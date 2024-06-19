@@ -1,3 +1,7 @@
+### Demo Site
+
+https://coolmovie-clinet.koijinoblog.com/
+
 ### Intruction
 
 This website is a side project and is not an officially launched independent website. The purpose of this project is to train the process of building a project from scratch, integrating front-end and back-end, and testing the implementation of new technologies.
@@ -12,7 +16,7 @@ This website is a side project and is not an officially launched independent web
 
 ### Technologies Used (Frontend)
 
-- Frontstage - React + Typescript + Bootstrap + Socket + Google Login
+- Frontstage - React + Typescript + Bootstrap + styled-components+ SocketI.O + Google Login
 - Backstage - Redux and Redux Toolkit + Ant Design
 
 ### Project Setup

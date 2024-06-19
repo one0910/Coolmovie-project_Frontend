@@ -1,0 +1,82 @@
+.backStageSider {
+  // display: none;
+  height: 100vh;
+  background-color: $primary-background  !important;
+
+  .menu-bar {
+    background-color: $primary-background  !important;
+
+    .ant-menu-item {
+      // margin: 30px 0;
+      font-size: .9rem;
+      color: $textColor;
+    }
+
+    .ant-menu-item-selected,
+    .ant-menu-item:hover {
+      color: $transparent-background  !important;
+      background-color: $primary  !important
+    }
+  }
+
+  .triger-btn {
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    color: $textColor;
+
+    &:hover {
+      color: $primary  !important;
+    }
+  }
+
+}
+
+
+.backStageContent {
+  background-color: $primary-background;
+  color: $textColor;
+  padding: 10px 20px;
+
+  @media screen and (max-width: 768px) {
+    padding: 10px 10px;
+
+  }
+
+  .card {
+    color: $textColor;
+    border: 2px solid $hoverTextColor;
+    background-color: $primary-background ;
+    // border-radius: 10px;
+
+
+    .ant-card-body {
+      // background-color: $primary-background;
+      padding: 0px;
+    }
+
+    .Statistic {
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      // background: #fcc;
+
+      .ant-statistic-title {
+        color: $textColor ;
+
+      }
+
+      .ant-statistic-content {
+        @media screen and (max-width: 768px) {
+          font-size: 1rem;
+        }
+
+        color: $textColor ;
+      }
+
+    }
+  }
+}

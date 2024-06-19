@@ -60,6 +60,15 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
               關於影城
             </p>
           </li>
+          <li>
+            <p
+              className={location.pathname.match("/admin") ? "active" : ""}
+              onClick={() => navigateHandler("/admin")}
+              role="button"
+            >
+              後台管理
+            </p>
+          </li>
           {isLogin && (
             <>
               <li>

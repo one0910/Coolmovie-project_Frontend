@@ -72,6 +72,9 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
             <NavLink to={`/aboutus`}>
               <li>關於影城</li>
             </NavLink>
+            <NavLink to={`/admin`}>
+              <li>後台管理</li>
+            </NavLink>
           </ul>
           <div className="d-flex align-items-center">
             {(isLogin || state.orderList.status === "member") ? (

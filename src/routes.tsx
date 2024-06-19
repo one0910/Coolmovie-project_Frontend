@@ -15,6 +15,12 @@ import {
   MemberOrder,
   Benifet,
   AboutUs,
+  BackstageHome,
+  DashBoard,
+  MovieManagement,
+  SeatManagement,
+  MemberManagement,
+  OrderManagement
 } from "./pages"
 
 const routes: RouteObject[] = [
@@ -92,6 +98,32 @@ const routes: RouteObject[] = [
     path: "*",
     element: <Navigate to="/" />,
   },
+  {
+    path: "/admin",
+    element: <BackstageHome />,
+    children: [
+      {
+        index: true,
+        element: <DashBoard />
+      },
+      {
+        path: 'movieMamagment',
+        element: <MovieManagement />
+      },
+      {
+        path: 'seatManagement',
+        element: <SeatManagement />
+      },
+      {
+        path: 'memberManagement',
+        element: <MemberManagement />
+      },
+      {
+        path: 'orderManagement',
+        element: <OrderManagement />
+      },
+    ]
+  }
 ];
 
 export default routes;
