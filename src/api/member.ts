@@ -5,6 +5,11 @@ export const getMember = async () => {
     return await authFetch.get(`/api/member/getUser`);
 }
 
+
+export const checkAdminToken = async () => {
+    return await authFetch.get(`/api/member/checkToken`);
+}
+
 export const updateMember = async ({
     nickName,
     phoneNumber,

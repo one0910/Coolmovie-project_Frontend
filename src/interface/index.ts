@@ -9,6 +9,13 @@ export interface I_MEMBER {
 	profilePic: string;
 }
 
+export interface MemberType extends I_MEMBER {
+	role: string
+	data: {
+		count: number;
+	};
+}
+
 export interface I_FormData {
 	nickName: string;
 	email: string;
@@ -45,7 +52,10 @@ export interface MovieDataType {
 	screens: any,
 	time: number,
 	videoImg: string,
-	videos: string[]
+	videos: string[],
+	data: {
+		count: number;
+	};
 }
 
 export interface GloabalThemeCSS {
@@ -96,4 +106,8 @@ export interface OrderDataType {
 	total: number,
 	payMethod: string
 	createTime: string
+	data: {
+		count: number;
+	};
 }
+

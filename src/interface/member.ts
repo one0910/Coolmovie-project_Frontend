@@ -1,39 +1,39 @@
 export interface I_MEMBER {
-    birthday: string;
-    email?: string;
-    nickName: string;
-    phoneNumber: string;
-    profilePic: string;
+	birthday: string;
+	email?: string;
+	nickName: string;
+	phoneNumber: string;
+	profilePic: string;
 }
 
 export interface I_FormData {
-    nickName: string;
-    email: string;
-    phoneNumber: string;
-    birthday: string;
-    profilePic: string;
+	nickName: string;
+	email: string;
+	phoneNumber: string;
+	birthday: string;
+	profilePic: string;
 }
 
 export interface CatchErrorMessage {
-    code: string,
-    message: string,
-    response: {
-        status: number
-        data: {
-            message: string
-        }
-    };
+	code: string,
+	message: string,
+	response: {
+		status: number
+		data: {
+			message: string
+		}
+	};
 }
 
 export interface I_ChangePassword {
-    password: string;
-    confirmPassword: string;
+	password: string;
+	confirmPassword: string;
 }
 
 export interface MovieDataType {
-    _id: string;
-    actors: [][];
-    imgs: [][];
-    name: string;
-    releaseData: string;
+	_id: string;
+	actors: [][];
+	imgs: [][];
+	name: string;
+	releaseData: string;
 }

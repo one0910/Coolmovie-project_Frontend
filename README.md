@@ -16,7 +16,7 @@ This website is a side project and is not an officially launched independent web
 
 ### Technologies Used (Frontend)
 
-- Frontstage - React + Typescript + Bootstrap + styled-components+ SocketI.O + Google Login
+- Frontstage - React + Typescript + Bootstrap + styled-components+ SocketI.O + Google Login + ECpay
 - Backstage - Redux and Redux Toolkit + Ant Design
 
 ### Project Setup

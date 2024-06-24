@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { getMember } from "../../api/member";
+import { getMember, checkAdminToken } from "../../api/member";
 import { format } from "date-fns";
 import { Loading } from "../../components";
 import { I_MEMBER } from "../../interface";
@@ -43,6 +43,7 @@ export const Member: React.FC = () => {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
   return (

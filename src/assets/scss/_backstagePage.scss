@@ -46,6 +46,7 @@
   }
 
   .card {
+    // display: none;
     color: $textColor;
     border: 2px solid $hoverTextColor;
     background-color: $primary-background ;
@@ -66,15 +67,27 @@
 
       .ant-statistic-title {
         color: $textColor ;
+        padding-top: 4px;
+        margin-bottom: 0px;
+        font-size: .8rem;
 
+        @media screen and (max-width: 768px) {
+          padding-top: 2px;
+        }
       }
 
       .ant-statistic-content {
+        font-size: 1.3rem;
+
         @media screen and (max-width: 768px) {
           font-size: 1rem;
         }
 
         color: $textColor ;
+      }
+
+      .ant-skeleton-title {
+        background: $secondary-background
       }
 
     }

@@ -23,6 +23,7 @@ authFetch.interceptors.response.use(
     const message = error.response?.data?.message || error.message
     // console.log('authFetch_error => ', error)
     console.error(`API Error: ${message}`)
+    alert(message);
     if (error.response?.status === 401) {
       window.location.replace('/')
     }

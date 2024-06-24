@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, MouseEvent } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { OrderContext } from "../store";
 import { Login, Logout, HamburgerMenu } from "./";
 import { authFetch, logoutClear, getCookie } from "../utilities";
@@ -14,6 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
   const memberName = state.orderList.memberName ? state.orderList.memberName : "";
   const token = localStorage.getItem("userToken") ? localStorage.getItem("userToken") : null;
   const navigate = useNavigate();
+  const location = useLocation()
 
 
   // 當網頁重新整理refresh時，檢查是否已有登入過
@@ -24,8 +25,8 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
       const userId = JSON.parse(atob(token?.split(".")[1] || "")).id;
       const currentTime = Math.floor(Date.now() / 1000);
       // 如果原本的token沒過期，則繼續向後端拿資料
-      console.log(' tokenExpTime=> ', tokenExpTime)
-      console.log(' currentTime=> ', currentTime)
+      // console.log(' tokenExpTime=> ', tokenExpTime)
+      // console.log(' currentTime=> ', currentTime)
       if (rememberMe && tokenExpTime > currentTime) {
         (async function () {
           try {

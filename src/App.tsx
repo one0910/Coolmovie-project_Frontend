@@ -5,7 +5,8 @@ import { ThemeProvider } from 'styled-components';
 import { Header, Footer } from './components';
 import './assets/scss/all.scss';
 import routes from './routes';
-
+import { Provider } from 'react-redux';
+import store from './store/store';
 
 
 function App() {
@@ -19,13 +20,15 @@ function App() {
 
   return (
     <OrderContext.Provider value={[state, dispatch]}>
-      <ThemeProvider theme={{ ...theme, setTheme }}>
-        <Header />
-        {routing}
-        {
-          (path !== 'admin') ? <Footer /> : ''
-        }
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={{ ...theme, setTheme }}>
+          <Header />
+          {routing}
+          {
+            (path !== 'admin') ? <Footer /> : ''
+          }
+        </ThemeProvider>
+      </Provider>
     </OrderContext.Provider>
   );
 }

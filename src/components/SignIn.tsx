@@ -1,11 +1,12 @@
-import React, { useState, useEffect, MutableRefObject, Dispatch, SetStateAction, useContext } from 'react'
+import React, { useState, MutableRefObject, Dispatch, SetStateAction, useContext } from 'react'
 import { OrderContext } from '../store';
 import { useForm, useWatch } from "react-hook-form"
 import { authFetch, getCookie } from '../utilities';
-import axios from 'axios';
 import { Loading, ErrorMsg } from './';
 import { CatchErrorMessage } from '../interface';
 import { AxiosResponse } from 'axios';
+import { useAppDispatch } from '../hooks';
+import { setUser } from '../store/user/user.reducer';
 
 
 interface LoginPropsType {
@@ -22,6 +23,7 @@ export interface SignInType {
 
 
 export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
+	const storeDispatch = useAppDispatch()
 	const [state, dispatch] = useContext(OrderContext);
 	const [errMsg, setErrMsg] = useState<string>()
 	const [loading, setloading] = useState(false)
@@ -42,6 +44,7 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 		const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
 		const googleId = (response.data.data.signinRes.googleId) ? response.data.data.signinRes.googleId : ""
 		localStorage.setItem('userToken', userToken)
+		storeDispatch(setUser({ token: userToken, mail: userMail }))
 
 		// 監控若是有勾選"保持登入"
 		if (getValues().remember_me) {
