@@ -18,16 +18,13 @@ export const movieApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getMovieCount: builder.query<RTKQuery_DataType, string>({
-      query: (parameter) => {
-        if (parameter === "count") {
-          return `api/movie/getMovieCount`;
-        }
-        return "api/movie/getMovieCount";
+    getMovieData: builder.query<RTKQuery_DataType, { parameter: string, daterange: string }>({
+      query: ({ parameter, daterange }) => {
+        return `api/movie/getMovieData/${parameter}/${daterange}`;
       }
     }),
 
   }),
 });
 
-export const { useGetMovieCountQuery } = movieApi
+export const { useGetMovieDataQuery } = movieApi

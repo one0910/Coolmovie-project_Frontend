@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { Card, Col, Flex, Statistic } from 'antd';
 import { DatabaseOutlined, FundViewOutlined, UnorderedListOutlined, UserAddOutlined } from '@ant-design/icons';
-import { useGetOrderCountQuery } from '../../../../services/orderService';
-import { useGetMovieCountQuery } from '../../../../services/movieService';
-import { useGetUserCountQuery } from '../../../../services/memberService';
+import { useGetOrderDataQuery } from '../../../../services/orderService';
+import { useGetMovieDataQuery } from '../../../../services/movieService';
+import { useGetUserDataQuery } from '../../../../services/memberService';
 import { RTKQuery_APIError } from '../../../../interface/rtk-query';
 import { CardDataType } from '../../../../interface/rtk-query';
 
@@ -33,19 +33,19 @@ const getIcon = (cartData: CardDataType, isMobileSize: boolean) => {
 export const Cards: React.FC<CardProps> = ({ isMobileSize, cartData }) => {
   const fetchQueryAPI = {
     getCurrentStream: {
-      api: useGetOrderCountQuery('count'),
+      api: useGetOrderDataQuery({ parameter: 'count', daterange: 'all' }),
       title: '今日造訪網站'
     },
     getOrderCount: {
-      api: useGetOrderCountQuery('count'),
+      api: useGetOrderDataQuery({ parameter: 'count', daterange: 'all' }),
       title: '目前訂票數'
     },
     getRegisterCount: {
-      api: useGetUserCountQuery('count'),
+      api: useGetUserDataQuery({ parameter: 'count', daterange: 'all' }),
       title: '己註冊人數'
     },
     getMovieCount: {
-      api: useGetMovieCountQuery('count'),
+      api: useGetMovieDataQuery({ parameter: 'count', daterange: 'all' }),
       title: '電影總數'
     }
   };

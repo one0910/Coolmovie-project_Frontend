@@ -110,6 +110,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
       }())
     }
   }, [getValues().movie_date])
+
   const openScreenSeat = (data: OrderType) => {
     const movie = (JSON.parse(data.movie_name).movie_name).split(") ")
     const theater_size = movie[0].replace("(", "")
@@ -158,6 +159,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
         movieId: movieId,
         movie_name: movie_name,
         movie_time: movie_time,
+        movie_date: movie_date,
         movie_length: movie_length,
         movie_level: movie_level,
         theater_size: theater_size,

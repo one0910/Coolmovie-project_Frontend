@@ -5,8 +5,17 @@ export interface RTKQuery_APIError {
   };
 }
 
+export interface YearlyData {
+  Month: string;
+  Box: number;
+  Total: number;
+}
+
 export interface RTKQuery_DataType {
   data: {
     count: number;
+    dataForChart: {
+      [key: string]: YearlyData[];
+    };
   };
 }

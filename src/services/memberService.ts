@@ -18,15 +18,12 @@ export const memberApi = createApi({
 
 
   endpoints: (builder) => ({
-    getUserCount: builder.query<RTKQuery_DataType, string>({
-      query: (parameter) => {
-        if (parameter === "count") {
-          return `api/member/getUserCount`;
-        }
-        return `api/member/getUserCount`;
+    getUserData: builder.query<RTKQuery_DataType, { parameter: string, daterange: string }>({
+      query: ({ parameter, daterange }) => {
+        return `api/member/getUserData/${parameter}/${daterange}`;
       }
     }),
 
   }),
 });
-export const { useGetUserCountQuery } = memberApi;
+export const { useGetUserDataQuery } = memberApi;

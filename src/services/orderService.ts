@@ -18,15 +18,12 @@ export const orderApi = createApi({
 
 
   endpoints: (builder) => ({
-    getOrderCount: builder.query<RTKQuery_DataType, string>({
-      query: (parameter) => {
-        if (parameter === "count") {
-          return `api/order/getOrderCount`;
-        }
-        return `api/order/getOrderCount`;
+    getOrderData: builder.query<RTKQuery_DataType, { parameter: string, daterange: string }>({
+      query: ({ parameter, daterange }) => {
+        return `api/order/getOrderData/${parameter}/${daterange}`;
       }
     }),
 
   }),
 });
-export const { useGetOrderCountQuery } = orderApi;
+export const { useGetOrderDataQuery } = orderApi;

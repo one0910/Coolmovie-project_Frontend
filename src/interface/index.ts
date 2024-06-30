@@ -111,3 +111,14 @@ export interface OrderDataType {
 	};
 }
 
+export interface ChartDataType {
+	labels: string[];
+	datasets: {
+		label: string;
+		data: number[];
+		fill?: { above?: string; below?: string; target: { value: number } } | boolean;
+		borderColor?: string;
+		backgroundColor?: string;
+	}[];
+}
+

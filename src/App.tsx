@@ -7,16 +7,23 @@ import './assets/scss/all.scss';
 import routes from './routes';
 import { Provider } from 'react-redux';
 import store from './store/store';
-
+import { setIsMobileScreen } from './store/common/common.reducer';
 
 function App() {
   // const reducer = useReducer(OrderReducer, OrderInitialState);
   const [state, dispatch] = useReducer(OrderReducer, OrderInitialState);
-  const routing = useRoutes(routes);
   const [theme, setTheme] = useState({ movieLevel: "", theaterSize: "" })
+  const routing = useRoutes(routes);
   const location = useLocation();
-
   const path = ((location.pathname).startsWith('/admin')) ? 'admin' : location.pathname
+  const mediaQuery = window.matchMedia('(max-width: 768px)');
+
+  const handleMediaQueryChange = (event: MediaQueryListEvent) => {
+    store.dispatch(setIsMobileScreen(event.matches));
+  };
+
+  mediaQuery.addEventListener('change', handleMediaQueryChange);
+
 
   return (
     <OrderContext.Provider value={[state, dispatch]}>
