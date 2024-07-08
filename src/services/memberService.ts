@@ -23,7 +23,48 @@ export const memberApi = createApi({
         return `api/member/getUserData/${parameter}/${daterange}`;
       }
     }),
-
+    checkEmail: builder.mutation({
+      query: (mail) => {
+        return {
+          url: `api/member/checkEmail`,
+          method: 'POST',
+          body: { email: mail },
+        }
+      },
+    }),
+    createAccount: builder.mutation({
+      query: (data) => {
+        return {
+          url: `api/member/createAccount`,
+          method: 'POST',
+          body: data,
+        }
+      },
+    }),
+    updateUserData: builder.mutation({
+      query: ({ memberID, ...data }) => {
+        return {
+          url: `api/member/updateUser/${memberID}`,
+          method: 'PATCH',
+          body: data,
+        }
+      },
+    }),
+    deleteUserData: builder.mutation({
+      query: (memberID) => {
+        console.log('memberID => ', memberID)
+        return {
+          url: `api/member/deleteUser/${memberID}`,
+          method: 'DELETE'
+        }
+      },
+    }),
   }),
 });
-export const { useGetUserDataQuery } = memberApi;
+export const {
+  useGetUserDataQuery,
+  useUpdateUserDataMutation,
+  useCheckEmailMutation,
+  useCreateAccountMutation,
+  useDeleteUserDataMutation
+} = memberApi;

@@ -34,6 +34,7 @@ export const MemberInfo: React.FC = () => {
   }, [member]);
   const onSubmit = async (formData: I_FormData) => {
     setIsSubmitting(true);
+
     try {
       const { data: response } = await updateMember({
         ...formData,
@@ -44,11 +45,12 @@ export const MemberInfo: React.FC = () => {
         setMember((member) => {
           return {
             ...member,
-            birthday: format(new Date(newFormData.birthday), "yyyy-MM-dd") || "無資料",
+            birthday: (newFormData.birthday) ? format(new Date(newFormData.birthday), "yyyy-MM-dd") : "無資料",
             email: newFormData.email || "無資料",
             nickName: newFormData.nickName || "無資料",
             phoneNumber: newFormData.phoneNumber || "無資料",
             profilePic: avatar || "/images/member/default_avatar.svg",
+            role: newFormData.role
           };
         });
         dispatch({

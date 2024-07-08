@@ -7,6 +7,7 @@ export interface I_MEMBER {
 	nickName: string;
 	phoneNumber: string;
 	profilePic: string;
+	role: string
 }
 
 export interface MemberType extends I_MEMBER {
@@ -22,9 +23,24 @@ export interface I_FormData {
 	phoneNumber: string;
 	birthday: string;
 	profilePic: string;
+	role: string;
 }
 
 export interface CatchErrorMessage {
+	code: string,
+	message: string,
+	response: {
+		status: number
+		data: {
+			message: string
+		}
+	};
+}
+
+export interface CatchErrorMessage {
+	data?: {
+		message: string
+	}
 	code: string,
 	message: string,
 	response: {

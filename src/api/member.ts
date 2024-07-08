@@ -14,13 +14,15 @@ export const updateMember = async ({
     nickName,
     phoneNumber,
     birthday,
-    profilePic
+    profilePic,
+    role
 }: I_MEMBER) => {
     return await authFetch.post(`/api/member/updateUser`, {
         nickName,
         phoneNumber,
         birthday,
-        profilePic
+        profilePic,
+        role
     });
 }
 

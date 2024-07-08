@@ -33,4 +33,16 @@ const convertTimeFormat = (num: number) => {
   const minute = num % 60
   return `${hour}時${minute.toString().padStart(2, '0')}分`
 }
-export { convertPlayDateFormat, convertTimeFormat }
+
+const converDateFormat = (dateString: string) => {
+  if (dateString) {
+    const date = new Date(dateString);
+    const formattedDate = date.toISOString().split('T')[0];
+    return formattedDate
+  } else {
+    return ''
+  }
+
+}
+
+export { convertPlayDateFormat, convertTimeFormat, converDateFormat }

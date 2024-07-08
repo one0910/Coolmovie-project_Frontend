@@ -17,5 +17,19 @@ export interface RTKQuery_DataType {
     dataForChart: {
       [key: string]: YearlyData[];
     };
+    dataForManagement: UserItem[];
   };
+}
+
+export interface UserItem {
+  __v: number;
+  _id: string;
+  createdAt: string;
+  email: string;
+  nickName: string;
+  profilePic: string;
+  role: string;
+  updatedAt: string;
+  birthday?: string;
+  phoneNumber?: string;
 }

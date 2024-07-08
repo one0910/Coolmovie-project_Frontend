@@ -59,10 +59,18 @@ select {
 .btn-outline-warning {
 	color: $primary;
 	border-color: $primary;
+	background-color: rgba(0, 0, 0, 0);
 
 	&:hover {
-		background-color: $primary;
-		border-color: $primary;
+		background-color: $primary  !important;
+		border-color: $primary  !important;
+		color: $hoverTextColor  !important;
+	}
+
+	&:focus {
+		background-color: transparent;
+		color: $primary;
+		box-shadow: 0 0 0 .25rem rgba(255, 193, 7, .5);
 	}
 }
 
@@ -93,7 +101,7 @@ select {
 	&:hover {
 		background-color: transparent !important;
 		color: $primary;
-		border: 1px solid $primary !important;
+		border: 1px solid $primary  !important;
 	}
 
 	&:focus {

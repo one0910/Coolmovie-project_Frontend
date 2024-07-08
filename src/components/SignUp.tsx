@@ -55,7 +55,6 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 
 	/******************登入後，將後傳回來的資料做處理*******************/
 	const setDataUI = (response: AxiosResponse<any, any>) => {
-		console.log(' response=> ', response)
 		const userToken = response.data.data.token
 		const userId = response.data.data.signinRes._id
 		const userName = response.data.data.signinRes.nickName

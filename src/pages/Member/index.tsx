@@ -17,6 +17,7 @@ export const Member: React.FC = () => {
     nickName: "",
     phoneNumber: "",
     profilePic: "",
+    role: ""
   });
   useEffect(() => {
     setLoading(true);
@@ -25,14 +26,14 @@ export const Member: React.FC = () => {
         const { data: response } = await getMember();
         if (response.status) {
           const { data: memberInfo } = response;
-          const { birthday, email, nickName, phoneNumber, profilePic } =
-            memberInfo;
+          const { birthday, email, nickName, phoneNumber, profilePic, role } = memberInfo;
           setMember({
             birthday: birthday ? format(new Date(birthday), "yyyy-MM-dd") : "無資料",
             email: email || "無資料",
             nickName: nickName || "無資料",
             phoneNumber: phoneNumber || "無資料",
             profilePic: profilePic || "/images/member/default_avatar.svg",
+            role: role
           });
           return;
         }

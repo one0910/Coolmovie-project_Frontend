@@ -1,6 +1,6 @@
 .backStageSider {
   // display: none;
-  height: 100vh;
+  // height: 100vh;
   background-color: $primary-background  !important;
 
   .menu-bar {
@@ -108,4 +108,173 @@
     }
 
   }
+
+  .divider {
+    // display: none;
+    color: $primary;
+
+    &::after,
+    &::before {
+      border: 1px solid $primary;
+    }
+  }
+
+  .memberTable {
+    .ant-table-thead tr th {
+      background-color: $primary ;
+
+      &::before {
+        background-color: $primary-dark  !important;
+      }
+    }
+
+    .ant-table-tbody {
+      color: $textColor;
+      background-color: $secondary-background;
+
+      .ant-table-cell-row-hover {
+        background: $hoverTextColor ;
+      }
+
+    }
+
+    .ant-table-cell {
+      // background-color: #fcc;
+      padding: 12px 16px;
+      border-bottom: 2px solid $hoverTextColor;
+
+      @media screen and (max-width: 768px) {
+        padding: 8px 16px;
+
+      }
+    }
+
+    .ant-pagination-item {
+      color: $textColor;
+      border: 1px solid $primary;
+      background-color: $primary-background;
+    }
+
+    .ant-pagination-prev .ant-pagination-item-link,
+    .ant-pagination-next .ant-pagination-item-link {
+      color: $primary;
+      /* 设置你想要的颜色 */
+    }
+
+  }
+
+
+
+  .List {
+    // background-color: $primary-background;
+    color: $textColor  !important;
+    margin: 0 20px;
+
+    .custom-skeleton {
+      .ant-skeleton-content {
+        background-color: #0F0F0F;
+      }
+
+      .ant-skeleton-avatar {
+        background-color: rgba(255, 255, 255, 0.25); // 調整avatar的背景顏色
+      }
+
+      .ant-skeleton-title,
+      .ant-skeleton-paragraph>li {
+        background-color: rgba(255, 255, 255, 0.25); // 調整其他加載特效的背景顏色
+      }
+    }
+
+    .ant-list-item-meta {
+      align-items: center;
+    }
+
+    .ant-list-item-meta-title,
+    .ant-list-item-meta-description {
+      color: $textColor  !important
+    }
+
+  }
+}
+
+.editModal,
+.createNewModal,
+.confirmModal {
+  color: $textColor;
+
+  .ant-modal-header {
+    background-color: $secondary-background;
+
+    .ant-modal-title {
+      color: $textColor;
+
+    }
+  }
+
+  .ant-modal-content {
+    background-color: $secondary-background;
+  }
+
+  .editMemberForm {
+    label {
+      color: $textColor ;
+    }
+
+    .ant-select-selector {
+      background-color: $secondary-background ;
+      color: $textColor ;
+    }
+
+    .ant-picker {
+      background-color: $secondary-background ;
+
+      .ant-picker-suffix {
+        color: $primary
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background-color: $secondary-background ;
+      color: $textColor ;
+
+      &.ant-input-outlined {
+        background-color: $secondary-background ;
+      }
+    }
+
+
+    input {
+      color: $textColor ;
+      background-color: $secondary-background ;
+
+      &.ant-input-outlined.ant-input-status-error {
+        background-color: $secondary-background ;
+      }
+
+      &:disabled {
+        border: 0px solid $hoverTextColor;
+        color: rgb(152, 151, 151);
+        background-color: $hoverTextColor;
+      }
+    }
+  }
+
+  .ant-modal-close-x {
+    color: $textColor;
+  }
+
+  .anticon.ant-input-password-icon {
+    color: $textColor ;
+
+    &:hover {
+      color: $textColor ;
+    }
+  }
+
+  .ant-modal-confirm-title {
+    color: $textColor ;
+    // background-color: $primary-background;
+  }
+
+  // display: none;
 }
