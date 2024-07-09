@@ -5,6 +5,9 @@ import { MemberContext } from '../context/member.context';
 import { converDateFormat } from '../../../../utilities';
 import { Loading } from '../../../../components';
 import dayjs from 'dayjs';
+import { CatchErrorMessage } from '../../../../interface';
+
+
 
 interface MemberEditTableModalProps {
   modalOpen: {
@@ -22,7 +25,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
 
 
   const submitHandle = async (values: any) => {
-    setLoadingToProvider()
+    setLoadingToProvider(true)
     const formattedValues = {
       ...values,
       birthday: values.birthday ? values.birthday.format('YYYY-MM-DD') : null
@@ -32,7 +35,9 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
       updateItemToProvider(formattedValues.index, response.data)
       closeModal()
     } catch (error) {
-      console.log('error => ', error)
+      const catchError = error as CatchErrorMessage
+      console.log('catchError => ', catchError.data?.message)
+      setLoadingToProvider(false)
     }
   }
 

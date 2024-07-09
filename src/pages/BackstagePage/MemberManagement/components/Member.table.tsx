@@ -5,24 +5,22 @@ import { UserItem } from '../context/member.type';
 import { Avatar, Button, Flex, Modal, Table, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { converDateFormat } from '../../../../utilities';
-import { useAppSelector } from '../../../../hooks';
 import { MemberEditTableModal } from './MemberEditTable.modal';
 import { MemberCreateTableModal } from './MemberCreateTable.modal';
+import { CatchErrorMessage } from '../../../../interface';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { setError } from '../../../../store/common/common.reducer';
 
-
-
-interface MemberTableProps {
-
-}
-
-export const MemberTable: React.FC<MemberTableProps> = ({ }) => {
+export const MemberTable: React.FC = () => {
   const { data, error, isLoading } = useGetUserDataQuery({ parameter: 'dataForManagement', daterange: 'all' })
+  const { isError } = useAppSelector(state => state.common.error)
+  const storeDispatch = useAppDispatch()
   const { setItemToProvider, userItems, setLoadingToProvider } = useContext(MemberContext)
+  const [deleteUserData] = useDeleteUserDataMutation()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [pagination, setPagination] = useState<{ current: number; pageSize: number }>({ current: 1, pageSize: 10 });
   const [createNewModalOpen, setCreateNewModalOpen] = useState(false)
   const [index, setIndex] = useState<number | null>(null)
-  const [deleteUserData] = useDeleteUserDataMutation()
   useEffect(() => {
     const userData = data?.data.dataForManagement.map((user: UserItem) => ({
       ...user,
@@ -47,9 +45,16 @@ export const MemberTable: React.FC<MemberTableProps> = ({ }) => {
       cancelText: '取消',
       className: 'confirmModal',
       onOk: async () => {
-        setLoadingToProvider()
-        const { data } = await deleteUserData(record._id).unwrap()
-        setItemToProvider(data as UserItem[]);
+        try {
+          setLoadingToProvider(true)
+          const { data } = await deleteUserData(record._id).unwrap()
+          setItemToProvider(data as UserItem[]);
+        } catch (error) {
+          const catchError = error as CatchErrorMessage
+          console.log('catchError => ', catchError.data?.message)
+          setLoadingToProvider(false)
+          storeDispatch(setError({ isError: !isError, errorMessage: `${catchError.data?.message}` }))
+        }
       },
       okButtonProps: {
         style: { backgroundColor: '#E7C673', color: '#393A3A' },

@@ -8,9 +8,10 @@ export const MEMBER_ACTION_TYPE = {
 };
 
 
-export const setLoading = (dispatch: Dispatch<MemberAction>) => {
+export const setLoading = (dispatch: Dispatch<MemberAction>, isLoading: boolean) => {
   dispatch({
     type: MEMBER_ACTION_TYPE.SET_LOADING,
+    payload: isLoading
   });
 };
 

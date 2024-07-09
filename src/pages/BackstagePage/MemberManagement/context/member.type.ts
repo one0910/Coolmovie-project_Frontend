@@ -19,7 +19,7 @@ export interface MemberContextType {
   addItemToProvider: (data: UserItem) => void;
   updateItemToProvider: (updateIndex: number, updateData: UserItem) => void;
   clearUserItem: () => void;
-  setLoadingToProvider: () => void;
+  setLoadingToProvider: (isLoading: boolean) => void;
 }
 
 export interface MemberState {
@@ -29,5 +29,5 @@ export interface MemberState {
 
 export interface MemberAction {
   type: string;
-  payload?: UserItem[];
+  payload?: UserItem[] | boolean
 }

@@ -1,10 +1,11 @@
-import { Button, Flex, Layout } from 'antd';
+import { Button, Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
 import Sider from 'antd/es/layout/Sider';
 import React, { useEffect, useState } from 'react'
 import { Siderbar } from '../../components';
 import { Outlet } from 'react-router-dom';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import Notification from '../../components/Notification';
 
 interface indexProps {
 
@@ -42,6 +43,7 @@ export const BackstageHome: React.FC<indexProps> = ({ }) => {
         />
       </Sider>
       <Content className='backStageContent'>
+        <Notification />
         <Outlet />
       </Content>
     </Layout>

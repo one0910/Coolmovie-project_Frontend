@@ -111,6 +111,17 @@ select {
 	}
 }
 
+.error-Notification {
+	background-color: $secondary-background;
+	border: 1px solid $invalid;
+	border-radius: 10px;
+
+	// color: $invalid  !important;
+	span {
+		color: $invalid ;
+	}
+}
+
 .text-color {
 	color: $textColor;
 }

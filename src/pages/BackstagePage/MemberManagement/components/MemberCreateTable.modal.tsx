@@ -45,7 +45,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
       profilePic: (values.profilePic) ? values.profilePic : `https://api.dicebear.com/7.x/miniavs/svg?seed=${random}`,
       birthday: (values.birthday && dayjs.isDayjs(values.birthday)) ? values.birthday.format('YYYY-MM-DD') : null,
     };
-    setLoadingToProvider()
+    setLoadingToProvider(true)
     try {
       const { data } = await createAccount(formattedValues).unwrap()
       addItemToProvider(data)
@@ -53,7 +53,8 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
     } catch (error) {
       const catchError = error as CatchErrorMessage
       console.log('catchError => ', catchError.data?.message)
-      closeModal()
+      setLoadingToProvider(false)
+      // closeModal()
     }
 
   }

@@ -26,7 +26,7 @@ export const MemberProvider: React.FC<MemberProviderProps> = ({ children }) => {
     addItemToProvider: (addData: UserItem) => addItemToUserReducer(dispatch, addData, userItems),
     updateItemToProvider: (updateIndex: number, updatData: UserItem) => updateItemToUserReducer(dispatch, updateIndex, updatData, userItems),
     clearUserItem: () => clearUserItemReducer(dispatch),
-    setLoadingToProvider: () => setLoading(dispatch),
+    setLoadingToProvider: (isLoading: boolean) => setLoading(dispatch, isLoading),
     isLoading,
   };
 
