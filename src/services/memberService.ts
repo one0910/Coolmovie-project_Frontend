@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store/store";
-import { RTKQuery_DataType } from "../interface/rtk-query";
+import { RTKQuery_DataType_User } from "../interface/rtk-query";
 const url = process.env.REACT_APP_REMOTE_URL
 
 export const memberApi = createApi({
@@ -17,7 +17,7 @@ export const memberApi = createApi({
   }),
   tagTypes: ['User'],
   endpoints: (builder) => ({
-    getUserData: builder.query<RTKQuery_DataType, { parameter: string, daterange: string }>({
+    getUserData: builder.query<RTKQuery_DataType_User, { parameter: string, daterange: string }>({
       query: ({ parameter, daterange }) => {
         return `api/member/getUserData/${parameter}/${daterange}`;
       },
@@ -29,7 +29,6 @@ export const memberApi = createApi({
       則getUserData的query就需要被重新觸發
       */
       providesTags: (result) => {
-        console.log('result => ', result)
         if (result?.data.dataForManagement) {
           return [
             ...result.data.dataForManagement.map(({ _id }) => {

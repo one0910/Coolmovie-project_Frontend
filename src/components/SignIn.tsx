@@ -39,12 +39,13 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 		const userToken = response.data.data.token
 		const userId = response.data.data.signinRes._id
 		const userMail = response.data.data.signinRes.email
+		const userRole = response.data.data.signinRes.role
 		const userName = response.data.data.signinRes.nickName
 		const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
 		const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
 		const googleId = (response.data.data.signinRes.googleId) ? response.data.data.signinRes.googleId : ""
 		localStorage.setItem('userToken', userToken)
-		storeDispatch(setUser({ token: userToken, mail: userMail }))
+		storeDispatch(setUser({ token: userToken, mail: userMail, role: userRole }))
 
 		// 監控若是有勾選"保持登入"
 		if (getValues().remember_me) {
@@ -62,7 +63,8 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 				memberMail: userMail,
 				price: price,
 				status: "member",
-				googleId: googleId
+				googleId: googleId,
+				role: userRole,
 			}
 		})
 

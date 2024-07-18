@@ -120,6 +120,10 @@
   }
 
   .memberTable {
+    .ant-table-container {
+      scrollbar-color: rgba(0, 0, 0, 0.42) rgba(0, 0, 0, 0.74);
+    }
+
     .ant-table-thead tr th {
       background-color: $primary ;
 
@@ -131,6 +135,14 @@
     .ant-table-tbody {
       color: $textColor;
       background-color: $secondary-background;
+
+      .ant-table-cell-fix-right,
+      .ant-table-cell-fix-right-first,
+      .ant-table-cell-fix-left,
+      .ant-table-cell-fix-left-first {
+        background-color: $secondary-background;
+
+      }
 
       .ant-table-cell-row-hover {
         background: $hoverTextColor ;
@@ -161,9 +173,19 @@
       /* 设置你想要的颜色 */
     }
 
+    .ant-table-column-has-sorters {
+      &:hover {
+        background-color: $primary  !important;
+      }
+
+    }
+
+    .ant-table-column-sort {
+      background-color: rgba(255, 255, 255, 0);
+
+    }
+
   }
-
-
 
   .List {
     // background-color: $primary-background;
@@ -193,7 +215,41 @@
     .ant-list-item-meta-description {
       color: $textColor  !important
     }
+  }
+}
 
+.editOrderForm {
+  input {
+    // display: none;
+    font-size: 12px;
+    padding: 4px 8px;
+    // line-height: 1;
+    color: $textColor  !important;
+    background-color: $secondary-background  !important;
+
+    &:hover {
+      background-color: $secondary-background ;
+      color: $textColor ;
+    }
+
+    &.ant-input-outlined {
+      border-color: $primary;
+      // background: $transparent-background  !important;
+    }
+
+    &.ant-input-outlined.ant-input-status-error {
+      background-color: $secondary-background ;
+    }
+
+    &:disabled {
+      border: 0px solid $hoverTextColor;
+      color: rgb(152, 151, 151);
+      background-color: $hoverTextColor;
+    }
+  }
+
+  #quantity {
+    // display: none;
   }
 }
 
@@ -276,5 +332,4 @@
     // background-color: $primary-background;
   }
 
-  // display: none;
 }

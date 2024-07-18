@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store/store";
-import { RTKQuery_DataType } from "../interface/rtk-query";
+import { RTKQuery_DataType_Order } from "../interface/rtk-query";
 const url = process.env.REACT_APP_REMOTE_URL
 
 export const orderApi = createApi({
@@ -16,14 +16,49 @@ export const orderApi = createApi({
     },
   }),
 
-
+  tagTypes: ['Order'],
   endpoints: (builder) => ({
-    getOrderData: builder.query<RTKQuery_DataType, { parameter: string, daterange: string }>({
+    getOrderData: builder.query<RTKQuery_DataType_Order, { parameter: string, daterange: string }>({
       query: ({ parameter, daterange }) => {
         return `api/order/getOrderData/${parameter}/${daterange}`;
+      },
+      providesTags: (result) => {
+        if (result?.data.dataForManagement) {
+          return [
+            ...result.data.dataForManagement.map(({ id }) => {
+              return { type: 'Order' as const, id: id }
+            }),
+            { type: 'Order', id: 'LIST' },
+          ]
+        } else {
+          return [{ type: 'Order', id: 'LIST' }]
+        }
       }
     }),
-
+    updateOrderData: builder.mutation({
+      query: ({ id, ...data }) => {
+        return {
+          url: `api/order/updateOrder/${id}`,
+          method: 'PATCH',
+          body: data,
+        }
+      },
+      invalidatesTags: (result, error, { id }) => {
+        return [{ type: 'Order', id: id }]
+      }
+    }),
+    deleteOrderData: builder.mutation({
+      query: ({ id, ...data }) => {
+        return {
+          url: `api/order/deleteOrder/${id}`,
+          method: 'DELETE',
+          body: data,
+        }
+      },
+      invalidatesTags: (result, error, { id }) => {
+        return [{ type: 'Order', id: id }]
+      },
+    }),
   }),
 });
-export const { useGetOrderDataQuery } = orderApi;
+export const { useGetOrderDataQuery, useUpdateOrderDataMutation, useDeleteOrderDataMutation } = orderApi;

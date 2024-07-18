@@ -12,6 +12,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
   const [isLogin, setIsLogin] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const memberName = state.orderList.memberName ? state.orderList.memberName : "";
+  const userRole = (state.orderList.role) ? state.orderList.role : ''
   const token = localStorage.getItem("userToken") ? localStorage.getItem("userToken") : null;
   const navigate = useNavigate();
   const location = useLocation()
@@ -34,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
             const userName = response.data.data.nickName;
             const userMail = (response.data.data.email) ? response.data.data.email : null
             const googleId = (response.data.data.googleId) ? response.data.data.googleId : null
+            const userRole = (response.data.data.role) ? response.data.data.role : ''
             dispatch({
               type: "ADD_MEMBER_DATA",
               payload: {
@@ -41,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
                 googleId: googleId,
                 memberName: userName,
                 memberMail: userMail,
+                role: userRole,
                 status: "member",
               },
             });
@@ -67,15 +70,15 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
             <img src={logoImg} alt="" />
           </a>
           <ul className="menuWrap">
-            <NavLink to={`/benifet`}>
+            {/* <NavLink to={`/benifet`}>
               <li>好康優惠</li>
             </NavLink>
             <NavLink to={`/aboutus`}>
               <li>關於影城</li>
-            </NavLink>
-            <NavLink to={`/admin`}>
-              <li>後台管理</li>
-            </NavLink>
+            </NavLink> */}
+            {(userRole == 'admin' || userRole == 'view') &&
+              <NavLink to={`/admin`}><li>後台管理</li></NavLink>
+            }
           </ul>
           <div className="d-flex align-items-center">
             {(isLogin || state.orderList.status === "member") ? (
@@ -84,6 +87,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
                   <i className=" bi-person-circle btn-outline-warning"></i>
                 </NavLink>
                 <span className="me-2 memberName">{memberName} 您好</span>
+                {/* 登出按鈕 */}
                 <Logout isLogin={isLogin} setIsLogin={setIsLogin} />
               </div>
             ) : (

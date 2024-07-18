@@ -2,6 +2,7 @@ import { Button, DatePicker, Form, Input, InputNumber, Modal, Select } from 'ant
 import React, { useContext, Dispatch, useEffect, useState } from 'react'
 import { useUpdateUserDataMutation } from '../../../../services/memberService';
 import { MemberContext } from '../context/member.context';
+import { OrderContext } from '../../../../store';
 import { converDateFormat } from '../../../../utilities';
 import { Loading } from '../../../../components';
 import dayjs from 'dayjs';
@@ -22,7 +23,10 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
   const [form] = Form.useForm();
   const [updateUserData] = useUpdateUserDataMutation()
   const { updateItemToProvider, userItems, isLoading, setLoadingToProvider } = useContext(MemberContext)
-
+  const [state, dispatch] = useContext(OrderContext);
+  const userRole = (state.orderList.role) ? state.orderList.role : ''
+  const confirmTipText = (userRole === 'view') ? '(此為瀏覽模式，無法修改)' : ''
+  const isView = (userRole === 'view') ? true : false
 
   const submitHandle = async (values: any) => {
     setLoadingToProvider(true)
@@ -70,7 +74,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
       <Loading isActive={isLoading} />
       <Modal
         className='editModal'
-        title='修改資料'
+        title=<span>修改資料 <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>
         open={(isModalOpen === true && index !== null)}
         okText='儲存'
         cancelText='取消'
@@ -180,9 +184,8 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
 
           <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: 'right' }}>
             <Button className='btn-outline-warning' onClick={closeModal}>關閉</Button>
-            <Button className='btn_primary' htmlType='submit' style={{ marginLeft: 10 }}>確定</Button>
+            <Button className='btn_primary' htmlType='submit' style={{ marginLeft: 10 }} disabled={isView}>確定</Button>
           </Form.Item>
-
         </Form>
       </Modal>
     </>

@@ -195,7 +195,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           >
             <Select placeholder='選擇會員級別' className='roelSelect'>
               <Select.Option value='admin'>管理員</Select.Option>
-              <Select.Option value='user'>會員</Select.Option>
+              <Select.Option value='user'>普通會員</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item

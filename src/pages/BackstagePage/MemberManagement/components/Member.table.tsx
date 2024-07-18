@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useGetUserDataQuery, useDeleteUserDataMutation } from '../../../../services/memberService';
 import { MemberContext } from '../context/member.context';
+import { OrderContext } from '../../../../store';
 import { UserItem } from '../context/member.type';
 import { Avatar, Button, Flex, Modal, Table, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -12,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { setError } from '../../../../store/common/common.reducer';
 
 export const MemberTable: React.FC = () => {
+  const [state, dispatch] = useContext(OrderContext);
   const { data, error, isLoading } = useGetUserDataQuery({ parameter: 'dataForManagement', daterange: 'all' })
   const { isError } = useAppSelector(state => state.common.error)
   const storeDispatch = useAppDispatch()
@@ -21,6 +23,10 @@ export const MemberTable: React.FC = () => {
   const [pagination, setPagination] = useState<{ current: number; pageSize: number }>({ current: 1, pageSize: 10 });
   const [createNewModalOpen, setCreateNewModalOpen] = useState(false)
   const [index, setIndex] = useState<number | null>(null)
+  const userRole = (state.orderList.role) ? state.orderList.role : ''
+  const confirmTipText = (userRole === 'view') ? '(此為瀏覽模式，無法刪除)' : ''
+  const isView = (userRole === 'view') ? true : false
+
   useEffect(() => {
     const userData = data?.data.dataForManagement.map((user: UserItem) => ({
       ...user,
@@ -40,7 +46,7 @@ export const MemberTable: React.FC = () => {
 
   const onenDleteModal = (record: UserItem) => {
     Modal.confirm({
-      title: '確定要刪除此筆資料會員資料嗎 ?',
+      title: <span>確定要刪除此筆資料會員資料嗎 ? <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>,
       okText: '確定',
       cancelText: '取消',
       className: 'confirmModal',
@@ -57,7 +63,8 @@ export const MemberTable: React.FC = () => {
         }
       },
       okButtonProps: {
-        style: { backgroundColor: '#E7C673', color: '#393A3A' },
+        disabled: isView,
+        className: 'btn_primary'
       },
       cancelButtonProps: {
         className: 'btn-outline-warning',
@@ -68,14 +75,14 @@ export const MemberTable: React.FC = () => {
   const columns = [
     {
       key: '1',
-      title: 'ID',
+      title: 'ID編號',
       dataIndex: '_id',
       width: 200,
       ellipsis: true
     },
     {
       key: '2',
-      title: 'Profile',
+      title: '圖像',
       dataIndex: 'profilePic',
       width: 80,
       ellipsis: {
@@ -87,7 +94,7 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '3',
-      title: 'Name',
+      title: '名稱',
       dataIndex: 'nickName'
     },
     {
@@ -98,7 +105,7 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '5',
-      title: 'Birthday',
+      title: '生日',
       dataIndex: 'birthday',
       render: (record: string) => {
         let brithDate = (record) ? converDateFormat(record) : ''
@@ -107,7 +114,7 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '6',
-      title: 'Role',
+      title: '級別',
       dataIndex: 'role',
       width: 160,
       render: (role: string, record: UserItem) => {
@@ -122,12 +129,13 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '7',
-      title: 'Phone Number',
+      title: '電話號碼',
       dataIndex: 'phoneNumber'
     },
     {
       key: '8',
-      title: 'Action',
+      title: '執行',
+      fixed: 'right' as const,
       render: (text: UserItem, record: UserItem, index: number) => {
         return <>
           <EditOutlined

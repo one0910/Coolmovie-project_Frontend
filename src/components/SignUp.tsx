@@ -59,6 +59,7 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 		const userId = response.data.data.signinRes._id
 		const userName = response.data.data.signinRes.nickName
 		const userMail = response.data.data.signinRes.email
+		const userRole = response.data.data.signinRes.role
 		const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
 		const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
 		const googleId = (response.data.data.signinRes.googleId) ? response.data.data.signinRes.googleId : ""
@@ -73,7 +74,8 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 				memberMail: userMail,
 				price: price,
 				status: "member",
-				googleId: googleId
+				googleId: googleId,
+				role: userRole,
 			}
 		})
 		// 註冊後，總價重新寫入store

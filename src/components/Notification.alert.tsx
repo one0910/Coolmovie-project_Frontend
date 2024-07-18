@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { notification, type NotificationArgsProps } from 'antd';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { setError } from '../store/common/common.reducer';
+import { setAlert } from '../store/common/common.reducer';
 import { WarningOutlined } from '@ant-design/icons';
 type NotificationPlacement = NotificationArgsProps['placement'];
 interface NotificationProps {
@@ -10,25 +10,25 @@ interface NotificationProps {
 
 const Notification: React.FC<NotificationProps> = ({ }) => {
   const [api, contextHolder] = notification.useNotification();
-  const { isError, errorMessage } = useAppSelector(state => state.common.error);
+  const { isAlert, alertMessage } = useAppSelector(state => state.common.alert);
   const storeDispatch = useAppDispatch()
   const openNotification = (placement: NotificationPlacement) => {
     api.info({
-      message: <span>{errorMessage}</span>,
+      message: <span>{alertMessage}</span>,
       placement,
       duration: 0,
-      className: 'error-Notification',
-      icon: <WarningOutlined style={{ color: '#fd7e14' }} />,
+      className: 'alert-Notification',
+      icon: <WarningOutlined style={{ color: '#059213' }} />,
       onClose: () => {
-        storeDispatch(setError({ isError: isError, errorMessage: '' }))
+        storeDispatch(setAlert({ isAlert: !isAlert, alertMessage: '' }))
       }
     });
   };
   useEffect(() => {
-    if (errorMessage) {
-      openNotification('topRight')
+    if (alertMessage) {
+      openNotification('bottomRight')
     }
-  }, [isError]);
+  }, [isAlert]);
   return (
     <>
       {contextHolder}

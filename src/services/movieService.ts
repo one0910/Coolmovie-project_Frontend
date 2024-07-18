@@ -18,7 +18,7 @@ export const movieApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getMovieData: builder.query<RTKQuery_DataType, { parameter: string, daterange: string }>({
+    getMovieData: builder.query<any, { parameter: string, daterange: string }>({
       query: ({ parameter, daterange }) => {
         return `api/movie/getMovieData/${parameter}/${daterange}`;
       }

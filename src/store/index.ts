@@ -22,7 +22,8 @@ export interface OrderType {
   seat_remain_number?: number
   seat_ordered?: []
   seat_orderedIndex?: [],
-  status: "quick" | "member"
+  status: "quick" | "member",
+  role: string
 }
 
 export interface OrderState {
@@ -55,7 +56,8 @@ export const OrderInitialState: OrderState = {
     theater_size: "",
     price: 0,
     quantity: 1,
-    status: "quick"
+    status: "quick",
+    role: ''
   },
   total: 0,
   lastPage: "",

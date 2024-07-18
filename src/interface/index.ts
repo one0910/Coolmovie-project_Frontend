@@ -122,7 +122,7 @@ export interface OrderDataType {
 	total: number,
 	payMethod: string
 	createTime: string
-	data: {
+	data?: {
 		count: number;
 	};
 }

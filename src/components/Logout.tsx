@@ -31,6 +31,7 @@ export const Logout: React.FC<LogoutProps> = ({ isLogin, setIsLogin }) => {
 					memberId: null,
 					status: "quick",
 					memberName: "",
+					role: "",
 				}
 			})
 			navigate("/")

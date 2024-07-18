@@ -11,7 +11,7 @@ interface MemberManagementProps {
 export const MemberManagement: React.FC<MemberManagementProps> = ({ }) => {
   return (
     <MemberProvider>
-      <Divider orientation="left" className='divider'>使用者列表</Divider>
+      <Divider orientation="left" className='divider'>使用者管理列表</Divider>
       <MemberTable />
     </MemberProvider>
   );
