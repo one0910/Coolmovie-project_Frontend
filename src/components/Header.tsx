@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, MouseEvent } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { OrderContext } from "../store";
 import { Login, Logout, HamburgerMenu } from "./";
@@ -16,6 +16,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
   const token = localStorage.getItem("userToken") ? localStorage.getItem("userToken") : null;
   const navigate = useNavigate();
   const location = useLocation()
+
 
 
   // 當網頁重新整理refresh時，檢查是否已有登入過

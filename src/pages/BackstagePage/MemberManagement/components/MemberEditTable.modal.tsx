@@ -7,6 +7,8 @@ import { converDateFormat } from '../../../../utilities';
 import { Loading } from '../../../../components';
 import dayjs from 'dayjs';
 import { CatchErrorMessage } from '../../../../interface';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
+import { setError } from '../../../../store/common/common.reducer';
 
 
 
@@ -19,7 +21,9 @@ interface MemberEditTableModalProps {
 }
 
 export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ modalOpen, index }) => {
+  const storeDispatch = useAppDispatch()
   const { isModalOpen, setIsModalOpen } = modalOpen
+  const { isError } = useAppSelector(state => state.common.error)
   const [form] = Form.useForm();
   const [updateUserData] = useUpdateUserDataMutation()
   const { updateItemToProvider, userItems, isLoading, setLoadingToProvider } = useContext(MemberContext)
@@ -28,6 +32,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
   const confirmTipText = (userRole === 'view') ? '(此為瀏覽模式，無法修改)' : ''
   const isView = (userRole === 'view') ? true : false
 
+  /*按下確定鈕*/
   const submitHandle = async (values: any) => {
     setLoadingToProvider(true)
     const formattedValues = {
@@ -42,6 +47,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
       const catchError = error as CatchErrorMessage
       console.log('catchError => ', catchError.data?.message)
       setLoadingToProvider(false)
+      storeDispatch(setError({ isError: !isError, errorMessage: `${catchError.data?.message}` }))
     }
   }
 
@@ -152,7 +158,8 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           >
             <Select placeholder='選擇會員級別' className='roelSelect'>
               <Select.Option value='admin'>管理員</Select.Option>
-              <Select.Option value='user'>會員</Select.Option>
+              <Select.Option value='user'>普通會員</Select.Option>
+              <Select.Option value='view'>瀏覽會員</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item

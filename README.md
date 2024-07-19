@@ -1,6 +1,10 @@
 ### Demo Site
 
-https://coolmovie-clinet.koijinoblog.com/
+- Frontend Stage:https://coolmovie-clinet.koijinoblog.com/
+- Backagend Stage(Management Page):https://coolmovie-clinet.koijinoblog.com/viewmode/a123456789
+
+Login Account :viewmode@gmail.com
+Login Password :a123456789
 
 ### Intruction
 

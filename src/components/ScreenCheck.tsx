@@ -46,10 +46,6 @@ export const ScreenCheck: React.FC<ScreenCheckProps> = ({ order, titleMsg, child
   const movie_time = (order) ? order.moviePlayTime : state.orderList.movie_time
   const theater_size = (order) ? order.theater_size : state.orderList.theater_size
   const seat_ordered = (order) ? order.seatOrdered.map(seat => `[${seat}]`).join('、') : state.orderList.seat_ordered?.map(item => `[${item}]`).join('、')
-  console.log('order => ', order)
-  console.log('state.orderList.movie_date => ', state.orderList.movie_date)
-  console.log('order.moviePlayDate => ', order?.moviePlayDate)
-  console.log('movie_date => ', movie_date)
 
 
   return (

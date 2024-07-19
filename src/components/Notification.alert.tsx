@@ -11,6 +11,7 @@ interface NotificationProps {
 const Notification: React.FC<NotificationProps> = ({ }) => {
   const [api, contextHolder] = notification.useNotification();
   const { isAlert, alertMessage } = useAppSelector(state => state.common.alert);
+  const isMoblieScreen = useAppSelector(state => state.common.isMoblieScreen);
   const storeDispatch = useAppDispatch()
   const openNotification = (placement: NotificationPlacement) => {
     api.info({
@@ -25,8 +26,9 @@ const Notification: React.FC<NotificationProps> = ({ }) => {
     });
   };
   useEffect(() => {
+    const position = isMoblieScreen ? 'topRight' : 'bottomRight'
     if (alertMessage) {
-      openNotification('bottomRight')
+      openNotification(position)
     }
   }, [isAlert]);
   return (

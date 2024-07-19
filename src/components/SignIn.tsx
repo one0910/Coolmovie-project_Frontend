@@ -1,17 +1,19 @@
-import React, { useState, MutableRefObject, Dispatch, SetStateAction, useContext } from 'react'
+import React, { useState, MutableRefObject, Dispatch, SetStateAction, useContext, useEffect } from 'react'
 import { OrderContext } from '../store';
 import { useForm, useWatch } from "react-hook-form"
-import { authFetch, getCookie } from '../utilities';
+import { authFetch } from '../utilities';
 import { Loading, ErrorMsg } from './';
 import { CatchErrorMessage } from '../interface';
 import { AxiosResponse } from 'axios';
 import { useAppDispatch } from '../hooks';
 import { setUser } from '../store/user/user.reducer';
+import { useNavigate } from 'react-router-dom';
 
 
 interface LoginPropsType {
 	myModal: MutableRefObject<bootstrap.Modal | null>
 	setIsLogin: Dispatch<SetStateAction<boolean>>
+	viewModel?: { account: string, password: string | undefined }
 }
 
 export interface SignInType {
@@ -22,17 +24,27 @@ export interface SignInType {
 }
 
 
-export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
+export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewModel }) => {
 	const storeDispatch = useAppDispatch()
 	const [state, dispatch] = useContext(OrderContext);
 	const [errMsg, setErrMsg] = useState<string>()
 	const [loading, setloading] = useState(false)
-	const { register, handleSubmit, control, getValues, setError, formState: { errors } } = useForm<SignInType>({
+	const { register, handleSubmit, control, getValues, setValue, setError, formState: { errors } } = useForm<SignInType>({
 		defaultValues: {
 			remember_me: true
 		}
 	});
 	const watchForm = useWatch({ control });
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (viewModel?.account) {
+			const { account, password } = viewModel
+			setValue('useremail', account);
+			setValue('password', password as string);
+		}
+	}, [viewModel]);
+
 
 	/******************登入後，將後傳回來的資料做處理*******************/
 	const setDataUI = (response: AxiosResponse<any, any>) => {
@@ -79,6 +91,12 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 		myModal.current?.hide();
 		setloading(false)
 		setIsLogin(true)
+
+		// 若為瀏覽模式，則使用viewmode@gmail.com登入後直接進入後台頁面
+		if (viewModel?.account) {
+			navigate('/admin')
+		}
+
 	}
 	const loginForm = (data: SignInType) => {
 		(async function () {
@@ -146,11 +164,17 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 			<Loading isActive={loading} />
 			<div id="login-tab-content">
 				<form className="login-form" onSubmit={handleSubmit(loginForm)}>
+					{/* google 登入 */}
 					<button type="button" className="button mt-3" onClick={openGoogleLogin} style={{ "letterSpacing": "1px" }}>
 						<i className="bi bi-google me-1"></i>
 						使用Google帳號登入
 					</button >
 					<div className='d-flex cross-line my-2'><span>或</span></div>
+
+					{/* 若是為瀏覽模式是，所顯示的文字提醒 */}
+					{(viewModel?.account) && <span className='valid-feedback d-inline'>進入瀏覽模式，可使用viewmode@gmail.com帳號直接登入</span>}
+
+					{/* 帳號密碼登入 登入 */}
 					<input
 						type="text"
 						className={`input ${errors.useremail && 'is-invalid'}`}
@@ -194,7 +218,10 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 						{...register("remember_me")}
 					/>
 					<label htmlFor="remember_me" className='remember_me'>保持登入</label>
-					<button type="submit" className="button">電子郵件登入</button >
+					<button type="submit" className="button">
+						{(viewModel?.account) ? '直接登入，進入後台管理' : '電子郵件登入'}
+
+					</button >
 				</form>
 				<div className="help-text">
 				</div>

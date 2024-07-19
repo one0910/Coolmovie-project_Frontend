@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { authFetch } from "../../utilities";
 import { Loading } from "../../components";
 import { HomeKv } from "./components/HomeKv";
@@ -9,18 +10,21 @@ import { HomeVideo } from "./components/HomeVideo";
 import { HomeDiscount } from "./components/HomeDiscount";
 import { HomeInvite } from "./components/HomeInvite";
 import { MovieDataType } from "../../interface";
-
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper";
+import { useAppDispatch } from "../../hooks";
+import { setViewMode } from "../../store/common/common.reducer";
+
 
 
 interface HomeProps { }
 
 
 export const Home: React.FC<HomeProps> = ({ }) => {
+  const storeDispatch = useAppDispatch()
   const [loading, setLoading] = useState(false);
   const [movieReleaseData, setMovieReleaseData] = useState<MovieDataType[]>([])
   const [movieCommingData, setMovieCommingReleaseData] = useState<MovieDataType[]>([])
+  const { viewmode, password } = useParams()
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
@@ -43,6 +47,11 @@ export const Home: React.FC<HomeProps> = ({ }) => {
       } catch (error) {
       }
     })();
+
+    if (viewmode && password) {
+      let viewmode = 'viewmode@gmail.com'
+      storeDispatch(setViewMode({ account: viewmode, password: password }))
+    }
   }, []);
   return (
     <div className="home">

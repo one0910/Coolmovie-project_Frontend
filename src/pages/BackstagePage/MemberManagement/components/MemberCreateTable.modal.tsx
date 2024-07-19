@@ -38,6 +38,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
     }
   };
 
+  /*按下確定鈕*/
   const submitHandle = async (values: UserItem) => {
     const random = Math.floor(Math.random() * 10000000)
     const formattedValues = {

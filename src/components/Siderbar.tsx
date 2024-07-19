@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { MenuInfo } from "rc-menu/lib/interface";
+import { useAppSelector } from '../hooks';
 import {
   UserOutlined,
   DashboardOutlined,
@@ -7,61 +8,65 @@ import {
   GitlabOutlined,
   AuditOutlined
 } from '@ant-design/icons'
-import { Flex, Menu } from 'antd'
+import { Menu } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom';
 
-interface SiderbarProps {
-
+interface MenuItem {
+  key: string;
+  icon: JSX.Element;
+  label: string;
 }
 
-export const Siderbar: React.FC<SiderbarProps> = ({ }) => {
+export const Siderbar: React.FC = () => {
   const location = useLocation();
-  const [selectedKeys, setSelectedKeys] = useState("/");
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const { account } = useAppSelector(state => state.common.viewMode)
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
   const goNavigate = (item: MenuInfo) => {
-    navigate(`${item.key}`)
+    navigate(`${item.key}`);
   }
 
   useEffect(() => {
     const pathName = location.pathname;
-    setSelectedKeys(pathName);
-  }, [location.pathname])
+    setSelectedKeys([pathName]);
+  }, [location.pathname]);
+
+  const menuItems = [
+    {
+      key: '/admin',
+      icon: <DashboardOutlined />,
+      label: '後台總覽'
+    },
+    !account && {
+      key: '/admin/movieMamagment',
+      icon: <VideoCameraAddOutlined />,
+      label: '電影管理'
+    },
+    !account && {
+      key: '/admin/seatManagement',
+      icon: <GitlabOutlined />,
+      label: '廳位管理'
+    },
+    {
+      key: '/admin/memberManagement',
+      icon: <UserOutlined />,
+      label: '會員管理'
+    },
+    {
+      key: '/admin/orderManagement',
+      icon: <AuditOutlined />,
+      label: '訂票管理'
+    },
+  ].filter(Boolean) as MenuItem[];
 
   return (
     <Menu
       mode='inline'
       onClick={goNavigate}
       className='menu-bar'
-      selectedKeys={[selectedKeys]}
-      items={[
-        {
-          key: '/admin',
-          icon: <DashboardOutlined />,
-          label: '後台總覽'
-        },
-        {
-          key: '/admin/movieMamagment',
-          icon: <VideoCameraAddOutlined />,
-          label: '電影管理'
-        },
-        {
-          key: '/admin/seatManagement',
-          icon: <GitlabOutlined />,
-          label: '廳位管理'
-        },
-        {
-          key: '/admin/memberManagement',
-          icon: <UserOutlined />,
-          label: '會員管理'
-        },
-        {
-          key: '/admin/orderManagement',
-          icon: <AuditOutlined />,
-          label: '訂票管理'
-        },
-
-      ]}
-    >
-    </Menu>);
+      selectedKeys={selectedKeys}
+      items={menuItems}
+    />
+  );
 }

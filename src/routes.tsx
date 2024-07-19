@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { GoogleLoginComplete } from "./components/GoogleLoginComplete";
 import { CheckComplete } from "./pages/CheckPay/CheckComplete";
 import { CheckFail } from "./pages/CheckPay/CheckFail";
+import { Header } from "./components";
 import {
   Home,
   Member,
@@ -20,13 +21,19 @@ import {
   MovieManagement,
   SeatManagement,
   MemberManagement,
-  OrderManagement
+  OrderManagement,
 } from "./pages"
 
 const routes: RouteObject[] = [
   {
     path: "/",
     element: <Home />,
+    children: [
+      {
+        path: ":viewmode/:password",
+        element: <Home />,
+      }
+    ]
   },
   {
     path: "/member",

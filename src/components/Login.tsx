@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect, Dispatch, SetStateAction, useContext } from 'react'
+import React, { useState, useRef, useEffect, Dispatch } from 'react'
 import * as bootstrap from 'bootstrap';
 import { SingIn, SignUp } from './';
 import styled from 'styled-components';
+import { useAppSelector } from '../hooks';
+import { useLocation } from 'react-router-dom';
 
 const LoingBtn = styled.button<{ LoingMsg: string, variable?: string }>`
 	width:${({ variable }) => (variable === "fromseats") ? "50%" : "auto"};
@@ -47,13 +49,22 @@ export const Login: React.FC<LoginProps> = ({ variable, LoginStatus, LoingMsg, s
 	const modalRef = useRef<HTMLDivElement | null>(null);
 	const myModal = useRef<bootstrap.Modal | null>(null);
 	let zIndex = (LoginStatus === "login") ? 1035 : 9999;
+	const { account, password } = useAppSelector(state => state.common.viewMode)
+	const location = useLocation()
+
 	let openModal = () => {
 		myModal?.current?.show()
 	}
 	useEffect(() => {
 		myModal.current = new bootstrap.Modal(modalRef.current as HTMLElement);
 	}, []);
-	// console.log(' currentTab=> ', currentTab)
+
+	useEffect(() => {
+		/*判斷是否為瀏覽模式的方式 (帳號/密碼是否存在store裡，然後只在指定頁面開啟登入modal)*/
+		if (account && password && location.pathname === '/viewmode/a123456789') {
+			myModal?.current?.show()
+		}
+	}, [account])
 	return (
 		<>
 			<LoingBtn type="button" className="btn " onClick={openModal} LoingMsg={LoingMsg} variable={variable}>
@@ -85,7 +96,7 @@ export const Login: React.FC<LoginProps> = ({ variable, LoginStatus, LoingMsg, s
 								</div>
 								<div className="tabs-content">
 									{currentTab === 'login' ? (
-										<SingIn myModal={myModal} setIsLogin={setIsLogin} />
+										<SingIn myModal={myModal} setIsLogin={setIsLogin} viewModel={{ account, password }} />
 									) : (
 										<SignUp myModal={myModal} setIsLogin={setIsLogin} />
 									)

@@ -12,6 +12,19 @@ import { CatchErrorMessage } from '../../../../interface';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { setError } from '../../../../store/common/common.reducer';
 
+const getColor = (role: string) => {
+  switch (role) {
+    case 'admin':
+      return 'magenta';
+    case 'user':
+      return 'green';
+    case 'view':
+      return 'geekblue';
+    default:
+      return 'lime';
+  }
+}
+
 export const MemberTable: React.FC = () => {
   const [state, dispatch] = useContext(OrderContext);
   const { data, error, isLoading } = useGetUserDataQuery({ parameter: 'dataForManagement', daterange: 'all' })
@@ -118,7 +131,7 @@ export const MemberTable: React.FC = () => {
       dataIndex: 'role',
       width: 160,
       render: (role: string, record: UserItem) => {
-        let color = (role === 'admin') ? 'magenta' : 'green'
+        const color = getColor(role)
         return (
           <>
             <Tag color={color} key={record._id}>{role.toUpperCase()}</Tag>

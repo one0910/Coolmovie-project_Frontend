@@ -9,6 +9,10 @@ interface CommonState {
   alert: {
     isAlert: boolean
     alertMessage: string
+  },
+  viewMode: {
+    account: string,
+    password: string | undefined,
   }
 }
 
@@ -21,6 +25,10 @@ export const COMMON_INITIAL_STATE: CommonState = {
   alert: {
     isAlert: false,
     alertMessage: ''
+  },
+  viewMode: {
+    account: '',
+    password: '',
   }
 };
 
@@ -36,9 +44,12 @@ const commonSlice = createSlice({
     },
     setAlert(state, action: PayloadAction<{ isAlert: boolean, alertMessage: string }>) {
       state.alert = action.payload
+    },
+    setViewMode(state, action: PayloadAction<{ account: string, password: string }>) {
+      state.viewMode = action.payload
     }
   },
 });
 
-export const { setIsMobileScreen, setError, setAlert } = commonSlice.actions;
+export const { setIsMobileScreen, setError, setAlert, setViewMode } = commonSlice.actions;
 export const commonReducer = commonSlice.reducer;
