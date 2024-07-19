@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { MenuInfo } from "rc-menu/lib/interface";
 import { useAppSelector } from '../hooks';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons'
 import { Menu } from 'antd'
 import { useLocation, useNavigate } from 'react-router-dom';
+import { OrderContext } from '../store';
 
 interface MenuItem {
   key: string;
@@ -19,8 +20,8 @@ interface MenuItem {
 
 export const Siderbar: React.FC = () => {
   const location = useLocation();
+  const [state] = useContext(OrderContext);
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const { account } = useAppSelector(state => state.common.viewMode)
   const navigate = useNavigate();
 
   const goNavigate = (item: MenuInfo) => {
@@ -38,12 +39,12 @@ export const Siderbar: React.FC = () => {
       icon: <DashboardOutlined />,
       label: '後台總覽'
     },
-    !account && {
+    (state.orderList.role === 'admin') && {
       key: '/admin/movieMamagment',
       icon: <VideoCameraAddOutlined />,
       label: '電影管理'
     },
-    !account && {
+    (state.orderList.role === 'admin') && {
       key: '/admin/seatManagement',
       icon: <GitlabOutlined />,
       label: '廳位管理'
