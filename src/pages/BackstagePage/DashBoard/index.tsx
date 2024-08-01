@@ -6,7 +6,7 @@ interface DashBoardProps {
 }
 
 
-export const DashBoard: React.FC<DashBoardProps> = ({ }) => {
+const DashBoard: React.FC<DashBoardProps> = ({ }) => {
   return (
     <Flex vertical gap={'2rem'}>
       <CardsContainer />
@@ -15,3 +15,5 @@ export const DashBoard: React.FC<DashBoardProps> = ({ }) => {
 
   );
 }
+
+export default DashBoard

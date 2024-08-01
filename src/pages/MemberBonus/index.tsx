@@ -1,7 +1,7 @@
 import React from "react";
 import { MemberContainer } from "../../components/MemberContainer";
 
-export const MemberBonus: React.FC = ({}) => {
+const MemberBonus: React.FC = ({ }) => {
   return (
     <>
       <MemberContainer title="會員紅利">
@@ -19,3 +19,5 @@ export const MemberBonus: React.FC = ({}) => {
     </>
   );
 };
+
+export default MemberBonus

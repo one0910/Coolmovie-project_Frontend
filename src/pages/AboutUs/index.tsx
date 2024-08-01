@@ -11,3 +11,5 @@ export const AboutUs: React.FC<AboutUsProps> = ({ }) => {
     </>
   );
 }
+
+export default AboutUs

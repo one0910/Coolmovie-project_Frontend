@@ -11,3 +11,5 @@ export const Benifet: React.FC<BenifetProps> = ({ }) => {
     </>
   );
 }
+
+export default Benifet

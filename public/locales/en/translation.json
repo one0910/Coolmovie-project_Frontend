@@ -1,0 +1,153 @@
+{
+  "title": {
+    "home_title": "Luxurious Immersion",
+    "document_title": "SHUZNG CINEMAS"
+  },
+  "or": "or",
+  "greeting": "Hello {{greet}}",
+  "movie": {
+    "now_showing": "Now Showing",
+    "coming_soon": "Coming Soon",
+    "release_date": "Release Date",
+    "online_ticketing": "Online Ticketing",
+    "director": "Director",
+    "cast": "Cast",
+    "synopsis": "Synopsis",
+    "tickets_available_soon": "Tickets Available Soon"
+  },
+  "register": {
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Signup",
+    "google_login": "Login With Google",
+    "email_login": "Login With Email",
+    "is_mail_available": "is available",
+    "view_mode_msg": "Enter view mode using the account viewmode@gmail.com to log in directly.",
+    "login_directly_msg": "Login directly to enter the admin page",
+    "stay_login": "Stay logged in",
+    "account_not_exist": "Account does not exist",
+    "password_is_incorrect": "Password is incorrect"
+  },
+  "inputPrompt": {
+    "username_empty": "Username is required!",
+    "email_empty": "Email is required!",
+    "email_invalid": "Eamil format is invalid",
+    "password_empty": "Password is required!",
+    "password_pattern_incorrect": "Please enter a password with at least 8 characters, including both letters and numbers."
+  },
+  "menu": {
+    "aminPanel": "Admin Panel",
+    "about": "About",
+    "benefit": "Benefit"
+  },
+  "selection": {
+    "select_movie": "Select a movie",
+    "select_movie_required": "Movie is required!",
+    "select_screening_date": "Select a screening date",
+    "select_screening_date_required": "Date is required",
+    "select_screening_time": "Select a screening time",
+    "select_screening_time_required": "Time is required"
+  },
+  "ticketPage": {
+    "ticket_announcement": "Choose up to 10 tickets per purchase",
+    "join_us_title": "Become a Member",
+    "join_us_btn": "Join Now",
+    "join_us_content": "Get a $50 discount on all theaters instantly",
+    "regular_ticket_title": "Regular Ticket",
+    "ticket": "Ticket",
+    "price": "Price",
+    "quantity": "Quantity",
+    "total": "Total",
+    "stand_price": "Standard Price (Non-Member)",
+    "member_price": "Member Price"
+  },
+  "button": {
+    "go_to_booking": "Go to Booking",
+    "check_seates": "Check Seats",
+    "confirm": "Confirm",
+    "next": "Next",
+    "ok": "OK"
+  },
+  "seats": {
+    "sold": "Sold",
+    "available": "Available",
+    "selected": "Selected",
+    "being_selected": "Being selected",
+    "digital": "Digital Theater",
+    "luxury": "Luxury Theater",
+    "remaining_seat_alert": "There is {{count}} seat left to be selected",
+    "exceeded_seat_selected": "You have exceeded the number of tickets purchased"
+  },
+  "copy": {
+    "coupon_title": "Date Night Movie Package",
+    "coupon_content": "Enjoy a romantic movie night with your loved one at Taiwan's most luxurious cinema. Our couple's package includes 2 movie tickets, 2 gourmet dishes, and cocktails. Originally priced at NT$1,230, now only NT$999.",
+    "invite_title": "Share the movie magic with a friend and get 23% off your tickets",
+    "invite_link_share": "Share Link",
+    "invite_link_share_content": "Share your unique link and your friend will receive 2 movie tickets at a 23% discount",
+    "invite_friend_register": "Friend Signs Up",
+    "invite_friend_register_content": "When your friend signs up, you'll both receive 2 movie tickets at a 23% discount and 200 reward points.",
+    "invite_get_benefit": "23% Discount",
+    "invite_get_benefit_content": "When your friend purchases 2 or more movie tickets within 2 months, you'll receive a movie ticket at a 23% discount"
+  },
+  "screenCheck": {
+    "title_check": "Please Confirm Your Order Details",
+    "select_check": "Your Selected Screening",
+    "movie_name": "Movie",
+    "date": "Date",
+    "time": "Time",
+    "theater": "Theater",
+    "seats": "Seats",
+    "total": "Total",
+    "phone_number": "Phone Number",
+    "email_address": "Email Address",
+    "proceed_to_seat_selection_btn": "Proceed to seat selection",
+    "proceed_to_payment_btn": "Proceed to payment",
+    "join_us_btn": "Join Now",
+    "join_us_content": "Sign up to get a $50 discount on all theaters instantly",
+    "cancel": "Cancel",
+    "checkout": "Checkout",
+    "order_id": "Booking ID"
+  },
+  "order": {
+    "contact_information_title": "Contact Information",
+    "payment_method_title": "Payment Method",
+    "payment_method_creditcard": "Credit Card",
+    "payment_method_ecpay": "ECPay",
+    "payment_reminder_message": "This is a test environment. No charges will be processed. You may enter any card number",
+    "credit_card_input_bank_label": "Select your Bank",
+    "credit_card_input_cardnumber_label": "Card Number",
+    "credit_card_input_cardexpiredate_label": "Expiration Date",
+    "credit_card_input_cardexpiredate_example_label": "(Month/Year Exp:01-28)",
+    "credit_card_input_verificationvalue_label": "Verification Code",
+    "credit_card_input_invalid_card_16-digit": "Please enter a 16-digit card number",
+    "credit_card_input_invalid_card_month_(01-12)": "Expiration month must be between 01 and 12",
+    "credit_card_input_invalid_card_year_(YYYY)": "Please enter the last two digits of the year. For example, for 2024, enter 24.",
+    "credit_card_input_invalid_card_cvc_3-digit": "Please enter the 3-digit CVV code on the back of your card.",
+    "payment_method_require": "Payment method is require",
+    "phone_number_require": "Phone number is require",
+    "phone_number_10-digit_is_require": "Please enter a 10-digit phone number",
+    "email_address_require": "Email address is requirel",
+    "bank_field_require": "Bank code is requirel",
+    "card_number_require": "Credit card number is require",
+    "this_field_is_required": "This field is required",
+    "click_next_button_to_checkout": "Click 「Next」button to proceed to checkout and enter the ECPay page",
+    "ecpay_alert_notification": "You will be redirected to EC Pay for a test payment. No actual charges will be made. You can complete the checkout process.",
+    "booking_complete_title": "Booking Successful",
+    "booking_complete_content": "Please check your email or log in to your member center to view your booking details."
+  },
+  "member": {
+    "member_center_title": "Member Center"
+  },
+  "footer": {
+    "contact_us": "Contact Us",
+    "faq": "FAQ",
+    "privacy_policy_statement": "Privacy Policy"
+  },
+  "title_out": {
+    "select_seat_timeout_tile": "Operation Timeout",
+    "select_seat_timeout_content": "Seat selection has timed out after 2 minutes. Please start your booking again."
+  },
+  "ErroMsg": {
+    "err_netowrk": "Unable to connect to the server. Please contact the server administrator or check your network."
+  }
+}

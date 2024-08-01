@@ -5,7 +5,7 @@ body {
 	font-size: 1em;
 	max-width: 1920px;
 	margin: 0 auto;
-	min-width: 360px;
+	// min-width: 360px;
 }
 
 a:hover {
@@ -24,6 +24,9 @@ ul {
 
 select {
 	background: rgba(15, 15, 15, 0);
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 	color: #fafafa;
 	position: relative;
 	border: $primary 1px solid;
@@ -42,6 +45,16 @@ select {
 
 	option {
 		background: rgba(0, 0, 0, 0.885);
+	}
+
+	&.select-language {
+		padding: 6px 16px 6px 8px;
+		color: $textColor;
+
+		@media screen and (max-width: 768px) {
+			padding: 4px 16px 4px 8px;
+			font-size: .85rem;
+		}
 	}
 }
 
@@ -76,6 +89,10 @@ select {
 
 .color-primary {
 	color: $primary;
+}
+
+.color-primary-dark {
+	color: $primary-dark;
 }
 
 .bg-1st {
@@ -145,4 +162,18 @@ select {
 
 .error-Msg {
 	color: $invalid;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+	color: $primary  !important;
+	border-radius: 100%;
+	background-color: #201A0B4A;
+	width: 43px !important;
+	border: 2px solid #E7C6737D;
+
+	&::after {
+		font-size: 1.2rem !important;
+		font-weight: 900 !important;
+	}
 }

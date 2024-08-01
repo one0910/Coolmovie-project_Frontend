@@ -12,7 +12,7 @@ import { uploadImage } from "../../api/image";
 import { validateFile } from "../../utilities/validate";
 import { I_MEMBER, I_FormData } from "../../interface";
 
-export const MemberInfo: React.FC = () => {
+const MemberInfo: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [_, dispatch] = useContext(OrderContext);
   const isGoogleMember = (_.orderList.googleId) ? true : false
@@ -235,3 +235,5 @@ export const MemberInfo: React.FC = () => {
     </>
   );
 };
+
+export default MemberInfo

@@ -5,14 +5,48 @@ import { ScreenCheck, PopUpWindows, MessageBox } from '../../components/';
 import { OrderContext } from '../../store';
 import { PopUpwindowRefType, CreditCardType, CompleteResDataType } from '../../interface';
 import { authFetch } from '../../utilities';
-import axios from 'axios';
 import { Loading } from '../../components';
 import io, { Socket } from "socket.io-client";
+import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../hooks';
+import { transDateString, transMovieTitleName, transPaymentMethod, transSeats } from '../../helper/transform.language';
 
 interface CheckPayProps { }
 
+const ContactInfoInput = styled.div<{ language: string }>`
+  span{
+    width:auto;
+    letter-spacing:${({ language }) => language === 'zh' ? '17px' : '1px'};
+    @media screen and (max-width: 768px){
+      letter-spacing:${({ language }) => language === 'zh' ? '4px' : '1px'};
+      font-size: ${({ language }) => language === 'en' && '12px'};
+    }
+  }
+`
 
-export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
+const CreditCardInputLabel = styled.div<{ language: string }>`
+  span{
+    width:${({ language }) => language === 'en' && '150px'};
+    @media screen and (max-width: 768px){
+      /* width:117px; */
+      width:${({ language }) => language === 'zh' ? '117px' : '90px'};
+      font-size: ${({ language }) => language === 'en' && '12px'};
+    }
+  }
+`
+
+const CompleteBookingItemDiv = styled.div<{ language: string }>`
+  span.title{
+    width: 100px;
+    padding: 2px 0px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+`
+
+const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   const [state, dispatch] = useContext(OrderContext);
   const [loading, setLoading] = useState(false)
   const [bankcodes, setBankcodes] = useState([])
@@ -20,6 +54,8 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   const [isPayComplete, setIsPayComplete] = useState(false)
   const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
   const socketIoRef = useRef<Socket>()
+  const { t } = useTranslation()
+  const { language } = useAppSelector(state => state.common)
   const { register, handleSubmit, getValues, setValue, control, setError, formState: { errors } } = useForm<CreditCardType>({
     defaultValues: {
       email: state.orderList.memberMail || ""
@@ -48,11 +84,18 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
     "payMethod": "信用卡",
     "orderId": ""
   };
-  const payMethod = (getValues().payMethod === `creditCard`) ? ' - 信用卡' : (getValues().payMethod === `ecPay`) ? ' - 綠界金流' : ""
+  // const payMethod = (getValues().payMethod === `creditCard`) ? ' - 信用卡' : (getValues().payMethod === `ecPay`) ? ' - 綠界金流' : ""
+  const payMethod = ` - ${transPaymentMethod(language, getValues().payMethod)}` || ''
 
   // 進入該頁時，載入銀行的代碼
   useEffect(() => {
     setLoading(true)
+
+    // transMovieTitleName('en', '小美人魚 (豪華廳)', true)
+    // popUpwindowRef.current?.openModal()
+    // setIsPayComplete(true)
+    // popUpwindowRef.current?.closeModal()
+    // setIsPayComplete(false)
     socketIoRef.current = io(url, { transports: ['websocket'] });
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     dispatch({
@@ -72,11 +115,14 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
     }())
   }, [])
 
-  //隨時監控form，若有錯誤，scroll移到最上方
+  /*隨時監控form，若有錯誤，scroll移到最上方，先把此功能關掉，因為當它一出現錯誤，
+    滑鼠滾輪就會移到最上面，干擾使用時的體驗
+  */
+
   useEffect(() => {
-    if (errors) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    }
+    // if (errors) {
+    //   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    // }
   }, [watchForm])
 
   // 登入或註冊將會員email寫到email的input欄位
@@ -148,13 +194,12 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
       { withCredentials: true }
     )
 
-    // 將socket的座位資料清除
     socketIoRef?.current?.emit("order", {
       socketId: state.orderList.socketId,
       screenId: state.orderList.screenId,
       seatOrderedIndex: state.orderList.seat_orderedIndex,
     });
-    alert('轉跳至綠界金流，該平台只為串接測試用，不會有任何實際扣款，可直接完成結帳流程');
+    alert(`${t("order.ecpay_alert_notification")}`);
     document.write(response.data.data);
   }
 
@@ -163,14 +208,15 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   let creditCardExpirationErrMsgDiv = null
   let screenContent = null
   if (!isPayComplete) {
+    /*結帳之前 - 再次確認訂票資訊*/
     screenContent =
-      <ScreenCheck titleMsg={"請再次確認您的訂票資料是否無誤"}>
+      <ScreenCheck titleMsg={t("screenCheck.title_check")}>
         <div className='d-flex justify-content-between mt-3 screenCheck pb-2 mb-0 border-bottom-0'>
-          <span>手機號碼</span>
+          <span>{t("screenCheck.phone_number")}</span>
           <span>{getValues().phoneNumber}</span>
         </div>
         <div className='d-flex justify-content-between pb-2'>
-          <span>電子郵件</span>
+          <span>{t("screenCheck.email_address")}</span>
           <span>{getValues().email}</span>
         </div>
         <div className='d-flex justify-content-between'>
@@ -179,76 +225,79 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
               window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
             }
             popUpwindowRef.current?.closeModal()
-          }}>取消
+          }}>{t("screenCheck.cancel")}
           </button>
           {/* <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={handleSubmit(clickCheckPay)}>結帳</button> */}
-          <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={handleSubmit(payMethodBtnClick)}>結帳</button>
+          <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={handleSubmit(payMethodBtnClick)}>{t("screenCheck.checkout")}</button>
         </div>
       </ScreenCheck >
   } else {
+    /*結帳完成後 - 訂票完成資訊*/
     screenContent = <MessageBox >
       <div className='text-center'>
         <i className="bi bi-ticket-perforated color-primary fw-bold fs-2 me-3"></i>
-        <strong className='color-primary fs-2'>訂票完成</strong>
+        <strong className='color-primary fs-2'>{t("order.booking_complete_title")}</strong>
       </div>
       <div className='orderedMovieInfo mt-3 mb-3 px-lg-4 py-lg-3 px-2 py-2 rounded'>
-        <div className='d-flex justify-content-between'>
-          <span className='title'>訂單編號</span>
+        <CompleteBookingItemDiv language={language} className='d-flex justify-content-between'>
+          <span className='title'>{t("screenCheck.order_id")}</span>
           <span>{completeResData?.OrderId}</span>
-        </div>
-        <div className='d-flex justify-content-between mt-3'>
-          <span className='title'>電影</span>
-          <span>{completeResData?.MovieName}</span>
-        </div>
-        <div className='d-flex justify-content-between my-3'>
-          <span className='title'>場次</span>
-          <span>{`${completeResData?.MoviePlayDate}  ${completeResData?.MoviePlayTime}`}</span>
-        </div>
-        <div className='d-flex justify-content-between align-items-center seats'>
-          <span className='title'>座位</span>
-          <span>{completeResData?.OrderSeat}</span>
-        </div>
+        </CompleteBookingItemDiv>
+        <CompleteBookingItemDiv language={language} className='d-flex justify-content-between mt-3'>
+          <span className='title'>{t("screenCheck.movie_name")}</span>
+          <span>{transMovieTitleName(language, completeResData?.MovieName, true)}</span>
+        </CompleteBookingItemDiv>
+        <CompleteBookingItemDiv language={language} className='d-flex justify-content-between my-3'>
+          <span className='title'>{t("screenCheck.date")}</span>
+          <span>
+            {`${transDateString(language, completeResData?.MoviePlayDate as string)}  ${completeResData?.MoviePlayTime}`}
+          </span>
+        </CompleteBookingItemDiv>
+        <CompleteBookingItemDiv language={language} className='d-flex justify-content-between align-items-center seats'>
+          <span className='title'>{t("screenCheck.seats")}</span>
+          <span>{transSeats(language, completeResData?.OrderSeat as string)}</span>
+        </CompleteBookingItemDiv>
       </div>
-      <p className='mt-2 text-start text-lg-center'>可至您的電子信箱或使用本站查詢功能查閱您的訂票記錄</p>
+      <p className='mt-2 text-start'>{t("order.booking_complete_content")}</p>
 
       {(state.orderList.status === "member") ?
         <div className='d-flex justify-content-between'>
           <button type='button' className='btn_primary mt-4 me-1 w-100' onClick={() => {
             popUpwindowRef.current?.closeModal()
             navigate('/member')
-          }}>會員中心
+          }}>{t("member.member_center_title")}
           </button>
           <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={() => {
             popUpwindowRef.current?.closeModal()
             navigate('/')
-          }}>確定
+          }}>{t("button.ok")}
           </button>
         </div> :
         <button className='btn_primary me-1 w-100 mt-2' onClick={() => {
           popUpwindowRef.current?.closeModal()
           navigate('/')
-        }}>確定</button>
+        }}>{t("button.ok")}</button>
       }
     </MessageBox>
 
   }
 
   /*信用卡號錯誤補捉訊息判斷*/
-  if (errors.creditCardNumber1?.message === "請輸入卡號" || errors.creditCardNumber2?.message === "請輸入卡號" || errors.creditCardNumber3?.message === "請輸入卡號" || errors.creditCardNumber4?.message === "請輸入卡號") {
-    creditCardInputErrMsgDiv = <p className="error-Msg">請輸入卡號</p>
+  if (errors.creditCardNumber1?.message === t("order.credit_card_input_cardnumber_label") || errors.creditCardNumber2?.message === t("order.credit_card_input_cardnumber_label") || errors.creditCardNumber3?.message === "請輸入卡號" || errors.creditCardNumber4?.message === "請輸入卡號") {
+    creditCardInputErrMsgDiv = <p className="error-Msg">{t("order.card_number_require")}</p>
   } else if (errors.creditCardNumber1?.message === "卡號總共需輸入16碼" || errors.creditCardNumber2?.message === "卡號總共需輸入16碼" || errors.creditCardNumber3?.message === "卡號總共需輸入16碼" || errors.creditCardNumber4?.message === "卡號總共需輸入16碼") {
-    creditCardInputErrMsgDiv = <p className="error-Msg">卡號總共需輸入16碼</p>
+    creditCardInputErrMsgDiv = <p className="error-Msg">{t("order.credit_card_input_invalid_card_16-digit")}</p>
   } else {
     creditCardInputErrMsgDiv = null
   }
 
   /*信用卡號錯誤補捉訊息判斷*/
   if (errors.expirationMonth?.message === "請輸入信用卡有效月份(例:01/28)" || errors.expirationYear?.message === "請輸入信用卡有效年份(例如01/28)") {
-    creditCardExpirationErrMsgDiv = <p className="error-Msg">欄位不可為空白</p>
+    creditCardExpirationErrMsgDiv = <p className="error-Msg">{t("order.this_field_is_required")}</p>
   } else if (errors.expirationMonth?.message === "月份的有效輸入為01~12") {
-    creditCardExpirationErrMsgDiv = <p className="error-Msg">月份的有效輸入為01~12</p>
+    creditCardExpirationErrMsgDiv = <p className="error-Msg">{t("order.credit_card_input_invalid_card_month_(01-12)")}</p>
   } else if (errors.expirationYear?.message === "請輸入年份，例如2024，則輸入24") {
-    creditCardExpirationErrMsgDiv = <p className="error-Msg">請輸入年份，例如2024，則輸入24</p>
+    creditCardExpirationErrMsgDiv = <p className="error-Msg">{t("order.credit_card_input_invalid_card_year_(YYYY)")}</p>
   } else {
     creditCardExpirationErrMsgDiv = null
   }
@@ -262,20 +311,29 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
             <div className='contactInfo'>
               <div className="mb-2 mt-4">
                 <i className="bi bi-telephone-fill align-middle fs-5 color-primary"></i>
-                <span className='ms-3 color-primary fw-bold'>訂購人聯絡資訊</span>
+                <span className='ms-3 color-primary fw-bold'>{t("order.contact_information_title")}</span>
               </div>
               <div className='creditCardInput bg-2nd py-4 ps-3 rounded-1'>
-                <div>
-                  <span>手機號碼</span>:
-                  <input type="text" size={30} maxLength={10} {...register('phoneNumber', { required: { value: true, message: '手機欄位為必填', }, minLength: { value: 10, message: '手機號碼必須為10碼', }, })} />
-                </div>
+                <ContactInfoInput language={language}>
+                  <span>{t("screenCheck.phone_number")}</span>:
+                  <input
+                    type="text"
+                    size={30}
+                    maxLength={10}
+                    {...register('phoneNumber',
+                      {
+                        required: { value: true, message: t("order.phone_number_require"), },
+                        minLength: { value: 10, message: t("order.phone_number_10-digit_is_require"), }
+                      })
+                    } />
+                </ContactInfoInput>
                 {errors.phoneNumber && (
                   <p className="error-Msg">{errors.phoneNumber.message}</p>
                 )}
-                <div className='mt-3'>
-                  <span>電子郵件</span>:
-                  <input type="text" size={30} {...register('email', { required: { value: true, message: '請輸入您的email', }, pattern: { value: /^\S+@\S+$/i, message: '您的email格式不正確', }, })} />
-                </div>
+                <ContactInfoInput language={language} className='mt-3'>
+                  <span>{t("screenCheck.email_address")}</span>:
+                  <input type="text" size={30} {...register('email', { required: { value: true, message: t("order.email_address_require"), }, pattern: { value: /^\S+@\S+$/i, message: '您的email格式不正確', }, })} />
+                </ContactInfoInput>
                 {errors.email && (
                   <p className="error-Msg">{errors.email.message}</p>
                 )}
@@ -284,7 +342,7 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
           }
           <div className="mb-2 mt-4">
             <i className="bi bi-credit-card-fill align-middle fs-5 color-primary"></i>
-            <span className='ms-3 color-primary fw-bold'>{`付款方式${payMethod}`}</span>
+            <span className='ms-3 color-primary fw-bold'>{`${t("order.payment_method_title")}${payMethod}`}</span>
           </div>
           <form className='screenFrom mb-2'>
             <div className='screenTime'>
@@ -296,11 +354,11 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
                   {...register('payMethod', {
                     required: {
                       value: true,
-                      message: '請先選擇付款方式',
+                      message: t("order.payment_method_require"),
                     }
                   })}
                 />
-                <label htmlFor="creditCard" className='rounded'>信用卡</label>
+                <label htmlFor="creditCard" className='rounded'>{t("order.payment_method_creditcard")}</label>
               </span>
               <span>
                 <input
@@ -310,11 +368,11 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
                   {...register('payMethod', {
                     required: {
                       value: true,
-                      message: '請先選擇付款方式',
+                      message: t("order.payment_method_require"),
                     }
                   })}
                 />
-                <label htmlFor="ecPay" className='rounded'>綠界金流</label>
+                <label htmlFor="ecPay" className='rounded'>{t("order.payment_method_ecpay")}</label>
               </span>
             </div>
             {errors.payMethod && (
@@ -323,19 +381,19 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
           </form>
           {(getValues().payMethod === 'creditCard') ?
             <>
-              <span className='text-secondary fs-6'> **此為測試平台，無實際扣款功能，卡號可隨意輸入** </span>
+              <span className='text-secondary fs-6'>{`**${t("order.payment_reminder_message")}**`}</span>
               <div className='creditCardInput bg-2nd py-4 ps-3 rounded-1 mt-2'>
                 <img src="/images/creditCard.png" className='d-block creditCardImg' alt="" />
-                <div className='mt-4'>
-                  <span>請選擇銀行</span>:
+                <CreditCardInputLabel language={language} className='mt-4'>
+                  <span>{t("order.credit_card_input_bank_label")}</span>:
                   <select {...register("bankCode", {
                     required: {
                       value: true,
-                      message: '請選擇銀行',
+                      message: t("order.bank_field_require"),
                     }
                   })}
                   >
-                    <option value="">請選擇銀行</option>
+                    <option value="">{t("order.credit_card_input_bank_label")}</option>
                     {
                       bankcodes?.map((bankcode, index) => {
                         return (
@@ -346,42 +404,42 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
                       })
                     }
                   </select>
-                </div>
+                </CreditCardInputLabel>
                 {errors.bankCode && (
                   <p className="error-Msg">{errors.bankCode.message}</p>
                 )}
-                <div className='mt-3'>
-                  <span>請輸入卡號</span>:
+                <CreditCardInputLabel language={language} className='mt-3'>
+                  <span>{t("order.credit_card_input_cardnumber_label")}</span>:
                   {/* <input type="text" size={2} maxLength={4} {...register("creditCardNumber", { required: { value: true, message: '卡號總共需輸入16碼', }, })} /> - */}
-                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber1', { required: { value: true, message: '請輸入卡號', }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} /> -
-                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber2', { required: { value: true, message: '請輸入卡號', }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} /> -
-                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber3', { required: { value: true, message: '請輸入卡號', }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} /> -
-                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber4', { required: { value: true, message: '請輸入卡號', }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} />
-                </div>
+                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber1', { required: { value: true, message: t("order.credit_card_input_cardnumber_label"), }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} /> -
+                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber2', { required: { value: true, message: t("order.credit_card_input_cardnumber_label"), }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} /> -
+                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber3', { required: { value: true, message: t("order.credit_card_input_cardnumber_label"), }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} /> -
+                  <input type="text" size={3} maxLength={4} {...register('creditCardNumber4', { required: { value: true, message: t("order.credit_card_input_cardnumber_label"), }, minLength: { value: 4, message: '卡號總共需輸入16碼', }, })} />
+                </CreditCardInputLabel>
                 {creditCardInputErrMsgDiv}
-                <div className='my-3'>
-                  <span>信用卡有效日期</span>:
+                <CreditCardInputLabel language={language} className='my-3'>
+                  <span>{t("order.credit_card_input_cardexpiredate_label")}</span>:
                   <input type="text" size={3} maxLength={2} {...register('expirationMonth', { required: { value: true, message: '請輸入信用卡有效月份(例:01/28)', }, pattern: { value: /^(0[1-9]|1[0-2])$/, message: '月份的有效輸入為01~12', }, })} /> -
                   <input type="text" size={3} maxLength={2} {...register('expirationYear', { required: { value: true, message: '請輸入信用卡有效年份(例如01/28)', }, minLength: { value: 2, message: '請輸入年份，例如2024，則輸入24', }, })} />
-                  <small className='ms-2 text-secondary'>(月/年 例:01-28)</small>
-                </div>
+                  <small className='ms-2 text-secondary'>{t("order.credit_card_input_cardexpiredate_example_label")}</small>
+                </CreditCardInputLabel>
                 {creditCardExpirationErrMsgDiv}
-                <div className='securityNum'>
-                  <span>背面末3碼</span>:
-                  <input type="text" size={2} maxLength={3} {...register('securityNum', { required: { value: true, message: '欄位不可為空白', }, minLength: { value: 3, message: '安全碼為3碼數字', }, })} />
+                <CreditCardInputLabel language={language} className='securityNum'>
+                  <span>{t("order.credit_card_input_verificationvalue_label")}</span>:
+                  <input type="text" size={2} maxLength={3} {...register('securityNum', { required: { value: true, message: t("order.this_field_is_required"), }, minLength: { value: 3, message: t("order.credit_card_input_invalid_card_cvc_3-digit"), }, })} />
                   <img src="/images/security_number.jpg" />
-                </div>
+                </CreditCardInputLabel>
                 {errors.securityNum && (
                   <p className="error-Msg">{errors.securityNum.message}</p>
                 )}
               </div></> : (getValues().payMethod === 'ecPay') ?
-              <div>按「下一步」直接結帳，進入綠界金流頁面</div> : <div></div>
+              <div>{t("order.click_next_button_to_checkout")}</div> : <div></div>
           }
 
         </div>
         <div className="col-md-4">
           <ScreenCheck>
-            <button type='button' className='btn_primary me-1 w-100 mt-4' onClick={handleSubmit(clickNextStep)}>下一步</button>
+            <button type='button' className='btn_primary me-1 w-100 mt-4' onClick={handleSubmit(clickNextStep)}>{t("button.next")}</button>
             <PopUpWindows ref={popUpwindowRef} backgroundClose={false}>
               {screenContent}
             </PopUpWindows >
@@ -391,3 +449,5 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
     </div>
   );
 }
+
+export default CheckPay

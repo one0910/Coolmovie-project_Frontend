@@ -6,9 +6,11 @@ import { authFetch } from '../../utilities';
 import { Loading, Login, PopUpWindows, MessageBox } from '../../components';
 import { PopUpwindowRefType } from '../../interface';
 import { ScreenCheck } from '../../components/ScreenCheck';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import io, { Socket } from "socket.io-client";
 import { filterSeat } from '../../utilities';
+import { useAppSelector } from '../../hooks';
+import { useTranslation } from 'react-i18next';
 interface SeatsProps {
 }
 
@@ -31,7 +33,30 @@ const Screen = styled.div`
 		}
 	}
 `
-export const Seats: React.FC<SeatsProps> = ({ }) => {
+
+const SeatIndicatorText = styled.strong<{ language: string }>`
+	font-weight: normal;
+	font-size: 0.8rem;
+	@media screen and (max-width: 768px){
+		font-size:${({ language }) => {
+		if (language === 'en') {
+			return '0.66rem'
+		}
+	}};
+	}
+`
+
+const SingUpTipSamllText = styled.small<{ language: string }>`
+		@media screen and (max-width: 768px){
+		font-size:${({ language }) => {
+		if (language === 'en') {
+			return '0.8rem'
+		}
+	}};
+	}
+`
+
+const Seats: React.FC<SeatsProps> = ({ }) => {
 	const [state, dispatch] = useContext(OrderContext);
 	const [isLogin, setIsLogin] = useState(false);
 	const [seatsReady, setSeatsReady] = useState(false);
@@ -49,7 +74,9 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 	const url = process.env.REACT_APP_REMOTE_URL || "http://localhost:3000"
 	const timerRef = useRef<number>(0)
 	const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
-
+	const { language } = useAppSelector(state => state.common)
+	const { t } = useTranslation()
+	const screenImg = (language === 'zh') ? '/images/screen2.svg' : '/images/screen_eng.svg'
 
 
 	/*進入該頁時，先載入座位表*/
@@ -210,7 +237,7 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 				});
 				return prevData.filter((seat) => seat !== seat_id);
 			} else if (prevData.length >= tickNumber) {
-				alert('劃位已超過夠買張數');
+				alert(t("seats.exceeded_seat_selected"));
 			}
 			return prevData;
 		})
@@ -220,7 +247,7 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 		if (state.orderList.quantity - slectSeatNums == 0) {
 			navigate("/checkpay")
 		} else {
-			alert(`您還有${state.orderList.quantity - slectSeatNums}個位子未劃位`);
+			alert(`${t("seats.remaining_seat_alert", { count: state.orderList.quantity - slectSeatNums })}`);
 		}
 	}
 
@@ -228,16 +255,21 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 	if (state.orderList.status == "quick") {
 		childWrapDiv = <>
 			<div className='d-flex justify-content-between align-items-end'>
-				<button type='button' className='btn_primary w-50 me-2 mt-3' onClick={goCheckPage}>直接前往付款</button>
-				<Login setIsLogin={setIsLogin} LoingMsg={"加入會員"} LoginStatus={"signup"} variable={"fromseats"} />
+				<button type='button' className='btn_primary w-50 me-2 mt-3 px-0' onClick={goCheckPage}>{t("screenCheck.proceed_to_payment_btn")}</button>
+				<Login setIsLogin={setIsLogin} LoingMsg={t("screenCheck.join_us_btn")} LoginStatus={"signup"} variable={"fromseats"} />
 			</div>
 			<div className='text-end mt-1'>
-				<small className='color-primary fst-italic'>現在加入會員立即享有全電影50元折扣</small>
+				<SingUpTipSamllText
+					className='color-primary fst-italic'
+					language={language}
+				>
+					{t("screenCheck.join_us_content")}
+				</SingUpTipSamllText>
 			</div>
 		</>
 	} else {
 		childWrapDiv =
-			<button type='button' className='btn_primary w-100 mt-3' onClick={goCheckPage}>前往付款</button>
+			<button type='button' className='btn_primary w-100 mt-3' onClick={goCheckPage}>{t("screenCheck.proceed_to_payment_btn")}</button>
 	}
 
 	return (
@@ -246,12 +278,24 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 			<div className='row'>
 				<Screen className="col-md-8 text-center">
 					{/* <p>選擇座位為<span>{`${selectSeat}`}</span></p> */}
-					<img src="/images/screen2.svg" className='screenImg' alt="" />
+					<img src={screenImg} className='screenImg' alt="" />
 					<div className='salseStatus d-flex justify-content-center mb-3'>
-						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>空位</strong></div>
-						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>已選</strong></div>
-						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>已售</strong></div>
-						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>其他人選位中...</strong></div>
+						<div className='me-2 me-lg-4'>
+							<span className='d-inline-block me-2 rounded-circle'></span>
+							<SeatIndicatorText language={language}>{t("seats.available")}</SeatIndicatorText>
+						</div>
+						<div className='me-2 me-lg-4'>
+							<span className='d-inline-block me-2 rounded-circle'></span>
+							<SeatIndicatorText language={language}>{t("seats.selected")}</SeatIndicatorText>
+						</div>
+						<div className='me-2 me-lg-4'>
+							<span className='d-inline-block me-2 rounded-circle'></span>
+							<SeatIndicatorText language={language}>{t("seats.sold")}</SeatIndicatorText>
+						</div>
+						<div className='me-2 me-lg-4'>
+							<span className='d-inline-block me-2 rounded-circle'></span>
+							<SeatIndicatorText language={language}>{t("seats.being_selected")}</SeatIndicatorText>
+						</div>
 					</div>
 					<ul className='theater' ref={seatRef}>
 						{seats.map((seat, index) => {
@@ -272,18 +316,20 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 				<MessageBox >
 					<div className='text-center'>
 						<i className="bi bi bi-alarm-fill color-primary fw-bold fs-2 me-3"></i>
-						<strong className='color-primary fs-2'>逾時操作</strong>
+						<strong className='color-primary fs-2'>{t("title_out.select_seat_timeout_tile")}</strong>
 					</div>
 					<div className='orderedMovieInfo mt-2 px-lg-4 py-lg-3 px-2 py-2 rounded'>
-						<p>選位逾時超過2分鐘，請重訂票</p>
+						<p>{t("title_out.select_seat_timeout_content")}</p>
 					</div>
 					<button className='btn_primary me-1 w-100 mt-1' onClick={() => {
 						popUpwindowRef.current?.closeModal()
 						// navigate('/')
 						window.location.href = '/'
-					}}>確定</button>
+					}}>{t("button.ok")}</button>
 				</MessageBox>
 			</PopUpWindows >
 		</div>
 	);
 }
+
+export default Seats

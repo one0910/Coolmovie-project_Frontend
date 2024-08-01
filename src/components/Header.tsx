@@ -1,24 +1,28 @@
 import React, { useState, useEffect, useContext } from "react";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { OrderContext } from "../store";
 import { Login, Logout, HamburgerMenu } from "./";
 import { authFetch, logoutClear, getCookie } from "../utilities";
 import logoImg from './../assets/images/Logo.png'
+import { useTranslation, Trans } from 'react-i18next';
+import { useForm, useWatch } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { setLanguage } from "../store/common/common.reducer";
 
 interface HeaderProps { }
 
 export const Header: React.FC<HeaderProps> = ({ }) => {
+  const { t, i18n } = useTranslation();
+  const storeDispatch = useAppDispatch()
   const [state, dispatch] = useContext(OrderContext);
   const [isLogin, setIsLogin] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const { register, getValues, control, setValue } = useForm<any>();
   const memberName = state.orderList.memberName ? state.orderList.memberName : "";
   const userRole = (state.orderList.role) ? state.orderList.role : ''
   const token = localStorage.getItem("userToken") ? localStorage.getItem("userToken") : null;
-  const navigate = useNavigate();
-  const location = useLocation()
-
-
-
+  useWatch({ control, name: ['language'] });
+  const { language } = useAppSelector(state => state.common)
   // 當網頁重新整理refresh時，檢查是否已有登入過
   useEffect(() => {
     const rememberMe = getCookie("remember_me");
@@ -27,8 +31,6 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
       const userId = JSON.parse(atob(token?.split(".")[1] || "")).id;
       const currentTime = Math.floor(Date.now() / 1000);
       // 如果原本的token沒過期，則繼續向後端拿資料
-      // console.log(' tokenExpTime=> ', tokenExpTime)
-      // console.log(' currentTime=> ', currentTime)
       if (rememberMe && tokenExpTime > currentTime) {
         (async function () {
           try {
@@ -37,6 +39,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
             const userMail = (response.data.data.email) ? response.data.data.email : null
             const googleId = (response.data.data.googleId) ? response.data.data.googleId : null
             const userRole = (response.data.data.role) ? response.data.data.role : ''
+
             dispatch({
               type: "ADD_MEMBER_DATA",
               payload: {
@@ -48,6 +51,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
                 status: "member",
               },
             });
+
           } catch (error) {
             console.log("error", error);
           }
@@ -61,7 +65,26 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
       logoutClear(dispatch);
       setIsLogin(false);
     }
+
   }, [dispatch]);
+
+  /*這邊先用來設置語系，將store裡的Language設置到header裡的language select*/
+  useEffect(() => {
+    setValue('language', language)
+  }, [])
+
+  /*當select有變更時，則更新相關併發的副作用程式*/
+  useEffect(() => {
+    const lng = getValues().language
+    if (lng) {
+      i18n.changeLanguage(lng).then(() => {
+        document.title = t("title.document_title")
+        storeDispatch(setLanguage(lng))
+      });
+    }
+
+  }, [getValues().language])
+
   return (
     <div className="headerContainer position-sticky left-0 top-0">
       <nav className="navbar container">
@@ -72,28 +95,54 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
           </a>
           <ul className="menuWrap">
             {/* <NavLink to={`/benifet`}>
-              <li>好康優惠</li>
+              <li>{t("menu.benefit")}</li>
             </NavLink>
             <NavLink to={`/aboutus`}>
-              <li>關於影城</li>
+              <li>{t("menu.about")}</li>
             </NavLink> */}
             {(userRole == 'admin' || userRole == 'view') &&
-              <NavLink to={`/admin`}><li>後台管理</li></NavLink>
+              <NavLink to={`/admin`}><li>{t("menu.aminPanel")}</li></NavLink>
             }
           </ul>
-          <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center headerBtnContainer">
             {(isLogin || state.orderList.status === "member") ? (
+              /*登入後會員頭像*/
               <div className="loginNav">
                 <NavLink className="nav-link navLink" to={`/member`}>
                   <i className=" bi-person-circle btn-outline-warning"></i>
                 </NavLink>
-                <span className="me-2 memberName">{memberName} 您好</span>
+                {/* <span className="me-2 memberName">{memberName} 您好</span> */}
+                <span className="me-2 memberName">
+                  <Trans
+                    i18nKey={t('greeting')}
+                    values={{
+                      greet: memberName
+                    }}
+                  />
+                </span>
                 {/* 登出按鈕 */}
                 <Logout isLogin={isLogin} setIsLogin={setIsLogin} />
               </div>
             ) : (
-              <Login setIsLogin={setIsLogin} LoingMsg={"登入 / 註冊"} LoginStatus={"login"} />
+              <Login setIsLogin={setIsLogin} LoingMsg={`${t('register.login')} / ${t('register.signup')}`} LoginStatus={"login"} />
             )}
+            <form className="ms-2">
+              <select
+                {...register("language", {
+                  required: {
+                    value: true,
+                    message: '請選擇語言',
+                  }
+                })}
+                value={language}
+                className="select-language"
+                style={{ backgroundImage: 'url(/images/home/language-icon.png)' }}
+              >
+                <option value="en">English</option>
+                <option value="zh">繁體中文</option>
+              </select>
+
+            </form>
             <div
               className="navbar-hamburger ms-2 d-block d-md-none"
               role="button"

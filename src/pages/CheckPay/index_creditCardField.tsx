@@ -5,14 +5,16 @@ import { ScreenCheck, PopUpWindows, MessageBox } from '../../components';
 import { OrderContext } from '../../store';
 import { PopUpwindowRefType, CreditCardType, CompleteResDataType } from '../../interface';
 import { authFetch } from '../../utilities';
-import axios from 'axios';
 import { Loading } from '../../components';
 import io, { Socket } from "socket.io-client";
+import { useTranslation } from 'react-i18next';
 
 interface CheckPayProps { }
 
 
 export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
+  const { t } = useTranslation()
+
   const [state, dispatch] = useContext(OrderContext);
   const [loading, setLoading] = useState(false)
   const [bankcodes, setBankcodes] = useState([])
@@ -142,7 +144,7 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   let screenContent = null
   if (!isPayComplete) {
     screenContent =
-      <ScreenCheck titleMsg={"請再次確認您的訂票資料是否無誤"}>
+      <ScreenCheck titleMsg={t("screenCheck.title_check")}>
         <div className='d-flex justify-content-between mt-3 screenCheck pb-2 mb-0 border-bottom-0'>
           <span>手機號碼</span>
           <span>{getValues().phoneNumber}</span>

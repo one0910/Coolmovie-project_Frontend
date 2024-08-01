@@ -1,0 +1,153 @@
+{
+  "title": {
+    "home_title": "奢華沉浸，非凡感官",
+    "document_title": "爽影票"
+  },
+  "or": "或",
+  "greeting": "{{greet}} 你好",
+  "movie": {
+    "now_showing": "熱映中",
+    "coming_soon": "即將上映",
+    "release_date": "上映日期",
+    "online_ticketing": "線上訂票",
+    "director": "導演",
+    "cast": "演員",
+    "synopsis": "電影簡介",
+    "tickets_available_soon": "即將開放訂票"
+  },
+  "register": {
+    "login": "登入",
+    "logout": "登出",
+    "signup": "註冊",
+    "google_login": "使用Google帳號登入",
+    "email_login": "電子郵件登入",
+    "is_mail_available": "可以使用",
+    "view_mode_msg": "進入瀏覽模式，可使用viewmode@gmail.com帳號直接登入",
+    "login_directly_msg": "直接登入，進入後台管理",
+    "stay_login": "保持登入",
+    "account_not_exist": "帳號不存在",
+    "password_is_incorrect": "密碼錯誤"
+  },
+  "inputPrompt": {
+    "username_empty": "請輸入您的名稱",
+    "email_empty": "請輸入您的email",
+    "email_invalid": "您的email格式不正確",
+    "password_empty": "請輸入密碼",
+    "password_pattern_incorrect": "請輸入英文+數字至少8碼的密碼"
+  },
+  "menu": {
+    "aminPanel": "後台管理",
+    "about": "關於影城",
+    "benefit": "好康優惠"
+  },
+  "selection": {
+    "select_movie": "選擇電影",
+    "select_movie_required": "選擇電影",
+    "select_screening_date": "請選擇日期",
+    "select_screening_date_required": "請選擇日期",
+    "select_screening_time": "選擇場次",
+    "select_screening_time_required": "請選擇場次"
+  },
+  "ticketPage": {
+    "ticket_announcement": "選擇您希望購買的電影票張數和類型, 每筆交易最多可購買10張電影票",
+    "join_us_title": "加入會員",
+    "join_us_btn": "加入會員",
+    "join_us_content": "立即享有全影廳50元折扣",
+    "regular_ticket_title": "一般票種",
+    "ticket": "票種",
+    "price": "單價",
+    "quantity": "數量",
+    "total": "小計",
+    "stand_price": "一般票價(非會員)",
+    "member_price": "會員價"
+  },
+  "button": {
+    "go_to_booking": "前往訂票",
+    "check_seates": "座位查詢",
+    "confirm": "確定",
+    "next": "下一步",
+    "ok": "確定"
+  },
+  "seats": {
+    "sold": "已售",
+    "available": "空位",
+    "digital": "數位廳",
+    "luxury": "豪華廳",
+    "selected": "已選",
+    "being_selected": "其他人選位中",
+    "remaining_seat_alert": "您還有{{count}}個位子未劃位",
+    "exceeded_seat_selected": "劃位已超過夠買張數"
+  },
+  "copy": {
+    "coupon_title": "電影之夜套餐優惠",
+    "coupon_content": "和另一半一起來全台最豪華影城看電影，享情侶套餐超划算！ 包括 2 張電影票、2 份私廚料理 套餐和調酒，原價 1230 元，現在只需 999 元。",
+    "invite_title": "邀請好友一起看電影， 電影 77 折券一起拿！",
+    "invite_link_share": "分享連結",
+    "invite_link_share_content": "分享專屬連結，送好友 2 張 77 折券",
+    "invite_friend_register": "好友註冊",
+    "invite_friend_register_content": "好友完成註冊，會員即可獲得 2 張 77 折券和會員點數 200 點",
+    "invite_get_benefit": "獲得優惠",
+    "invite_get_benefit_content": "好友 2 個月內購票 2 張以上， 即可獲得 77 折券一張"
+  },
+  "screenCheck": {
+    "title_check": "請再次確認您的訂票資料是否無誤",
+    "select_check": "您選定的場次",
+    "movie_name": "電影",
+    "date": "場次",
+    "time": "時間",
+    "theater": "影廳",
+    "seats": "座位",
+    "total": "總計",
+    "phone_number": "手機號碼",
+    "email_address": "電子郵件",
+    "proceed_to_seat_selection_btn": "前往劃位",
+    "proceed_to_payment_btn": "前往付款",
+    "join_us_btn": "加入會員",
+    "join_us_content": "現在加入會員立即享有全電影50元折扣",
+    "cancel": "取消",
+    "checkout": "結帳",
+    "order_id": "訂單編號"
+  },
+  "order": {
+    "contact_information_title": "訂購人聯絡資訊",
+    "payment_method_title": "付款方式",
+    "payment_method_creditcard": "信用卡",
+    "payment_method_ecpay": "綠界金流",
+    "payment_reminder_message": "此為測試平台，無實際扣款功能，卡號可隨意輸入",
+    "credit_card_input_bank_label": "請選擇銀行",
+    "credit_card_input_cardnumber_label": "請輸入卡號",
+    "credit_card_input_cardexpiredate_label": "信用卡有效日期",
+    "credit_card_input_cardexpiredate_example_label": "(月/年 例:01-28)",
+    "credit_card_input_verificationvalue_label": "背面末3碼",
+    "credit_card_input_invalid_card_16-digit": "卡號總共需輸入16碼",
+    "credit_card_input_invalid_card_month_(01-12)": "月份的有效輸入為01~12",
+    "credit_card_input_invalid_card_year_(YYYY)": "請輸入年份，例如2024，則輸入24",
+    "credit_card_input_invalid_card_cvc_3-digit": "安全碼為3碼數字",
+    "payment_method_require": "請先選擇付款方式",
+    "phone_number_require": "手機欄位為必填",
+    "phone_number_10-digit_is_require": "手機號碼必須為10碼",
+    "email_address_require": "請輸入您的email",
+    "bank_field_require": "請選擇銀行",
+    "card_number_require": "請輸入卡號",
+    "this_field_is_required": "欄位不可為空白",
+    "click_next_button_to_checkout": "按「下一步」直接結帳，進入綠界金流頁面",
+    "ecpay_alert_notification": "轉跳至綠界金流，該平台只為串接測試用，不會有任何實際扣款，可直接完成結帳流程",
+    "booking_complete_title": "訂票完成",
+    "booking_complete_content": "可至您的電子信箱或至會員中心查閱您的訂票記錄"
+  },
+  "member": {
+    "member_center_title": "會員中心"
+  },
+  "footer": {
+    "contact_us": "聯絡我們",
+    "faq": "常見問題",
+    "privacy_policy_statement": "隱私權公告"
+  },
+  "title_out": {
+    "select_seat_timeout_tile": "逾時操作",
+    "select_seat_timeout_content": "選位逾時超過2分鐘，請重訂票"
+  },
+  "ErroMsg": {
+    "err_netowrk": "無法連線至伺服器，請聯絡伺服器管理員或是檢查您的網路"
+  }
+}

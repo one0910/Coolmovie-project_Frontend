@@ -6,8 +6,10 @@ import { Loading } from '../../components';
 import { MovieDataType, GloabalThemeCSS, PopUpwindowRefType } from '../../interface';
 import { Screens } from './components/Screens';
 import styled, { ThemeContext } from 'styled-components';
-import { MovieLevelColor } from '../../assets/GlobalStyle';
 import { PopUpWindows } from '../../components';
+import { useAppSelector } from '../../hooks';
+import { transDateString, transLevelData, transMovieInfo, transTheaterSize } from '../../helper/transform.language';
+import { useTranslation } from 'react-i18next';
 
 
 const MovieTitleWrap = styled.div`
@@ -25,12 +27,13 @@ interface MovieInfoProps {
 
 
 
-export const Movie: React.FC<MovieInfoProps> = ({ }) => {
+const Movie: React.FC<MovieInfoProps> = ({ }) => {
+	const { t } = useTranslation()
 	const [state, dispatch] = useContext(OrderContext);
 	const { id, isRelease } = useParams()
 	const { setTheme } = useContext<GloabalThemeCSS>(ThemeContext)
 	const [movieInfo, setMovieInfo] = useState<MovieDataType | null>(null)
-	const movieLevelRef = useRef<'普' | '護' | '輔' | '限'>('普');
+	const movieLevelRef = useRef('');
 	const movieLenghtRef = useRef<string | null>(null)
 	const movieReleaseDateRef = useRef<{ date: string } | null>(null)
 	const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
@@ -39,6 +42,7 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 	const [isScreen, setIsScreen] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const navigate = useNavigate();
+	const { language } = useAppSelector(state => state.common)
 
 	useEffect(() => {
 		if (state.orderList.screenId) {
@@ -58,13 +62,16 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 			}
 			try {
 				const response = await authFetch.get(`/api/movie/?isRelease=${isRelease}&id=${id}`)
-				setMovieInfo(response.data.data.data)
-				movieLevelRef.current = ['普', '護', '導', '限'][response.data.data.data.level] as '普' | '護' | '輔' | '限'
-				movieLenghtRef.current = convertTimeFormat(response.data.data.data.time)
-				movieReleaseDateRef.current = convertPlayDateFormat(response.data.data.data.releaseData)
+				const transMovieData = transMovieInfo(language, response.data.data.data.name, response.data.data.data)
+				setMovieInfo(transMovieData)
+				const { color, level } = transLevelData(language, response.data.data.data.level)
+
+				movieLevelRef.current = level
+				movieLenghtRef.current = convertTimeFormat(language, response.data.data.data.time)
+				movieReleaseDateRef.current = convertPlayDateFormat(response.data.data.data.releaseData, language)
 				setTheme((currentTheme) => ({
 					...currentTheme,
-					movieLevel: MovieLevelColor[movieLevelRef.current],
+					movieLevel: color,
 					theaterSize: state.orderList.theater_size
 				}))
 
@@ -73,8 +80,8 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 					payload: {
 						movieId: id,
 						movie_name: response.data.data.data.name,
-						movie_length: convertTimeFormat(response.data.data.data.time),
-						movie_level: ['普', '護', '導', '限'][response.data.data.data.level],
+						movie_length: convertTimeFormat(language, response.data.data.data.time),
+						movie_level: level,
 					},
 				});
 
@@ -82,7 +89,7 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 			} catch (error) {
 			}
 		}())
-	}, [])
+	}, [language])
 
 	const openYoutubeVideo = () => {
 		setLoading(true)
@@ -121,8 +128,8 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 					<img src={movieInfo?.videoImg} alt="" />
 				</picture>
 				<MovieTitleWrap className='movieTitle text-left text-nowrap'>
-					<p className='color-primary'>熱映中 NOW SHOWING</p>
-					<p className='fs-2 font-weight-bold'>{movieInfo?.name}</p>
+					<p className='color-primary'>{(language === 'zh') && '熱映中'} NOW SHOWING</p>
+					<p className='fs-2 font-weight-bold text-md-nowrap'>{movieInfo?.name}</p>
 					<div className='movieTitleInfo d-flex justify-content-start'>
 						<span className='px-1 me-2'>{movieLevelRef.current}</span>
 						<span className='border px-1'>{movieLenghtRef.current}</span>
@@ -135,15 +142,15 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 						<img src={movieInfo?.imgs[0]} alt="" />
 						<div className='movieDigesttWrap p-3'>
 							<div className='d-flex justify-content-between mb-2'>
-								<span>上映日期 :</span>
+								<span>{t("movie.release_date")} :</span>
 								<span>{movieReleaseDateRef.current?.date}</span>
 							</div>
 							<div className='d-flex justify-content-between mb-2'>
-								<span>導演 :</span>
+								<span>{t("movie.director")} :</span>
 								<span>{movieInfo?.director}</span>
 							</div>
 							<div className='d-flex justify-content-between'>
-								<span>演員 :</span>
+								<span>{t("movie.cast")} :</span>
 								<span className='w-75 text-end'>{movieInfo?.actors}</span>
 							</div>
 						</div>
@@ -151,7 +158,7 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 					<div className="screenPart col-xl-8">
 						<div className={`movieDescriptWrap mb-4 ${!movieDescrip && 'mh-100'}`}>
 							<div className='descript mb-3'>
-								<span>電影簡介</span>
+								<span>{t("movie.synopsis")}</span>
 							</div>
 							<p>{movieInfo?.desc}</p>
 						</div>
@@ -171,11 +178,11 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 								<p className='m-0 text-truncate'>{movieInfo?.name}</p>
 							</div>
 							<div className="movieCheckScreen col-lg-4 col-4 d-flex flex-column justify-content-center align-items-start">
-								<p className='m-0'>{state.orderList.movie_date}</p>
-								<span>{state.orderList.theater_size} {state.orderList.movie_time}</span>
+								<p className='m-0'>{transDateString(language, state.orderList.movie_date)}</p>
+								<span className='text-uppercase'>{transTheaterSize(language, state.orderList.theater_size)} {state.orderList.movie_time}</span>
 							</div>
 							<div className="movieCheckNext col-lg col-3 d-flex justify-content-lg-end align-items-center">
-								<button type='button' className='btn_primary' disabled={!isScreen} onClick={() => navigate("/ticknumber")}>下一步</button>
+								<button type='button' className='btn_primary' disabled={!isScreen} onClick={() => navigate("/ticknumber")}>{t("button.next")}</button>
 							</div>
 						</div>
 					</div>
@@ -184,3 +191,5 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 		</div>
 	);
 }
+
+export default Movie

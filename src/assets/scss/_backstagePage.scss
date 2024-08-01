@@ -10,6 +10,16 @@
       // margin: 30px 0;
       font-size: .9rem;
       color: $textColor;
+
+      &.ant-menu-item-disabled {
+        background-color: $primary-background;
+        color: $hoverTextColor  !important;
+
+        &:hover {
+          color: $hoverTextColor  !important;
+          background-color: $primary-background  !important;
+        }
+      }
     }
 
     .ant-menu-item-selected,
@@ -17,6 +27,8 @@
       color: $transparent-background  !important;
       background-color: $primary  !important
     }
+
+
   }
 
   .triger-btn {

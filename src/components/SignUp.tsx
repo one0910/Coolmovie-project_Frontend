@@ -6,6 +6,8 @@ import { SignInType } from './';
 import { Loading, ErrorMsg } from './';
 import { CatchErrorMessage } from '../interface';
 import { AxiosResponse } from 'axios';
+import { useTranslation } from 'react-i18next';
+import { getEngErrMessage } from '../helper/transform.language';
 
 interface SignUpPropsType {
 	myModal: MutableRefObject<bootstrap.Modal | null>
@@ -17,13 +19,13 @@ interface SingUpType extends SignInType {
 }
 
 export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
+	const { t, i18n } = useTranslation()
 	const [state, dispatch] = useContext(OrderContext);
 	const [errMsg, setErrMsg] = useState<string>()
 	const [loading, setloading] = useState(false)
-	const [emailAvailable, setEmailAvailable] = useState(null);
+	const [emailAvailable, setEmailAvailable] = useState<string | null>(null);
 	const { register, handleSubmit, getValues, control, setError, formState: { errors } } = useForm<SingUpType>();
 	const watchForm = useWatch({ control });
-
 
 	/*******************即時偵測email是否重覆*****************/
 	useEffect(() => {
@@ -35,12 +37,12 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 							email: getValues().useremail
 						})
 						if (response.status == 200) {
-							setEmailAvailable(response.data.data.message)
+							setEmailAvailable(`${response?.data.data.message} ${t("register.is_mail_available")}`)
 						}
 					} catch (error) {
 						setEmailAvailable(null)
 						const CatchErrorMessage = error as CatchErrorMessage
-						const errorMessage = CatchErrorMessage.response.data?.message;
+						const errorMessage = (i18n.language === 'zh') ? CatchErrorMessage.response.data?.message : getEngErrMessage(CatchErrorMessage.response.data?.message);
 						setError("useremail", {
 							type: "serverError",
 							message: errorMessage
@@ -143,7 +145,7 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 					message: CatchErrorMessage.response.data?.message,
 				});
 				if (CatchErrorMessage.code === "ERR_NETWORK") {
-					setErrMsg('無法連線至伺服器，請聯絡伺服器管理員或是檢查您的網路')
+					setErrMsg(t("ErroMsg.err_netowrk"))
 				}
 			}
 		}())
@@ -199,9 +201,9 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 				<form className="signup-form" onSubmit={handleSubmit(signUpForm)}>
 					<button type="button" className="button mt-3" onClick={openGoogleLogin} style={{ "letterSpacing": "1px" }}>
 						<i className="bi bi-google me-1"></i>
-						使用Google帳號登入
+						{t("register.google_login")}
 					</button >
-					<div className='d-flex cross-line my-2'><span>或</span></div>
+					<div className='d-flex cross-line my-2'><span>{t("or")}</span></div>
 					<input
 						type="text"
 						className={`input ${errors.username && 'is-invalid'}`}
@@ -211,7 +213,7 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 						{...register("username", {
 							required: {
 								value: true,
-								message: '請輸入您的名稱',
+								message: t("inputPrompt.username_empty"),
 							},
 						})}
 					/>
@@ -227,7 +229,7 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 						{...register("useremail", {
 							required: {
 								value: true,
-								message: '請輸入您要設定的email',
+								message: t("inputPrompt.email_empty"),
 							},
 						})}
 					/>
@@ -241,15 +243,15 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 						{...register("password", {
 							required: {
 								value: true,
-								message: '請輸入您要設定的密碼',
+								message: t("inputPrompt.password_empty"),
 							},
 							pattern: {
 								value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/,
-								message: '請輸入英文+數字至少8碼的密碼',
+								message: t("inputPrompt.password_pattern_incorrect"),
 							},
 							minLength: {
 								value: 8,
-								message: '請輸入英文+數字至少8碼的密碼',
+								message: t("inputPrompt.password_pattern_incorrect"),
 							}
 						})}
 					/>
@@ -257,7 +259,7 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 						<div className="invalid-feedback">{errors?.password?.message}</div>
 					)}
 					{/* {signupBtn} */}
-					<button type="submit" className="button" disabled={!emailAvailable}>註冊</button >
+					<button type="submit" className="button" disabled={!emailAvailable}>{t("register.signup")}</button >
 				</form>
 				<div className="help-text">
 				</div>

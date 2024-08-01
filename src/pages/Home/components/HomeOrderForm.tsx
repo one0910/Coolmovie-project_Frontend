@@ -4,13 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../../utilities";
 import { OrderContext } from "../../../store/";
 import { OrderType } from "../../../store/";
-import { ThemeContext } from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 import { GloabalThemeCSS } from "../../../interface";
 import { MovieLevelColor } from "../../../assets/GlobalStyle";
 import { PopUpWindows, MessageBox } from "../../../components";
 import { PopUpwindowRefType } from "../../../interface";
 import { HomeScreenCheck } from "./HomeScreenCheck";
-interface OrderFormProps { }
+import { useTranslation } from "react-i18next";
+import { transMovieTitleName, transDateString, transTheaterSize } from "../../../helper/transform.language";
+import { useAppSelector } from "../../../hooks";
+
+const GoToBookingBtn = styled.button<{ language: string }>`
+  padding:${({ language }) => (language === 'en') ? '0px' : 'inherit'};
+`
 
 interface AvailableMoviesType {
   date: string,
@@ -24,17 +30,17 @@ interface AvailableMoviesType {
 }
 
 
-export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
+export const HomeOrderForm: React.FC = () => {
+  const { t } = useTranslation()
+  const { language } = useAppSelector(state => state.common)
   const [state, dispatch] = useContext(OrderContext);
   const { setTheme } = useContext<GloabalThemeCSS>(ThemeContext)
   const { register, getValues, setValue, handleSubmit, control, formState: { errors } } = useForm<OrderType>();
   const [loading, setLoading] = useState(false)
   const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
   const screenDataRef = useRef<{ screenId: string, movieName: string, screenTime: string, }>({ screenId: "", movieName: "", screenTime: "" })
-  const watchForm = useWatch({
-    control,
-    name: ['movie_name', 'movie_date', "movie_time"]
-  });
+  useWatch({ control, name: ['movie_name', 'movie_date', "movie_time"] });
+
   const [availableMovies, setAvailableMovies] = useState<AvailableMoviesType[]>([])
   const [moviePlayDate, setMoviePlayDate] = useState<AvailableMoviesType[]>([])
   const [moviePlayTime, setMoviePlayTime] = useState<AvailableMoviesType[]>([])
@@ -46,6 +52,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
     const memberStatus = state.orderList.memberId ? "member" : "quick";
     const memberName = state.orderList.memberName ? state.orderList.memberName : "";
     const userMail = state.orderList.memberMail ? state.orderList.memberMail : "";
+    const userRole = state.orderList.role ? state.orderList.role : "";
 
     /*一進首頁，先清空全域的電影級別顏色*/
     setTheme({ movieLevel: "", theaterSize: "" })
@@ -59,6 +66,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
         status: memberStatus,
         memberName: memberName,
         memberMail: userMail,
+        role: userRole,
       },
     });
 
@@ -113,9 +121,9 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
 
   const openScreenSeat = (data: OrderType) => {
     const movie = (JSON.parse(data.movie_name).movie_name).split(") ")
-    const theater_size = movie[0].replace("(", "")
-    const movie_name = movie[1]
-    const movie_date = JSON.parse(data.movie_date).date
+    const theater_size = transTheaterSize(language, movie[0].replace("(", ""))
+    const movie_name = transMovieTitleName(language, movie[1])
+    const movie_date = transDateString(language, JSON.parse(data.movie_date).date)
     const movie_time = JSON.parse(data.movie_time).movieTime
     screenDataRef.current =
     {
@@ -141,6 +149,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
     const movie_time = JSON.parse(data.movie_time).movieTime
     const movie_length = JSON.parse(data.movie_time).movieLength
     const movie_level = JSON.parse(data.movie_time).movieLevel as '普' | '護' | '輔' | '限'
+    console.log('JSON.parse(data.movie_time).movieLevel => ', JSON.parse(data.movie_time))
     // 設定全域的CSS變數
     setTheme((currentTheme) => ({
       ...currentTheme,
@@ -175,14 +184,15 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
           <select {...register("movie_name", {
             required: {
               value: true,
-              message: '請選擇電影',
+              message: t("selection.select_movie_required"),
             }
           })}
             style={{ backgroundImage: 'url(/images/home/movie-icon.png)' }}
           >
-            <option value="">選擇電影</option>
+            <option value="">{t("selection.select_movie")}</option>
             {
               availableMovies?.map((availableMovie, index) => {
+                const movieName = transMovieTitleName(language, availableMovie.movie)
                 return (
                   <option
                     key={index}
@@ -191,7 +201,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
                       screenId: availableMovie.screenId
                     })}
                   >
-                    {availableMovie.movie}
+                    {movieName}
                   </option>
                 )
               })
@@ -205,14 +215,15 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
           <select {...register("movie_date", {
             required: {
               value: true,
-              message: '請選擇日期',
+              message: t("selection.select_screening_date_required"),
             }
           })}
             style={{ backgroundImage: 'url(/images/home/calender-icon.png)' }}
           >
-            <option value="">選擇日期</option>
+            <option value="">{t("selection.select_screening_date")}</option>
             {
               moviePlayDate?.map((date, index) => {
+                const movieDate = transDateString(language, date.date)
                 return (
                   <option
                     key={index}
@@ -221,7 +232,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
                       screenId: date.screenId,
                     })}
                   >
-                    {date.date}
+                    {movieDate}
                   </option>
                 )
               })
@@ -235,11 +246,11 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
           <select {...register("movie_time", {
             required: {
               value: true,
-              message: '請選擇時間',
+              message: t("selection.select_screening_time_required"),
             }
           })}
             style={{ backgroundImage: 'url(/images/home/click-icon.png)' }}>
-            <option value="">選擇場次</option>
+            <option value="">{t("selection.select_screening_time")}</option>
             {
               moviePlayTime?.map((time, index) => {
                 return (
@@ -264,18 +275,26 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
             <p className="errorMsg">{errors.movie_time.message}</p>
           )}
         </div>
-        <button type="submit" className="rounded">前往訂票</button>
-        <button type="button" className="rounded" onClick={handleSubmit(openScreenSeat)} disabled={(getValues().movie_time) ? false : true} >座位查詢</button>
+        <button type="submit" className="rounded">{t("button.go_to_booking")}</button>
+        <button
+          type="button"
+          className="rounded"
+          onClick={handleSubmit(openScreenSeat)}
+          disabled={(getValues().movie_time) ? false : true}
+        >{t("button.check_seates")}</button>
       </form>
       <PopUpWindows ref={popUpwindowRef} backgroundClose={true} status={"homeCheckSeat"}>
         <MessageBox>
           <HomeScreenCheck screenDataRef={screenDataRef.current} />
           <div className='d-flex justify-content-center'>
-            <button type='button' className='btn_primary mt-4 me-2 w-25' onClick={() => {
-              popUpwindowRef.current?.closeModal()
-            }}>確定
+            <button
+              type='button'
+              className='btn_primary mt-4 me-2 w-25'
+              onClick={() => { popUpwindowRef.current?.closeModal() }}
+            >
+              {t("button.confirm")}
             </button>
-            <button type='button' className='btn_primary mt-4 ms-2 w-25' onClick={handleSubmit(onSubmit)}>前往訂票</button>
+            <GoToBookingBtn language={language} type='button' className='btn_primary mt-4 ms-2 w-25' onClick={handleSubmit(onSubmit)}>{t("button.go_to_booking")}</GoToBookingBtn>
           </div>
         </MessageBox>
       </PopUpWindows >

@@ -57,19 +57,19 @@ export interface I_ChangePassword {
 }
 
 export interface MovieDataType {
-	id: string,
-	name: string,
-	actors: string[],
-	desc: string,
-	director: string[],
+	id?: string,
+	name?: string,
+	actors?: string[],
+	desc?: string,
+	director?: string[],
 	imgs: string[],
-	level: number,
-	releaseData: string,
-	screens: any,
-	time: number,
-	videoImg: string,
+	level?: number,
+	releaseData?: string,
+	screens?: any,
+	time?: number,
+	videoImg?: string,
 	videos: string[],
-	data: {
+	data?: {
 		count: number;
 	};
 }

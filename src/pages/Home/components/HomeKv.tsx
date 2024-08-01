@@ -1,5 +1,6 @@
 import React from "react";
 import { Autoplay } from "swiper";
+import { useTranslation } from "react-i18next";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -8,10 +9,11 @@ interface HomeKvProps {
 }
 
 export const HomeKv: React.FC<HomeKvProps> = ({ children }) => {
+  const { t } = useTranslation()
   return (
     <div className="homeKv">
       <div className="bannerTitle text-center">
-        <h1>奢華沉浸，非凡感官</h1>
+        <h1>{t("title.home_title")}</h1>
       </div>
       <Swiper
         className="homeKv-swiper"

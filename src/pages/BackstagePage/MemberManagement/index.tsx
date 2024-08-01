@@ -8,7 +8,7 @@ interface MemberManagementProps {
 
 }
 
-export const MemberManagement: React.FC<MemberManagementProps> = ({ }) => {
+const MemberManagement: React.FC<MemberManagementProps> = ({ }) => {
   return (
     <MemberProvider>
       <Divider orientation="left" className='divider'>使用者管理列表</Divider>
@@ -16,3 +16,5 @@ export const MemberManagement: React.FC<MemberManagementProps> = ({ }) => {
     </MemberProvider>
   );
 }
+
+export default MemberManagement

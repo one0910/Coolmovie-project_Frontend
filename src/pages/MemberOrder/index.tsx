@@ -7,7 +7,7 @@ import { Loading } from "../../components";
 import { PopUpWindows } from "../../components";
 import { OrderList } from "./components/OrderList";
 
-export const MemberOrder: React.FC = ({ }) => {
+const MemberOrder: React.FC = ({ }) => {
   const [state, dispatch] = useContext(OrderContext);
   const [loading, setLoading] = useState(false)
   const [orderData, setOrderData] = useState<OrderDataType[]>([])
@@ -50,3 +50,5 @@ export const MemberOrder: React.FC = ({ }) => {
     </>
   );
 };
+
+export default MemberOrder

@@ -3,7 +3,8 @@ import { Navigate } from "react-router-dom";
 import { GoogleLoginComplete } from "./components/GoogleLoginComplete";
 import { CheckComplete } from "./pages/CheckPay/CheckComplete";
 import { CheckFail } from "./pages/CheckPay/CheckFail";
-import { Header } from "./components";
+import { Loading } from "./components";
+import { Suspense } from "react";
 import {
   Home,
   Member,
@@ -24,36 +25,37 @@ import {
   OrderManagement,
 } from "./pages"
 
+
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Home />,
+    element: <Suspense fallback={<Loading isActive={true} />}><Home /></Suspense>,
     children: [
       {
         path: ":viewmode/:password",
-        element: <Home />,
+        element: <Suspense fallback={<Loading isActive={true} />}><Home /></Suspense>,
       }
     ]
   },
   {
     path: "/member",
-    element: <Member />,
+    element: <Suspense fallback={<Loading isActive={true} />}><Member /></Suspense>,
     children: [
       {
         path: "",
-        element: <MemberInfo />,
+        element: <Suspense fallback={<Loading isActive={true} />}><MemberInfo /></Suspense>,
       },
       {
         path: "account",
-        element: <MemberAccount />,
+        element: <Suspense fallback={<Loading isActive={true} />}><MemberAccount /></Suspense>,
       },
       {
         path: "bonus",
-        element: <MemberBonus />,
+        element: <Suspense fallback={<Loading isActive={true} />}><MemberBonus /></Suspense>,
       },
       {
         path: "order",
-        element: <MemberOrder />,
+        element: <Suspense fallback={<Loading isActive={true} />}><MemberOrder /></Suspense>,
       },
       {
         path: "*",
@@ -63,31 +65,31 @@ const routes: RouteObject[] = [
   },
   {
     path: "/movie/:id/:isRelease",
-    element: <Movie />,
+    element: <Suspense fallback={<Loading isActive={true} />}><Movie /></Suspense>,
   },
   {
     path: "/ticknumber",
-    element: <Ticknumber />,
+    element: <Suspense fallback={<Loading isActive={true} />}><Ticknumber /></Suspense>,
   },
   {
     path: "/benifet",
-    element: <Benifet />,
+    element: <Suspense fallback={<Loading isActive={true} />}><Benifet /></Suspense>,
   },
   {
     path: "/aboutus",
-    element: <AboutUs />,
+    element: <Suspense fallback={<Loading isActive={true} />}><AboutUs /></Suspense>,
   },
   {
     path: "/chooseSeates/:tickNumber",
-    element: <Seats />,
+    element: <Suspense fallback={<Loading isActive={true} />}><Seats /></Suspense>,
   },
   {
     path: "/checkpay",
-    element: <CheckPay />,
+    element: <Suspense fallback={<Loading isActive={true} />}><CheckPay /></Suspense>,
   },
   {
     path: "/checkcomplete/:orderId",
-    element: <CheckComplete />,
+    element: <Suspense fallback={<Loading isActive={true} />}><CheckComplete /></Suspense>,
   },
   {
     path: "/checkfail",
@@ -107,27 +109,27 @@ const routes: RouteObject[] = [
   },
   {
     path: "/admin",
-    element: <BackstageHome />,
+    element: <Suspense fallback={<Loading isActive={true} />}><BackstageHome /></Suspense>,
     children: [
       {
         index: true,
-        element: <DashBoard />
+        element: <Suspense fallback={<Loading isActive={true} />}><DashBoard /></Suspense>,
       },
       {
         path: 'movieMamagment',
-        element: <MovieManagement />
+        element: <Suspense fallback={<Loading isActive={true} />}><MovieManagement /></Suspense>,
       },
       {
         path: 'seatManagement',
-        element: <SeatManagement />
+        element: <Suspense fallback={<Loading isActive={true} />}><SeatManagement /></Suspense>,
       },
       {
         path: 'memberManagement',
-        element: <MemberManagement />
+        element: <Suspense fallback={<Loading isActive={true} />}><MemberManagement /></Suspense>,
       },
       {
         path: 'orderManagement',
-        element: <OrderManagement />
+        element: <Suspense fallback={<Loading isActive={true} />}><OrderManagement /></Suspense>,
       },
     ]
   }

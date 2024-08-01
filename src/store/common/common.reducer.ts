@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CommonState {
   isMoblieScreen: boolean;
+  language: string;
   error: {
     isError: boolean
     errorMessage: string
@@ -18,6 +19,7 @@ interface CommonState {
 
 export const COMMON_INITIAL_STATE: CommonState = {
   isMoblieScreen: window.matchMedia('(max-width: 768px)').matches,
+  language: '',
   error: {
     isError: false,
     errorMessage: '',
@@ -47,9 +49,12 @@ const commonSlice = createSlice({
     },
     setViewMode(state, action: PayloadAction<{ account: string, password: string }>) {
       state.viewMode = action.payload
+    },
+    setLanguage(state, action: PayloadAction<string>) {
+      state.language = action.payload
     }
   },
 });
 
-export const { setIsMobileScreen, setError, setAlert, setViewMode } = commonSlice.actions;
+export const { setIsMobileScreen, setError, setAlert, setViewMode, setLanguage } = commonSlice.actions;
 export const commonReducer = commonSlice.reducer;

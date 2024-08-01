@@ -1,56 +1,74 @@
 import React, { useState, useRef, useEffect, Dispatch } from 'react'
 import * as bootstrap from 'bootstrap';
 import { SingIn, SignUp } from './';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useAppSelector } from '../hooks';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-const LoingBtn = styled.button<{ LoingMsg: string, variable?: string }>`
+const customerizedLoginBtn = ({ LoingMsg, Pathname, variable }: { variable?: string, LoingMsg: string, Pathname: string }) => {
+	const path = Pathname.match(/^\/([^\/]+)/)
+	if (path && path[1] === 'ticknumber' && (LoingMsg === "加入會員" || LoingMsg === "Join Now")) {
+		return css`
+      background-color: #E7C673;
+			padding: 6px 11px;
+    `;
+	} else if (path && path[1] === 'chooseSeates' && (LoingMsg === "加入會員" || LoingMsg === "Join Now")) {
+		return css`
+      background-color: #E7C673;
+			padding: 7px 11px;
+			@media screen and (max-width: 768px){
+				font-size: 1rem !important;
+			}
+    `;
+	}
+	else {
+		return css`
+      background-color: transparent;
+    `;
+	}
+
+};
+
+const LoingBtn = styled.button<{ LoingMsg: string, variable?: string, Pathname?: string }>`
+	${({ LoingMsg, Pathname = '', variable }) => customerizedLoginBtn({ LoingMsg, Pathname, variable })}
 	width:${({ variable }) => (variable === "fromseats") ? "50%" : "auto"};
-	background-color: ${({ LoingMsg }) => {
-		if (LoingMsg === "加入會員") {
-			return "#E7C673"
-		} else {
-			return "transparent"
-		}
-	}};
-	color:${({ LoingMsg }) => (LoingMsg === "加入會員") ? "#000" : "#E7C673"};
+	color:${({ LoingMsg }) => (LoingMsg === "加入會員" || LoingMsg === "Join Now") ? "#000" : "#E7C673"};
 	border: 1px solid #E7C673;
-	padding: ${({ LoingMsg }) => {
-		if (LoingMsg === "登入 / 註冊") {
-			return "5px 11px"
-		} else {
-			return "7px 11px"
-		}
-	}};
-	:hover{
+	&:hover{
 		background-color: #E7C673;
 	}
-	:focus{
+	&:focus{
 		background-color: transparent;
 		color: #E7C673;
 		box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.5);
 	}
 	@media screen and (max-width: 768px){
-		padding:${({ variable }) => (variable === "fromseats") ? "7px 11px" : " 4px 8px"};
+		padding:${({ variable }) => (variable === "fromseats") ? "7px 11px" : "4px 8px"};
+		font-size: .85rem;
+		width:${({ LoingMsg, Pathname }) => {
+		if (Pathname === '/ticknumber' && LoingMsg === "Join Now") {
+			return "37%"
+		}
+	}}
 	}
-`
-
+`;
 interface LoginProps {
 	isLogin?: boolean
 	setIsLogin: Dispatch<React.SetStateAction<boolean>>
 	LoingMsg: string
 	LoginStatus: string
 	variable?: string
-}
+};
 
 export const Login: React.FC<LoginProps> = ({ variable, LoginStatus, LoingMsg, setIsLogin }) => {
+	const { t } = useTranslation()
 	const [currentTab, setCurrentTab] = useState(LoginStatus)
 	const modalRef = useRef<HTMLDivElement | null>(null);
 	const myModal = useRef<bootstrap.Modal | null>(null);
 	let zIndex = (LoginStatus === "login") ? 1035 : 9999;
 	const { account, password } = useAppSelector(state => state.common.viewMode)
-	const location = useLocation()
+	const { pathname } = useLocation()
 
 	let openModal = () => {
 		myModal?.current?.show()
@@ -61,13 +79,19 @@ export const Login: React.FC<LoginProps> = ({ variable, LoginStatus, LoingMsg, s
 
 	useEffect(() => {
 		/*判斷是否為瀏覽模式的方式 (帳號/密碼是否存在store裡，然後只在指定頁面開啟登入modal)*/
-		if (account && password && location.pathname === '/viewmode/a123456789') {
+		if (account && password && pathname === '/viewmode/a123456789') {
 			myModal?.current?.show()
 		}
 	}, [account])
 	return (
 		<>
-			<LoingBtn type="button" className="btn " onClick={openModal} LoingMsg={LoingMsg} variable={variable}>
+			<LoingBtn
+				type="button"
+				className="btn text-truncate"
+				onClick={openModal}
+				LoingMsg={LoingMsg}
+				variable={variable}
+				Pathname={pathname}>
 				{LoingMsg}
 			</LoingBtn>
 			<div className="modal fade" id="staticBackdrop" data-bs-keyboard="false" tabIndex={-1} ref={modalRef} style={{ zIndex: zIndex }}>
@@ -82,7 +106,7 @@ export const Login: React.FC<LoginProps> = ({ variable, LoginStatus, LoingMsg, s
 											type='button'
 											onClick={() => setCurrentTab('login')}
 											style={{ "backgroundColor": (currentTab === "login") ? "#E7C673" : " rgba(55, 55, 55, 0)" }}>
-											登入
+											{t("register.login")}
 										</button>
 									</h6>
 									<h6 className="signup-tab">
@@ -90,7 +114,7 @@ export const Login: React.FC<LoginProps> = ({ variable, LoginStatus, LoingMsg, s
 											type='button'
 											onClick={() => setCurrentTab('signup')}
 											style={{ "backgroundColor": (currentTab === "signup") ? "#E7C673" : "rgba(55, 55, 55, 0)" }}>
-											註冊
+											{t("register.signup")}
 										</button>
 									</h6>
 								</div>

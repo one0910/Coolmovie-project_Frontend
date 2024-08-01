@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { MenuInfo } from "rc-menu/lib/interface";
-import { useAppSelector } from '../hooks';
 import {
   UserOutlined,
   DashboardOutlined,
@@ -16,6 +15,7 @@ interface MenuItem {
   key: string;
   icon: JSX.Element;
   label: string;
+  disabled?: boolean
 }
 
 export const Siderbar: React.FC = () => {
@@ -37,18 +37,25 @@ export const Siderbar: React.FC = () => {
     {
       key: '/admin',
       icon: <DashboardOutlined />,
-      label: '後台總覽'
+      label: '後台總覽',
     },
-    (state.orderList.role === 'admin') && {
+    {
       key: '/admin/movieMamagment',
       icon: <VideoCameraAddOutlined />,
-      label: '電影管理'
+      label: '電影管理',
+      disabled: (state.orderList.role === 'admin') ? false : true
     },
-    (state.orderList.role === 'admin') && {
+    {
       key: '/admin/seatManagement',
       icon: <GitlabOutlined />,
-      label: '廳位管理'
+      label: '廳位管理',
+      disabled: (state.orderList.role === 'admin') ? false : true
     },
+    // (state.orderList.role === 'admin') && {
+    //   key: '/admin/seatManagement',
+    //   icon: <GitlabOutlined />,
+    //   label: '廳位管理'
+    // },
     {
       key: '/admin/memberManagement',
       icon: <UserOutlined />,

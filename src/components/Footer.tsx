@@ -1,7 +1,12 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../hooks";
 interface FooterProps { }
 
 export const Footer: React.FC<FooterProps> = () => {
+  const { t } = useTranslation()
+  const { language } = useAppSelector(state => state.common)
+
   return (
     <>
       <div className="footer">
@@ -12,9 +17,9 @@ export const Footer: React.FC<FooterProps> = () => {
                 <img src="/images/Logo.png" />
               </div>
               <ul className="d-flex footer-content">
-                <li>聯絡我們</li>
-                <li>常見問題</li>
-                <li>隱私權公告</li>
+                <li>{t("footer.contact_us")}</li>
+                <li>{t("footer.faq")}</li>
+                <li>{t("footer.privacy_policy_statement")}</li>
               </ul>
               <div className="d-flex">
                 <div className="footer-fb">
@@ -26,10 +31,10 @@ export const Footer: React.FC<FooterProps> = () => {
               </div>
             </div>
             <div className="col-lg-6 col-12 mt-4 d-lg-block d-none">
-              <div>爽影票影城</div>
+              <div>{t("title.document_title")}</div>
               <ul className="footer-contact">
                 <li>02-8502-2208</li>
-                <li>台北市市民大道 22 號 6 樓</li>
+                {(language === 'zh') && <li>台北市市民大道 22 號 6 樓</li>}
                 <li>
                   6F, No.22, Jingye 3rd Rd., Zhongshan Dist.,Taipei City 104,
                   Taiwan (R.O.C.)

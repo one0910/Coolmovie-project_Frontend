@@ -13,13 +13,14 @@ import { MovieDataType } from "../../interface";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useAppDispatch } from "../../hooks";
 import { setViewMode } from "../../store/common/common.reducer";
-
+import { Navigation, Pagination } from "swiper";
+import 'swiper/swiper-bundle.css';
 
 
 interface HomeProps { }
 
 
-export const Home: React.FC<HomeProps> = ({ }) => {
+const Home: React.FC<HomeProps> = ({ }) => {
   const storeDispatch = useAppDispatch()
   const [loading, setLoading] = useState(false);
   const [movieReleaseData, setMovieReleaseData] = useState<MovieDataType[]>([])
@@ -65,14 +66,14 @@ export const Home: React.FC<HomeProps> = ({ }) => {
             {movieReleaseData.length > 0 && (
               <Swiper
                 slidesPerView={"auto"}
-                loop={true}
+                // loop={true}
                 spaceBetween={24}
                 centeredSlides={false}
-              // pagination={{
-              //   type: "fraction",
-              // }}
-              // navigation={true}
-              // modules={[Pagination, Navigation]}
+                // pagination={{
+                //   type: "fraction",
+                // }}
+                navigation={true}
+                modules={[Pagination, Navigation]}
               >
                 {movieReleaseData.map((movie, index) => {
                   return (
@@ -92,6 +93,8 @@ export const Home: React.FC<HomeProps> = ({ }) => {
               loop={true}
               spaceBetween={24}
               centeredSlides={false}
+              navigation={true}
+              modules={[Pagination, Navigation]}
             >
               {movieCommingData.map((movie, index) => {
                 return (
@@ -112,3 +115,5 @@ export const Home: React.FC<HomeProps> = ({ }) => {
     </div>
   );
 };
+
+export default Home

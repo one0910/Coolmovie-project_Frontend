@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Outlet, NavLink } from "react-router-dom";
-import { getMember, checkAdminToken } from "../../api/member";
+import { getMember } from "../../api/member";
 import { format } from "date-fns";
 import { Loading } from "../../components";
 import { I_MEMBER } from "../../interface";
 import { OrderContext } from "../../store";
 
 
-export const Member: React.FC = () => {
+const Member: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [state, dispatch] = useContext(OrderContext);
   const isGoogleMember = (state.orderList.googleId) ? true : false
@@ -101,3 +101,5 @@ export const Member: React.FC = () => {
     </>
   );
 };
+
+export default Member

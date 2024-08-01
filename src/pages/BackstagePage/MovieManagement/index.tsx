@@ -4,8 +4,10 @@ interface MovieManagementProps {
 
 }
 
-export const MovieManagement: React.FC<MovieManagementProps> = ({ }) => {
+const MovieManagement: React.FC<MovieManagementProps> = ({ }) => {
   return (
     <>MovieManagement</>
   );
 }
+
+export default MovieManagement

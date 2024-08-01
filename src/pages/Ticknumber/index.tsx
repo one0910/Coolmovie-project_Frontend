@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { CallToActio } from './components/CallToActio';
 import { ScreenCheck } from '../../components/ScreenCheck';
 import io, { Socket } from "socket.io-client";
+import { useTranslation } from 'react-i18next';
+import { useAppSelector } from '../../hooks';
 interface OrderFastProps { }
 
 interface TicketType {
@@ -13,6 +15,9 @@ interface TicketType {
 }
 
 export const Ticknumber: React.FC<OrderFastProps> = ({ }) => {
+	const { t } = useTranslation()
+	const { language } = useAppSelector(state => state.common)
+
 	const [state, dispatch] = useContext(OrderContext);
 	const { register, handleSubmit, control, getValues } = useForm<TicketType>();
 	const [totalPrice, setTotalPrice] = useState(0)
@@ -67,28 +72,28 @@ export const Ticknumber: React.FC<OrderFastProps> = ({ }) => {
 	}
 	return (
 		<div className="container mb-5">
-			<div className="row gx-5">
+			<div className="row gx-md-5">
 				<div className="col-xl-8">
-					<p className='mt-4'>選擇您希望購買的電影票張數和類型, 每筆交易最多可購買10張電影票</p>
+					<p className='mt-4'>{t("ticketPage.ticket_announcement")}</p>
 					<CallToActio isLogin={islogin} setIsLogin={setIsLogin} />
 					<div className='ticketGenre'>
 						<div className='mb-2'>
 							<img src="/images/home/ticket-icon.png" className='iconImg' alt="" />
-							<span className='ms-3 color-primary fw-bold'>一般票種</span>
+							<span className='ms-3 color-primary fw-bold'>{t("ticketPage.regular_ticket_title")}</span>
 						</div>
 						<div className=" bg-2nd p-1 p-lg-3 rounded-1 table-responsive">
 							<table className='table text-color table-borderless m-0'>
 								<thead>
 									<tr>
-										<th scope="col">票種</th>
-										<th scope="col">單價</th>
-										<th scope="col">數量</th>
-										<th scope="col" className='text-end'>小計</th>
+										<th scope="col">{t("ticketPage.ticket")}</th>
+										<th scope="col">{t("ticketPage.price")}</th>
+										<th scope="col">{t("ticketPage.quantity")}</th>
+										<th scope="col" className='text-end'>{t("ticketPage.total")}</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>{(islogin) ? "會員價" : "一般票價(非會員)"}</td>
+										<td>{(islogin) ? t("ticketPage.member_price") : t("ticketPage.stand_price")}</td>
 										<td>${price}</td>
 										<td>
 											<select
@@ -96,7 +101,9 @@ export const Ticknumber: React.FC<OrderFastProps> = ({ }) => {
 												id="selectNumber">
 												{[...Array(10)].map((__, index) => {
 													return (
-														<option value={index + 1} key={index}>{index + 1}張</option>
+														<option value={index + 1} key={index}>{index + 1}
+															{(language === 'zh') && '張'}
+														</option>
 													)
 												})}
 											</select>
@@ -110,10 +117,12 @@ export const Ticknumber: React.FC<OrderFastProps> = ({ }) => {
 				</div>
 				<div className="col-xl-4">
 					<ScreenCheck >
-						<button type='button' className='btn_primary w-100 mt-4' onClick={goSelectSeats}>前往劃位</button>
+						<button type='button' className='btn_primary w-100 mt-4' onClick={goSelectSeats}>{t("screenCheck.proceed_to_seat_selection_btn")}</button>
 					</ScreenCheck>
 				</div>
 			</div>
 		</div>
 	);
 }
+
+export default Ticknumber

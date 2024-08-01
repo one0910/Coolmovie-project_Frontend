@@ -6,7 +6,7 @@ interface OrderManagementProps {
 
 }
 
-export const OrderManagement: React.FC<OrderManagementProps> = ({ }) => {
+const OrderManagement: React.FC<OrderManagementProps> = ({ }) => {
   return (
     <>
       <Divider orientation="left" className='divider'>訂單管理列表</Divider>
@@ -14,3 +14,5 @@ export const OrderManagement: React.FC<OrderManagementProps> = ({ }) => {
     </>
   );
 }
+
+export default OrderManagement

@@ -14,7 +14,7 @@ interface indexProps {
 
 }
 
-export const BackstageHome: React.FC<indexProps> = ({ }) => {
+const BackstageHome: React.FC<indexProps> = ({ }) => {
   const storeDispatch = useAppDispatch()
   const [collapsed, setCollapsed] = useState(false)
   const [state] = useContext(OrderContext);
@@ -67,3 +67,5 @@ export const BackstageHome: React.FC<indexProps> = ({ }) => {
     </Layout>
   );
 }
+
+export default BackstageHome

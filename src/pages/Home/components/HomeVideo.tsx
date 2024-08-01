@@ -7,11 +7,17 @@ import { Loading } from "../../../components";
 import "swiper/css/pagination";
 import { MovieDataType, PopUpwindowRefType } from "../../../interface";
 import { PopUpWindows } from "../../../components";
+import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../../hooks";
+import { transMovieDescription, transMovieTitleName } from "../../../helper/transform.language";
 SwiperCore.use([Pagination]);
 
 interface HomeVideo { }
 
 export const HomeVideo: React.FC<HomeVideo> = () => {
+  const { t } = useTranslation()
+  const { language } = useAppSelector(state => state.common)
+
   const pagination = {
     clickable: true,
     bulletClass: "homeVideo-pagination-bullet",
@@ -32,7 +38,6 @@ export const HomeVideo: React.FC<HomeVideo> = () => {
       }
     }())
   }, [])
-
   const onenYoutubeVideo = () => {
     setLoading(true)
     popUpwindowRef.current?.openModal()
@@ -84,16 +89,16 @@ export const HomeVideo: React.FC<HomeVideo> = () => {
                 </div>
               </div>
               <div className="homeVideo-desc">
-                <h3> {movieHead?.name}</h3>
+                <h3> {transMovieTitleName(language, movieHead?.name)}</h3>
                 <p>
-                  {movieHead?.desc}
+                  {transMovieDescription(language, movieHead?.name, movieHead?.desc)}
                 </p>
                 <div className="homeVideo-buttons d-flex no-wrap">
                   <Link to={`/movie/${movieHead?.id}/true`} className="homeVideo-buttons-movie me-4">
-                    電影簡介
+                    {t("movie.synopsis")}
                   </Link>
                   <Link to={`/movie/${movieHead?.id}/true`} className="homeVideo-buttons-order">
-                    前往訂票
+                    {t("button.go_to_booking")}
                   </Link>
                 </div>
               </div>

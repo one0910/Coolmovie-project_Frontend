@@ -3,6 +3,9 @@ import { OrderContext } from '../../../store'
 import { useForm, useWatch } from "react-hook-form"
 import { ThemeContext } from 'styled-components'
 import { GloabalThemeCSS } from '../../../interface'
+import { useTranslation } from 'react-i18next'
+import { transDateString, transTheaterSize } from '../../../helper/transform.language'
+import { useAppSelector } from '../../../hooks'
 
 interface ScreensProps {
 	screens: {
@@ -19,11 +22,13 @@ interface ScreensProps {
 
 
 export const Screens: React.FC<ScreensProps> = (props) => {
+	const { language } = useAppSelector(state => state.common)
 	const [state, dispatch] = useContext(OrderContext);
 	const { setTheme } = useContext<GloabalThemeCSS>(ThemeContext)
 	const { screens } = props
 	const { register, getValues, control, handleSubmit } = useForm();
 	const watchForm = useWatch({ control });
+	const { t } = useTranslation()
 	useEffect(() => {
 		if (getValues().checked) {
 			const { movie_date, movie_screenId, movie_size, movie_time, price } = JSON.parse(getValues().checked)
@@ -49,16 +54,16 @@ export const Screens: React.FC<ScreensProps> = (props) => {
 	return (
 		<form className='screenFrom'>
 			<div className='screenFromTitle mt-2 mb-3'>
-				<span>線上訂票</span>
+				<span>{t("movie.online_ticketing")}</span>
 			</div>
 			{(screens) ? screens?.map((screen, index) => {
 				return (
 					<div key={index}>
-						<h2 className='fs-4'>{screen.date}</h2>
+						<h2 className='fs-4'>{transDateString(language, screen.date)}</h2>
 						{Object.keys(screen.screenType).map((type, index) => {
 							return (
 								<div key={index}>
-									<p className='theaterSize mb-2'>{type}</p>
+									<p className='theaterSize mb-2'>{transTheaterSize(language, type)}</p>
 									<div className='screenTime ms-2 ms-lg-3'>
 										{screen.screenType[type].map((item, index) => {
 											return (
@@ -85,7 +90,7 @@ export const Screens: React.FC<ScreensProps> = (props) => {
 						})}
 					</div>
 				)
-			}) : "即將開放訂票"}
+			}) : t("movie.tickets_available_soon")}
 			{ }
 		</form>
 	);

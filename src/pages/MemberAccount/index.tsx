@@ -6,7 +6,7 @@ import { changePassword } from "../../api/member";
 import { Loading } from "../../components";
 import { CatchErrorMessage } from "../../interface";
 
-export const MemberAccount: React.FC = ({ }) => {
+const MemberAccount: React.FC = ({ }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // 表單資料
   const {
@@ -84,3 +84,5 @@ export const MemberAccount: React.FC = ({ }) => {
     </>
   );
 };
+
+export default MemberAccount

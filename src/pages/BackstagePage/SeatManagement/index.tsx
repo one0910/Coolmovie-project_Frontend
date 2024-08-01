@@ -4,8 +4,10 @@ interface SeatManagementProps {
 
 }
 
-export const SeatManagement: React.FC<SeatManagementProps> = ({ }) => {
+const SeatManagement: React.FC<SeatManagementProps> = ({ }) => {
   return (
     <>SeatManagement</>
   );
 }
+
+export default SeatManagement

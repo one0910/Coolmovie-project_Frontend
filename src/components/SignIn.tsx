@@ -8,6 +8,7 @@ import { AxiosResponse } from 'axios';
 import { useAppDispatch } from '../hooks';
 import { setUser } from '../store/user/user.reducer';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 interface LoginPropsType {
@@ -25,6 +26,7 @@ export interface SignInType {
 
 
 export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewModel }) => {
+	const { t } = useTranslation()
 	const storeDispatch = useAppDispatch()
 	const [state, dispatch] = useContext(OrderContext);
 	const [errMsg, setErrMsg] = useState<string>()
@@ -111,7 +113,7 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewMode
 				setloading(false)
 				const CatchErrorMessage = error as CatchErrorMessage
 				if (CatchErrorMessage.code === "ERR_NETWORK") {
-					setErrMsg('無法連線至伺服器，請聯絡伺服器管理員或是檢查您的網路')
+					setErrMsg(t("ErroMsg.err_netowrk"))
 				}
 
 				if (CatchErrorMessage.response.status === 404) {
@@ -119,13 +121,13 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewMode
 					if (errorMessage.includes('帳號不存在')) {
 						setError("useremail", {
 							type: "serverError",
-							message: errorMessage
+							message: t("register.account_not_exist")
 						});
 
 					} else if (errorMessage.includes('密碼錯誤')) {
 						setError("password", {
 							type: "serverError",
-							message: errorMessage,
+							message: t("register.password_is_incorrect")
 						});
 					}
 				}
@@ -167,12 +169,12 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewMode
 					{/* google 登入 */}
 					<button type="button" className="button mt-3" onClick={openGoogleLogin} style={{ "letterSpacing": "1px" }}>
 						<i className="bi bi-google me-1"></i>
-						使用Google帳號登入
+						{t("register.google_login")}
 					</button >
-					<div className='d-flex cross-line my-2'><span>或</span></div>
+					<div className='d-flex cross-line my-2'><span>{t("or")}</span></div>
 
 					{/* 若是為瀏覽模式是，所顯示的文字提醒 */}
-					{(viewModel?.account) && <span className='valid-feedback d-inline'>進入瀏覽模式，可使用viewmode@gmail.com帳號直接登入</span>}
+					{(viewModel?.account) && <span className='valid-feedback d-inline'>{t("register.view_mode_msg")}</span>}
 
 					{/* 帳號密碼登入 登入 */}
 					<input
@@ -184,11 +186,11 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewMode
 						{...register("useremail", {
 							required: {
 								value: true,
-								message: '請輸入您的email',
+								message: t("inputPrompt.email_empty"),
 							},
 							pattern: {
 								value: /^\S+@\S+$/i,
-								message: '您的email格式不正確',
+								message: t("inputPrompt.email_invalid"),
 							},
 						})}
 					/>
@@ -204,7 +206,7 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewMode
 						{...register("password", {
 							required: {
 								value: true,
-								message: '請輸入密碼',
+								message: t("inputPrompt.password_empty"),
 							},
 						})}
 					/>
@@ -217,9 +219,9 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin, viewMode
 						id="remember_me"
 						{...register("remember_me")}
 					/>
-					<label htmlFor="remember_me" className='remember_me'>保持登入</label>
+					<label htmlFor="remember_me" className='remember_me'>{t("register.stay_login")}</label>
 					<button type="submit" className="button">
-						{(viewModel?.account) ? '直接登入，進入後台管理' : '電子郵件登入'}
+						{(viewModel?.account) ? t("register.login_directly_msg") : t("register.email_login")}
 
 					</button >
 				</form>
