@@ -6,6 +6,8 @@ import { useGetMovieDataQuery } from '../../../../services/movieService';
 import { useGetUserDataQuery } from '../../../../services/memberService';
 import { RTKQuery_APIError } from '../../../../interface/rtk-query';
 import { CardDataType } from '../../../../interface/rtk-query';
+import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
 
 
 interface CardProps {
@@ -15,6 +17,7 @@ interface CardProps {
 
 
 const getIcon = (cartData: CardDataType, isMobileSize: boolean) => {
+  const { t } = useTranslation()
   const style = { fontSize: `${isMobileSize ? '1.2rem' : '1.5rem'}` };
   switch (cartData) {
     case 'getCurrentStream':
@@ -34,19 +37,19 @@ export const Cards: React.FC<CardProps> = ({ isMobileSize, cartData }) => {
   const fetchQueryAPI = {
     getCurrentStream: {
       api: useGetOrderDataQuery({ parameter: 'count', daterange: 'all' }),
-      title: '今日造訪網站'
+      title: t("admin_page.dashboard_page.website_visits_today")
     },
     getOrderCount: {
       api: useGetOrderDataQuery({ parameter: 'count', daterange: 'all' }),
-      title: '目前訂票數'
+      title: t("admin_page.dashboard_page.current_booking_count")
     },
     getRegisterCount: {
       api: useGetUserDataQuery({ parameter: 'count', daterange: 'all' }),
-      title: '己註冊人數'
+      title: t("admin_page.dashboard_page.registered_users")
     },
     getMovieCount: {
       api: useGetMovieDataQuery({ parameter: 'count', daterange: 'all' }),
-      title: '電影總數'
+      title: t("admin_page.dashboard_page.total_movies")
     }
   };
 
@@ -70,7 +73,7 @@ export const Cards: React.FC<CardProps> = ({ isMobileSize, cartData }) => {
           <Flex align='center' justify='center' flex={`0 0 ${(isMobileSize) ? '40px' : '60px'}`} style={{ backgroundColor: 'rgba(55, 55, 55, 0.9)' }}>
             {getIcon(cartData, isMobileSize)}
           </Flex>
-          <Flex flex={'1'} align='center'>
+          <Flex flex={'1'} align='center' className='StatisticContainer'>
             <Statistic
               title={title}
               value={data ? data.data.count : 0}

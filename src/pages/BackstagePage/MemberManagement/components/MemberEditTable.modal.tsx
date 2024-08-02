@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 import { CatchErrorMessage } from '../../../../interface';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { setError } from '../../../../store/common/common.reducer';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -22,6 +23,7 @@ interface MemberEditTableModalProps {
 
 export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ modalOpen, index }) => {
   const storeDispatch = useAppDispatch()
+  const { t } = useTranslation()
   const { isModalOpen, setIsModalOpen } = modalOpen
   const { isError } = useAppSelector(state => state.common.error)
   const [form] = Form.useForm();
@@ -29,7 +31,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
   const { updateItemToProvider, userItems, isLoading, setLoadingToProvider } = useContext(MemberContext)
   const [state, dispatch] = useContext(OrderContext);
   const userRole = (state.orderList.role) ? state.orderList.role : ''
-  const confirmTipText = (userRole === 'view') ? '(此為瀏覽模式，無法修改)' : ''
+  const confirmTipText = (userRole === 'view') ? `${t("admin_page.common.view_mode_notice_modify_text")}` : ''
   const isView = (userRole === 'view') ? true : false
 
   /*按下確定鈕*/
@@ -82,8 +84,8 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
         className='editModal'
         title=<span>修改資料 <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>
         open={(isModalOpen === true && index !== null)}
-        okText='儲存'
-        cancelText='取消'
+        okText={t("button.save")}
+        cancelText={t("button.cancel")}
         maskClosable={false}
         footer={null}
         onCancel={closeModal}
@@ -106,13 +108,13 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           </Form.Item>
           <Form.Item
             name='memberID'
-            label="會員ID"
+            label={t("admin_page.member_mamagement_page.member_id")}
           >
             <Input disabled />
           </Form.Item>
           <Form.Item
             name='nickName'
-            label="會員名稱"
+            label={t("admin_page.member_mamagement_page.member_nick_name")}
             rules={[
               {
                 required: true,
@@ -121,7 +123,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
               { whitespace: true },
               {
                 min: 3,
-                message: '最少3個字元'
+                message: t("admin_page.form_formated_vertification.enter_at_least_x_characters")
               }
             ]}
           >
@@ -129,7 +131,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           </Form.Item>
           <Form.Item
             name='email'
-            label="Email"
+            label={t("admin_page.member_mamagement_page.email")}
             rules={[
               {
                 required: true,
@@ -137,7 +139,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
               },
               {
                 type: 'email',
-                message: '請輸入Email格式，例如abc@def.com'
+                message: t("admin_page.member_mamagement_page.a_valid_email_address")
               },
             ]}
           >
@@ -145,7 +147,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           </Form.Item>
           <Form.Item
             name='birthday'
-            label="生日"
+            label={t("admin_page.member_mamagement_page.birthday")}
           >
             <DatePicker
               style={{ width: '100%' }}
@@ -154,17 +156,17 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           </Form.Item>
           <Form.Item
             name='role'
-            label="會員等級"
+            label={t("admin_page.member_mamagement_page.level")}
           >
             <Select placeholder='選擇會員級別' className='roelSelect'>
-              <Select.Option value='admin'>管理員</Select.Option>
-              <Select.Option value='user'>普通會員</Select.Option>
-              <Select.Option value='view'>瀏覽會員</Select.Option>
+              <Select.Option value='admin'>{t("admin_page.member_mamagement_page.level_admin")}</Select.Option>
+              <Select.Option value='user'>{t("admin_page.member_mamagement_page.level_general")}</Select.Option>
+              <Select.Option value='view'>{t("admin_page.member_mamagement_page.level_browsing")}</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
             name='phoneNumber'
-            label="電話號碼"
+            label={t("admin_page.member_mamagement_page.phone_number")}
             rules={[
               {
                 validator: (_, value) =>
@@ -178,11 +180,11 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           </Form.Item>
           <Form.Item
             name='profilePic'
-            label="個人圖象URL"
+            label={t("admin_page.member_mamagement_page.profile_picture_url")}
             rules={[
               {
                 type: 'url',
-                message: '請輸入網址格式'
+                message: t("admin_page.form_formated_vertification.profilePic_field_formated_invalid")
               },
             ]}
           >
@@ -190,8 +192,8 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: 'right' }}>
-            <Button className='btn-outline-warning' onClick={closeModal}>關閉</Button>
-            <Button className='btn_primary' htmlType='submit' style={{ marginLeft: 10 }} disabled={isView}>確定</Button>
+            <Button className='btn-outline-warning' onClick={closeModal}>{t("button.cancel")}</Button>
+            <Button className='btn_primary' htmlType='submit' style={{ marginLeft: 10 }} disabled={isView}>{t("button.confirm")}</Button>
           </Form.Item>
         </Form>
       </Modal>

@@ -10,6 +10,7 @@ import NotificationAlert from '../../components/Notification.alert';
 import { OrderContext } from '../../store';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setAlert } from '../../store/common/common.reducer';
+import { t } from 'i18next';
 interface indexProps {
 
 }
@@ -20,7 +21,7 @@ const BackstageHome: React.FC<indexProps> = ({ }) => {
   const [state] = useContext(OrderContext);
   const { isAlert } = useAppSelector(state => state.common.alert)
   const userRole = (state.orderList.role) ? state.orderList.role : ''
-  const alertMsg = (userRole === 'view') ? '此帳號為瀏覽模式，部份功能會無法使用' : ''
+  const alertMsg = (userRole === 'view') && t("admin_page.common.view_mode_notice_alert")
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
     const handleResize = () => {

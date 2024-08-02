@@ -11,6 +11,7 @@ import { MemberCreateTableModal } from './MemberCreateTable.modal';
 import { CatchErrorMessage } from '../../../../interface';
 import { useAppDispatch, useAppSelector } from '../../../../hooks';
 import { setError } from '../../../../store/common/common.reducer';
+import { useTranslation } from 'react-i18next';
 
 const getColor = (role: string) => {
   switch (role) {
@@ -26,6 +27,7 @@ const getColor = (role: string) => {
 }
 
 export const MemberTable: React.FC = () => {
+  const { t } = useTranslation()
   const [state, dispatch] = useContext(OrderContext);
   const { data, error, isLoading } = useGetUserDataQuery({ parameter: 'dataForManagement', daterange: 'all' })
   const { isError } = useAppSelector(state => state.common.error)
@@ -59,9 +61,9 @@ export const MemberTable: React.FC = () => {
 
   const onenDleteModal = (record: UserItem) => {
     Modal.confirm({
-      title: <span>確定要刪除此筆資料會員資料嗎 ? <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>,
-      okText: '確定',
-      cancelText: '取消',
+      title: <span>{t("admin_page.common.confirm_delete_message")}<span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>,
+      okText: t("button.ok"),
+      cancelText: t("button.cancel"),
       className: 'confirmModal',
       onOk: async () => {
         try {
@@ -88,14 +90,14 @@ export const MemberTable: React.FC = () => {
   const columns = [
     {
       key: '1',
-      title: 'ID編號',
+      title: t("admin_page.member_mamagement_page.id_number"),
       dataIndex: '_id',
       width: 200,
       ellipsis: true
     },
     {
       key: '2',
-      title: '圖像',
+      title: t("admin_page.member_mamagement_page.profile_pic"),
       dataIndex: 'profilePic',
       width: 80,
       ellipsis: {
@@ -107,18 +109,18 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '3',
-      title: '名稱',
+      title: t("admin_page.member_mamagement_page.nick_name"),
       dataIndex: 'nickName'
     },
     {
       key: '4',
-      title: 'Email',
+      title: t("admin_page.member_mamagement_page.email"),
       dataIndex: 'email',
       width: 250,
     },
     {
       key: '5',
-      title: '生日',
+      title: t("admin_page.member_mamagement_page.birthday"),
       dataIndex: 'birthday',
       render: (record: string) => {
         let brithDate = (record) ? converDateFormat(record) : ''
@@ -127,7 +129,7 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '6',
-      title: '級別',
+      title: t("admin_page.member_mamagement_page.level"),
       dataIndex: 'role',
       width: 160,
       render: (role: string, record: UserItem) => {
@@ -142,12 +144,12 @@ export const MemberTable: React.FC = () => {
     },
     {
       key: '7',
-      title: '電話號碼',
+      title: t("admin_page.member_mamagement_page.phone_number"),
       dataIndex: 'phoneNumber'
     },
     {
       key: '8',
-      title: '執行',
+      title: t("admin_page.member_mamagement_page.action"),
       fixed: 'right' as const,
       render: (text: UserItem, record: UserItem, index: number) => {
         return <>
@@ -168,7 +170,11 @@ export const MemberTable: React.FC = () => {
   return (
     <>
       <Flex justify={'end'} style={{ marginBottom: 16 }}>
-        <Button className='btn_primary' onClick={() => setCreateNewModalOpen(true)}>新增使用者</Button>
+        <Button
+          className='btn_primary'
+          onClick={() => setCreateNewModalOpen(true)}>
+          {t("admin_page.member_mamagement_page.add_new_member_button")}
+        </Button>
       </Flex>
       <Flex vertical justify='start'>
         <Table

@@ -12,6 +12,8 @@ import { useUpdateOrderDataMutation, useDeleteOrderDataMutation } from '../../..
 import { CatchErrorMessage } from '../../../../interface';
 import { setError } from '../../../../store/common/common.reducer';
 import { OrderContext } from '../../../../store';
+import { useTranslation } from 'react-i18next';
+import { paymethod, transArraySeats, transDateString, transMovieTitleName } from '../../../../helper/transform.language';
 
 
 const getColor = (data: string) => {
@@ -28,6 +30,8 @@ const getColor = (data: string) => {
 }
 
 export const Ordertable: React.FC = () => {
+  const { t } = useTranslation()
+  const { language } = useAppSelector(state => state.common)
   const storeDispatch = useAppDispatch()
   const { data, error, isLoading } = useGetOrderDataQuery({ parameter: 'dataForManagement', daterange: 'all' })
   const { isError } = useAppSelector(state => state.common.error)
@@ -42,7 +46,7 @@ export const Ordertable: React.FC = () => {
   const antPopconfirmElement = document.querySelector('.ant-popover.ant-popconfirm') as HTMLDivElement
   const [state] = useContext(OrderContext);
   const userRole = (state.orderList.role) ? state.orderList.role : ''
-  const confirmTipText = (userRole === 'view') ? '(此為瀏覽模式，無法修改)' : ''
+  const confirmTipText = (userRole === 'view') ? `${t("admin_page.common.view_mode_notice_delete_text")}` : ''
   const isView = (userRole === 'view') ? true : false
   const isMoblieScreen = useAppSelector(state => state.common.isMoblieScreen);
   // const { orders } = useAppSelector(selectOrderReducer)
@@ -126,68 +130,81 @@ export const Ordertable: React.FC = () => {
 
   const columns: ColumnsType<OrderItem> = [
     {
-      title: '訂單編號',
+      title: t("admin_page.order_mamagement_page.id_number"),
       dataIndex: '_id',
       ellipsis: true,
     },
     {
-      title: '訂票日期/時間',
+      title: t("admin_page.order_mamagement_page.booking_date_time"),
       dataIndex: 'createTime',
       sorter: (record1, record2) => {
         return record1.createTime.localeCompare(record2.createTime);
       },
+      ellipsis: true,
       width: 150
     },
     {
-      title: '電影',
+      title: t("admin_page.order_mamagement_page.movie_name"),
       dataIndex: 'movieName',
-      width: 180
+      width: 180,
+      ellipsis: true,
+      render: (data: string) => {
+        return transMovieTitleName(language, data)
+      }
 
     },
     {
-      title: '場次',
+      title: t("admin_page.order_mamagement_page.data"),
       dataIndex: 'moviePlayDate',
-      width: 140
+      width: 140,
+      render: (data) => {
+        return <span>{transDateString(language, data)}</span>;
+      }
     },
     {
-      title: '座位',
+      title: t("admin_page.order_mamagement_page.seats"),
       dataIndex: 'seatOrdered',
       width: 85,
       ellipsis: true,
       render: (seatDatas: [], record, index: number) => {
-        return <span>{seatDatas.join('、')}</span>;
+        return <span>{transArraySeats(language, seatDatas)}</span>;
       }
     },
     {
-      title: '播放時間',
+      title: t("admin_page.order_mamagement_page.playing_time"),
       dataIndex: 'moviePlayTime',
       width: 90,
+      ellipsis: true,
     },
     {
-      title: '訂票',
+      title: t("admin_page.order_mamagement_page.booking_mehtod"),
       dataIndex: 'status',
+      ellipsis: true,
       width: 100,
       render: (data: string, record: OrderItem, index: number) => {
-        let colorStatus = (data === 'member') ? { status: '會員登入', color: 'blue' } : { status: '快速訂票', color: 'cyan' }
+
+        let colorStatus = (data === 'member') ?
+          { status: t("admin_page.order_mamagement_page.member_login"), color: 'blue' } :
+          { status: t("admin_page.order_mamagement_page.quick_booking"), color: 'cyan' }
         return (
           <Tag color={colorStatus.color} key={index}>{colorStatus.status}</Tag>
         )
       }
     },
     {
-      title: `${payMethodTitle.title} ${(payMethodTitle.count > 0 ? `(${payMethodTitle.count})` : '')}`,
+      title: `${t("admin_page.order_mamagement_page.payment_mehtod")} ${(payMethodTitle.count > 0 ? `(${payMethodTitle.count})` : '')}`,
       dataIndex: 'payMethod',
       width: 200,
       render: (data: string) => {
         const color = getColor(data)
         return (
-          <Tag color={color}>{data}</Tag>
+          <Tag color={color}>{paymethod(language, data)}</Tag>
         )
       },
       filters: [
-        { text: '信用卡', value: '信用卡' },
-        { text: '綠界科技-Credit_CreditCard', value: '綠界科技-Credit_CreditCard' },
-        { text: '綠界科技-WebATM_TAISHIN', value: '綠界科技-WebATM_TAISHIN' },
+        { text: paymethod(language, '信用卡'), value: '信用卡' },
+        { text: paymethod(language, '綠界科技-Credit_CreditCard'), value: '綠界科技-Credit_CreditCard' },
+        { text: paymethod(language, '綠界科技-WebATM_TAISHIN'), value: '綠界科技-WebATM_TAISHIN' },
       ],
       onFilter: (value, record) => {
         return record.payMethod === value
@@ -195,8 +212,9 @@ export const Ordertable: React.FC = () => {
 
     },
     {
-      title: '票數',
+      title: t("admin_page.order_mamagement_page.tickets_number"),
       dataIndex: 'quantity',
+      ellipsis: true,
       // width: 80,
       render: (data: number, record: OrderItem, index: number) => {
         if (editingRow === index) {
@@ -214,8 +232,9 @@ export const Ordertable: React.FC = () => {
       }
     },
     {
-      title: '總價',
+      title: t("admin_page.order_mamagement_page.total"),
       dataIndex: 'total',
+      ellipsis: true,
       // width: 100,
       render: (data: number, record: OrderItem, index: number) => {
         if (editingRow === index) {
@@ -233,9 +252,9 @@ export const Ordertable: React.FC = () => {
       }
     },
     {
-      title: '執行',
+      title: t("admin_page.order_mamagement_page.action"),
       fixed: 'right' as const,
-      width: 140,
+      width: 150,
       render: (data: string, record: OrderItem, index: number) => {
         if (editingRow === index) {
           return (
@@ -243,12 +262,12 @@ export const Ordertable: React.FC = () => {
               <Button className='btn_primary'
                 style={{ padding: "0px 7px" }}
                 htmlType='submit'
-              >儲存
+              >{t("button.save")}
               </Button>
 
               <Button className='btn_primary'
                 onClick={() => setEditingRow(null)}
-                style={{ padding: "0px 7px" }}>取消
+                style={{ padding: "0px 7px" }}>{t("button.cancel")}
               </Button>
             </Flex>
           )
@@ -259,12 +278,12 @@ export const Ordertable: React.FC = () => {
               onClick={() => { enableEditRow(record, index) }}
             />
             <Popconfirm
-              title=<span>確定刪除嗎? <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>
+              title=<span>{t("admin_page.common.confirm_delete_message")} <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>
               onConfirm={() => deleteHandler(record)}
               onCancel={() => setDeleteCheck(false)}
               disabled={deleteCheck}
               okButtonProps={{ loading: false, disabled: isView }}
-              okText='確定'
+              okText={t("button.confirm")}
             >
               <DeleteOutlined
                 style={{ color: '#fd8686', fontSize: 16, marginLeft: 12 }}
@@ -275,13 +294,12 @@ export const Ordertable: React.FC = () => {
         }
       }
     },
-
   ]
 
   return (
     <>
       <Flex justify={'end'} style={{ marginBottom: 16 }}>
-        <Button className='btn_primary'>匯出訂單</Button>
+        <Button className='btn_primary'>{t("admin_page.order_mamagement_page.export_order")}</Button>
       </Flex>
       <Form
         form={form}
@@ -302,8 +320,8 @@ export const Ordertable: React.FC = () => {
           onChange={onChange}
           showSorterTooltip={{ target: 'sorter-icon' }}
           locale={{
-            filterConfirm: '確定',
-            filterReset: '清除',
+            filterConfirm: t("button.confirm"),
+            filterReset: t("button.reset"),
           }}
           scroll={{ x: isMoblieScreen ? 'max-content' : '100%' }}
           pagination={{

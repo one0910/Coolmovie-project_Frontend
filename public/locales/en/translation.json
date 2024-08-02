@@ -65,8 +65,11 @@
     "go_to_booking": "Go to Booking",
     "check_seates": "Check Seats",
     "confirm": "Confirm",
+    "save": "Save",
     "next": "Next",
-    "ok": "OK"
+    "ok": "OK",
+    "cancel": "Cancel",
+    "reset": "Reset"
   },
   "seats": {
     "sold": "Sold",
@@ -131,9 +134,79 @@
     "card_number_require": "Credit card number is require",
     "this_field_is_required": "This field is required",
     "click_next_button_to_checkout": "Click 「Next」button to proceed to checkout and enter the ECPay page",
-    "ecpay_alert_notification": "You will be redirected to EC Pay for a test payment. No actual charges will be made. You can complete the checkout process.",
+    "ecpay_alert_notification": "You will be redirected to ECPay for a test payment. No actual charges will be made. You can complete the checkout process.",
     "booking_complete_title": "Booking Successful",
     "booking_complete_content": "Please check your email or log in to your member center to view your booking details."
+  },
+  "admin_page": {
+    "sidebar_menu": {
+      "dashboard": "Dashboard",
+      "movie_management": "Movie Management",
+      "member_management": "Member Management",
+      "theater_management": "Theater Management",
+      "order_management": "Order Management"
+    },
+    "dashboard_page": {
+      "website_visits_today": "Website Visits Today",
+      "current_booking_count": "Current Booking Count",
+      "registered_users": "Registered Users",
+      "total_movies": " Total Movies",
+      "box_office_data": "Box Office Data",
+      "number_of_registered_members": "Number of Registered Members"
+    },
+    "member_mamagement_page": {
+      "usesr_management_list": "Usesr Management List",
+      "id_number": "ID No.",
+      "member_id": "Mmeber ID",
+      "profile_pic": "Profile Picture",
+      "nick_name": "Name",
+      "email": "Email",
+      "birthday": "Birthday",
+      "level": "Level",
+      "phone_number": "Phone Number",
+      "action": "Action",
+      "add_new_member_button": "Add New",
+      "add_new_member": "Add New Member",
+      "member_nick_name": "Nick Name",
+      "password": "Password",
+      "confirm_password": "Confirm Password",
+      "level_admin": "Administrator",
+      "level_general": "General Member",
+      "level_browsing": "Browsing Member",
+      "profile_picture_url": "Picture URL"
+    },
+    "order_mamagement_page": {
+      "booking_management_list": "Booking Management List",
+      "id_number": "ID No.",
+      "booking_date_time": "Booking Date/Time",
+      "movie_name": "Movie Name",
+      "data": "Data",
+      "seats": "Seats",
+      "playing_time": "Plyaing Time",
+      "booking_mehtod": "Booking Method",
+      "payment_mehtod": "Paymenet Method",
+      "tickets_number": "Ticket Number",
+      "total": "Total",
+      "action": "Action",
+      "export_order": "Export Data",
+      "member_login": "Mmeber",
+      "quick_booking": "Quick"
+    },
+    "form_formated_vertification": {
+      "enter_at_least_x_characters": "Please enter at least 3 characters.",
+      "a_valid_email_address": "Please enter a valid email address (e.g.'abc@def.com')",
+      "password_field_is_required": "Password is required",
+      "passwords_do_not_match": "Passwords do not match. Please try again",
+      "level_field_is_required": "Level filed is require",
+      "phone_field_is_required": "phone is required",
+      "profilePic_field_formated_invalid": "Please enter a valid URL"
+    },
+    "common": {
+      "confirm_delete_message": "Are you sure to delete this data ?",
+      "view_mode_notice_alert": "Your account is currently in viewer mode. Certain features are restricted.",
+      "view_mode_notice_modify_text": "This is in viewing mode. Modifications are not allowed.",
+      "view_mode_notice_delete_text": "This is in viewing mode. Deletion are not allowed."
+    }
   },
   "member": {
     "member_center_title": "Member Center"

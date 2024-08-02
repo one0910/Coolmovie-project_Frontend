@@ -138,6 +138,43 @@ const weekMap_eng: { [key: string]: string } = {
   "六": "Sat"
 };
 
+const monthMap: { [key: string]: { [key: string]: string } } = {
+  "zh": {
+    "01": "01月",
+    "02": "02月",
+    "03": "03月",
+    "04": "04月",
+    "05": "05月",
+    "06": "06月",
+    "07": "07月",
+    "08": "08月",
+    "09": "09月",
+    "10": "10月",
+    "11": "11月",
+    "12": "12月",
+  },
+  "en": {
+    "01": "Jan.",
+    "02": "Feb.",
+    "03": "Mar.",
+    "04": "Apr.",
+    "05": "May.",
+    "06": "Jun.",
+    "07": "Jul.",
+    "08": "Aug.",
+    "09": "Sep.",
+    "10": "Oct.",
+    "11": "Nov.",
+    "12": "Dec.",
+  }
+};
+
+const paymethodMap: { [key: string]: string } = {
+  "信用卡": "Credit Card",
+  "綠界科技-Credit_CreditCard": "ECPAY-Credit_CreditCard",
+  "綠界科技-WebATM_TAISHIN": "ECPAY-WebATM_TAISHIN",
+};
+
 const levelMap: { [key: string]: { [key: number]: { level: string, color: string } } } = {
   'zh': {
     0: {
@@ -339,3 +376,15 @@ export const transArraySeats = (lang: string, seats: string[] = []) => {
     return newSeats.join(' ')
   }
 }
+
+export const transMonth = (lang: string, month: string): string => {
+  return monthMap[lang || 'en'][month];
+}
+
+export const paymethod = (lang: string, pay_data: string) => {
+  if (lang === 'zh') {
+    return pay_data
+  } else {
+    return paymethodMap[pay_data]
+  }
+}  

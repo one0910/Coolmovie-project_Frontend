@@ -14,6 +14,8 @@ import { useAppSelector } from '../../../../hooks';
 import { useGetUserDataQuery } from '../../../../services/memberService';
 import { Spinner } from '../../../../components';
 import { ChartDataType } from '../../../../interface';
+import { useTranslation } from 'react-i18next';
+import { transMonth } from '../../../../helper/transform.language';
 
 ChartJS.register(
   CategoryScale,
@@ -30,6 +32,8 @@ interface ChartBarComponentProps {
 }
 
 export const ChartBarComponent: React.FC<ChartBarComponentProps> = ({ }) => {
+  const { t } = useTranslation()
+  const { language } = useAppSelector(state => state.common)
   const { data, error, isLoading } = useGetUserDataQuery({ parameter: 'dataForChart', daterange: 'all' })
 
   const [revenueData, setRevenueData] = useState<ChartDataType>({
@@ -41,7 +45,7 @@ export const ChartBarComponent: React.FC<ChartBarComponentProps> = ({ }) => {
   useEffect(() => {
 
     const charLabels = data?.data.dataForChart['2023'].slice(2, 10).map((chardata) => {
-      return `${chardata.Month}月`
+      return transMonth(language, chardata.Month)
     }) || [];
     const charDatas = data?.data.dataForChart['2023'].slice(2, 10).map((chardata) => {
       return chardata.Total
@@ -80,7 +84,7 @@ export const ChartBarComponent: React.FC<ChartBarComponentProps> = ({ }) => {
       title: {
         position: 'top' as const,
         display: true,
-        text: '註冊會員數量',
+        text: t("admin_page.dashboard_page.number_of_registered_members"),
         color: 'rgba(255, 255, 255, 0.9)',
         align: 'start' as const,
         font: {

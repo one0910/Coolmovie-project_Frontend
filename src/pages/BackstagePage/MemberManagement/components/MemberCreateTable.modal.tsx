@@ -6,6 +6,8 @@ import { Loading } from '../../../../components';
 import dayjs from 'dayjs';
 import { UserItem } from '../context/member.type';
 import { CatchErrorMessage } from '../../../../interface';
+import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface MemberCreateTableModalProps {
   modalOpen: {
@@ -15,6 +17,7 @@ interface MemberCreateTableModalProps {
 }
 
 export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ modalOpen }) => {
+  const { t } = useTranslation()
   const { createNewModalOpen, setCreateNewModalOpen } = modalOpen
   const [emailValidationStatus, setEmailValidationStatus] = useState<{ status: 'success' | 'error' | 'validating' | undefined, message: string | null }>({ status: undefined, message: null });
   // const [emailValidationStatus, setEmailValidationStatus] = useState({ status: '', message: '' })
@@ -70,10 +73,10 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
       <Loading isActive={isLoading} />
       <Modal
         className='createNewModal'
-        title='新增使用者'
+        title={t("admin_page.member_mamagement_page.add_new_member")}
         open={createNewModalOpen}
-        okText='儲存'
-        cancelText='取消'
+        okText={t("button.save")}
+        cancelText={t("button.cancel")}
         maskClosable={false}
         footer={null}
         onCancel={closeModal}
@@ -92,7 +95,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
         >
           <Form.Item
             name='nickName'
-            label="會員名稱"
+            label={t("admin_page.member_mamagement_page.member_nick_name")}
             rules={[
               {
                 required: true,
@@ -101,7 +104,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
               { whitespace: true },
               {
                 min: 3,
-                message: '最少3個字元'
+                message: t("admin_page.form_formated_vertification.enter_at_least_x_characters")
               }
             ]}
             hasFeedback
@@ -110,7 +113,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
           <Form.Item
             name='email'
-            label="Email"
+            label={t("admin_page.member_mamagement_page.email")}
             rules={[
               {
                 required: true,
@@ -118,7 +121,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
               },
               {
                 type: 'email',
-                message: '請輸入Email格式，例如abc@def.com'
+                message: t("admin_page.member_mamagement_page.a_valid_email_address")
               },
             ]}
             // hasFeedback
@@ -141,11 +144,11 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
           <Form.Item
             name='password'
-            label="密碼"
+            label={t("admin_page.member_mamagement_page.password")}
             rules={[
               {
                 required: true,
-                message: '需要輸入密碼'
+                message: t("admin_page.admin_page.form_formated_vertification.password_field_is_required")
               },
               { min: 5 },
             ]}
@@ -155,7 +158,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
           <Form.Item
             name='confirmPassowrd'
-            label="密碼確認"
+            label={t("admin_page.form_formated_vertification.confirm_password")}
             dependencies={['password']}
             rules={[
               {
@@ -167,7 +170,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve()
                   }
-                  return Promise.reject('密碼輸入不一致，請再確認輸入的密碼')
+                  return Promise.reject(t("admin_page.form_formated_vertification.passwords_do_not_match"))
                 }
               })
             ]}
@@ -177,7 +180,7 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
           <Form.Item
             name='birthday'
-            label="生日"
+            label={t("admin_page.member_mamagement_page.birthday")}
           >
             <DatePicker
               style={{ width: '100%' }}
@@ -186,22 +189,23 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
           <Form.Item
             name='role'
-            label="會員等級"
+            label={t("admin_page.member_mamagement_page.level")}
             rules={[
               {
                 required: true,
-                message: '請選擇會員等級'
+                message: t("admin_page.form_formated_vertification.level_field_is_required")
               },
             ]}
           >
             <Select placeholder='選擇會員級別' className='roelSelect'>
-              <Select.Option value='admin'>管理員</Select.Option>
-              <Select.Option value='user'>普通會員</Select.Option>
+              <Select.Option value='admin'>{t("admin_page.member_mamagement_page.level_admin")}</Select.Option>
+              <Select.Option value='user'>{t("admin_page.member_mamagement_page.level_general")}</Select.Option>
+              <Select.Option value='view'>{t("admin_page.member_mamagement_page.level_browsing")}</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
             name='phoneNumber'
-            label="電話號碼"
+            label={t("admin_page.member_mamagement_page.phone_number")}
             rules={[
               {
                 validator: (_, value) =>
@@ -215,11 +219,11 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
           <Form.Item
             name='profilePic'
-            label="個人圖象URL"
+            label={t("admin_page.member_mamagement_page.profile_picture_url")}
             rules={[
               {
                 type: 'url',
-                message: '請輸入網址格式'
+                message: t("admin_page.form_formated_vertification.profilePic_field_formated_invalid")
               },
             ]}
           >
@@ -227,12 +231,12 @@ export const MemberCreateTableModal: React.FC<MemberCreateTableModalProps> = ({ 
           </Form.Item>
 
           <Form.Item wrapperCol={{ span: 24 }} style={{ textAlign: 'right' }}>
-            <Button className='btn-outline-warning' onClick={closeModal}>關閉</Button>
-            <Button className='btn_primary' htmlType='submit' style={{ marginLeft: 10 }}>確定</Button>
+            <Button className='btn-outline-warning' onClick={closeModal}>{t("button.cancel")}</Button>
+            <Button className='btn_primary' htmlType='submit' style={{ marginLeft: 10 }}>{t("button.confirm")}</Button>
           </Form.Item>
 
         </Form>
-      </Modal>
+      </Modal >
     </>
   );
 }

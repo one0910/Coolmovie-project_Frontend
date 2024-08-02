@@ -2,9 +2,9 @@ import React, { useContext, Dispatch, SetStateAction } from 'react'
 import { OrderContext } from '../store'
 import { useNavigate } from 'react-router-dom';
 import { authFetch } from '../utilities';
-import { setUser } from '../store/user/user.reducer';
+import { setAlert } from '../store/common/common.reducer';
 import styled from 'styled-components';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { orderApi } from '../services/orderService';
 import { userLogout } from '../store/user/user.action';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,7 @@ export const Logout: React.FC<LogoutProps> = ({ isLogin, setIsLogin }) => {
 	const storeDispatch = useAppDispatch()
 	const [state, dispatch] = useContext(OrderContext);
 	const navigate = useNavigate()
+	const { isAlert } = useAppSelector(state => state.common.alert);
 
 	const clickHandler = () => {
 		localStorage.removeItem("userToken")
@@ -36,6 +37,7 @@ export const Logout: React.FC<LogoutProps> = ({ isLogin, setIsLogin }) => {
 		storeDispatch(orderApi.util.resetApiState())
 		authFetch.get('/api/google/logout')
 		setIsLogin(false)
+		storeDispatch(setAlert({ isAlert: !isAlert, alertMessage: '' }))
 		if (isLogin || state.orderList.status === "member") {
 			dispatch({
 				type: "CLEAR_ORDER",
