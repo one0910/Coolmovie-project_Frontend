@@ -82,7 +82,7 @@ export const MemberEditTableModal: React.FC<MemberEditTableModalProps> = ({ moda
       <Loading isActive={isLoading} />
       <Modal
         className='editModal'
-        title=<span>修改資料 <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>
+        title=<span>{t("admin_page.member_mamagement_page.edit_member_data")} <span style={{ color: '#aaa', fontSize: '12px' }}>{confirmTipText}</span></span>
         open={(isModalOpen === true && index !== null)}
         okText={t("button.save")}
         cancelText={t("button.cancel")}

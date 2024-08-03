@@ -5,6 +5,7 @@ import { I_ChangePassword } from "../../interface"
 import { changePassword } from "../../api/member";
 import { Loading } from "../../components";
 import { CatchErrorMessage } from "../../interface";
+import { t } from "i18next";
 
 const MemberAccount: React.FC = ({ }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,19 +40,19 @@ const MemberAccount: React.FC = ({ }) => {
   return (
     <>
       <Loading isActive={isSubmitting}></Loading>
-      <MemberContainer title="修改密碼">
+      <MemberContainer title={t("member_page.edit_password.edit_passowrd_sidebar")}>
         <div className="MemberAccount">
           <form className="MemberAccount-form d-flex flex-column" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-2">
               <label htmlFor="password" className="mb-2">
-                新密碼
+                {t("member_page.edit_password.new_passowrd")}
               </label>
               <input
                 id="password"
                 type="password"
                 className="input mb-2"
                 autoComplete="off"
-                placeholder="新密碼"
+                placeholder={t("member_page.edit_password.new_passowrd")}
                 {...register("password", { required: "請輸入密碼" })}
               />
               {errors.password && (
@@ -64,7 +65,7 @@ const MemberAccount: React.FC = ({ }) => {
                 type="password"
                 className="input"
                 autoComplete="off"
-                placeholder="再次確認密碼"
+                placeholder={t("member_page.edit_password.confirm_passowrd")}
                 {...register("confirmPassword", { required: "再次確認新密碼" })}
               />
               {errors.confirmPassword && (
@@ -76,7 +77,7 @@ const MemberAccount: React.FC = ({ }) => {
             <input
               type="submit"
               className="button align-self-end"
-              value="儲存"
+              value={t("button.save")}
             />
           </form>
         </div>

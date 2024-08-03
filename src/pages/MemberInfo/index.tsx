@@ -11,8 +11,10 @@ import { OrderContext } from "../../store";
 import { uploadImage } from "../../api/image";
 import { validateFile } from "../../utilities/validate";
 import { I_MEMBER, I_FormData } from "../../interface";
+import { useTranslation } from "react-i18next";
 
 const MemberInfo: React.FC = () => {
+  const { t } = useTranslation()
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [_, dispatch] = useContext(OrderContext);
   const isGoogleMember = (_.orderList.googleId) ? true : false
@@ -30,7 +32,12 @@ const MemberInfo: React.FC = () => {
   } = useForm<I_FormData>();
 
   useEffect(() => {
-    reset(member);
+    console.log('member => ', member)
+    reset({
+      ...member,
+      nickName: (member.nickName === '無資料') ? t("member_page.no_data") : member.nickName,
+      phoneNumber: (member.phoneNumber === '無資料') ? t("member_page.no_data") : member.phoneNumber
+    });
   }, [member]);
   const onSubmit = async (formData: I_FormData) => {
     setIsSubmitting(true);
@@ -46,9 +53,9 @@ const MemberInfo: React.FC = () => {
           return {
             ...member,
             birthday: (newFormData.birthday) ? format(new Date(newFormData.birthday), "yyyy-MM-dd") : "無資料",
-            email: newFormData.email || "無資料",
-            nickName: newFormData.nickName || "無資料",
-            phoneNumber: newFormData.phoneNumber || "無資料",
+            email: newFormData.email || t("member_page.no_data"),
+            nickName: newFormData.nickName || t("member_page.no_data"),
+            phoneNumber: newFormData.phoneNumber || t("member_page.no_data"),
             profilePic: avatar || "/images/member/default_avatar.svg",
             role: newFormData.role
           };
@@ -64,7 +71,7 @@ const MemberInfo: React.FC = () => {
       alert(response.message);
     } catch (error) {
       console.log('error => ', error)
-      alert("系統錯誤請聯絡管理員");
+      alert(t("ErroMsg"));
     } finally {
       setIsSubmitting(false);
     }
@@ -99,7 +106,7 @@ const MemberInfo: React.FC = () => {
         alert(response.message);
       }
     } catch (error) {
-      alert("系統錯誤請聯絡管理員");
+      alert(t("ErroMsg"));
     } finally {
       setIsSubmitting(false);
     }
@@ -109,14 +116,14 @@ const MemberInfo: React.FC = () => {
   return (
     <>
       <Loading isActive={isSubmitting}></Loading>
-      <MemberContainer title="個人檔案">
+      <MemberContainer title={t("member_page.profile.profile_title")}>
         <div className="memberInfo">
           <form
             className="memberInfo-form d-flex flex-column"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="mb-2">
-              <p className="mb-2">照片</p>
+              <p className="mb-2">{t("member_page.profile.pircture")}</p>
               <label
                 className="memberInfo-avatar-label d-inline-block"
                 htmlFor="avatar"
@@ -145,7 +152,7 @@ const MemberInfo: React.FC = () => {
             </div>
             <div className="mb-2">
               <label htmlFor="name" className="mb-2">
-                暱稱
+                {t("member_page.profile.nick_name")}
               </label>
               <input
                 id="name"
@@ -163,7 +170,7 @@ const MemberInfo: React.FC = () => {
             </div>
             <div className="mb-2">
               <label htmlFor="birthday" className="mb-2">
-                生日
+                {t("member_page.profile.brithday")}
               </label>
               <input
                 id="birthday"
@@ -188,7 +195,7 @@ const MemberInfo: React.FC = () => {
             </div>
             <div className="mb-2">
               <label htmlFor="phone" className="mb-2">
-                電話
+                {t("member_page.profile.phone_number")}
               </label>
               <input
                 id="phone"
@@ -201,7 +208,7 @@ const MemberInfo: React.FC = () => {
             </div>
             <div className="mb-2">
               <label htmlFor="email" className="mb-2">
-                email
+                {t("member_page.email")}
               </label>
               <input
                 id="email"
@@ -227,7 +234,7 @@ const MemberInfo: React.FC = () => {
             <input
               type="submit"
               className="button align-self-end"
-              value="儲存"
+              value={t("button.save")}
             />
           </form>
         </div>

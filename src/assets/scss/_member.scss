@@ -96,7 +96,7 @@
 .memberOrder {
 	.orderHead {
 		display: grid;
-		grid-template-columns: .5fr 1fr 1fr 2fr .5fr;
+		grid-template-columns: .5fr 1.3fr 1fr 1.7fr .5fr;
 		padding: 5px 0 5px 1rem;
 		background-color: $primary;
 		color: $primary-background;
@@ -117,7 +117,7 @@
 			cursor: pointer;
 			padding: .8rem 0 .8rem 1rem;
 			display: grid;
-			grid-template-columns: .5fr 1fr 1fr 2fr .5fr;
+			grid-template-columns: .5fr 1.3fr 1fr 1.7fr .5fr;
 			border: 1px solid #9e9e9ed9;
 			margin-bottom: .6rem;
 			border-radius: 2px;

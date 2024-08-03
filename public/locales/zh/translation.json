@@ -109,7 +109,10 @@
     "join_us_content": "現在加入會員立即享有全電影50元折扣",
     "cancel": "取消",
     "checkout": "結帳",
-    "order_id": "訂單編號"
+    "order_id": "訂單編號",
+    "order_detail": "訂單明細",
+    "ticket_number": "票種張數",
+    "ticket_quantity": "會員優惠{{quantity}}張"
   },
   "order": {
     "contact_information_title": "訂購人聯絡資訊",
@@ -157,6 +160,7 @@
     "member_mamagement_page": {
       "usesr_management_list": "使用者管理列表",
       "id_number": "ID 編號",
+      "edit_member_data": "修改資料",
       "member_id": "會員ID",
       "profile_pic": "圖像",
       "nick_name": "名稱",
@@ -208,8 +212,38 @@
       "view_mode_notice_modify_text": "此為瀏覽模式，無法修改"
     }
   },
-  "member": {
-    "member_center_title": "會員中心"
+  "member_page": {
+    "member": "會員",
+    "member_center_title": "會員中心",
+    "email": "電子郵件",
+    "no_data": "無資料",
+    "profile": {
+      "profile_title": "個人檔案",
+      "pircture": "照片",
+      "nick_name": "暱稱",
+      "brithday": "生日",
+      "phone_number": "電話"
+    },
+    "edit_password": {
+      "edit_passowrd_sidebar": "修改密碼",
+      "new_passowrd": "新密碼",
+      "confirm_passowrd": "再次確認密碼"
+    },
+    "booking_recod": {
+      "booking_record_sidebar": "訂票紀錄",
+      "title_booking_time": "訂票時間",
+      "title_booking_movie": "電影",
+      "title_booking_date": "放映場次",
+      "title_booking_seats": "座位",
+      "check_booking_detail": "查看明細"
+    },
+    "bonus": {
+      "bonus_sidebar": "紅利查詢",
+      "bonus_title": "會員紅利",
+      "bonus_get_point_number": "我的紅利點數",
+      "bonus_get_point_record": "會員紅利紀錄",
+      "bonus_get_point_none": "暫無紀錄"
+    }
   },
   "footer": {
     "contact_us": "聯絡我們",

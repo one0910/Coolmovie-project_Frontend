@@ -5,9 +5,11 @@ import { format } from "date-fns";
 import { Loading } from "../../components";
 import { I_MEMBER } from "../../interface";
 import { OrderContext } from "../../store";
+import { useTranslation } from "react-i18next";
 
 
 const Member: React.FC = () => {
+  const { t } = useTranslation()
   const [isLoading, setLoading] = useState(false);
   const [state, dispatch] = useContext(OrderContext);
   const isGoogleMember = (state.orderList.googleId) ? true : false
@@ -28,10 +30,10 @@ const Member: React.FC = () => {
           const { data: memberInfo } = response;
           const { birthday, email, nickName, phoneNumber, profilePic, role } = memberInfo;
           setMember({
-            birthday: birthday ? format(new Date(birthday), "yyyy-MM-dd") : "無資料",
-            email: email || "無資料",
-            nickName: nickName || "無資料",
-            phoneNumber: phoneNumber || "無資料",
+            birthday: birthday ? format(new Date(birthday), "yyyy-MM-dd") : t("member_page.no_data"),
+            email: email || t("member_page.no_data"),
+            nickName: nickName || t("member_page.no_data"),
+            phoneNumber: phoneNumber || t("member_page.no_data"),
             profilePic: profilePic || "/images/member/default_avatar.svg",
             role: role
           });
@@ -39,7 +41,7 @@ const Member: React.FC = () => {
         }
         alert(response.message);
       } catch (error) {
-        alert("系統錯誤請聯絡管理員");
+        alert(t("ErroMsg"));
       } finally {
         setLoading(false);
       }
@@ -62,12 +64,12 @@ const Member: React.FC = () => {
               ></div>
               <hr className="my-2" />
               <div className="member-sidebar-user-name">
-                <p className="text-muted">會員</p>
+                <p className="text-muted">{t("member_page.member")}</p>
                 <p>{member.nickName}</p>
               </div>
               <hr className="my-2" />
               <div className="member-sidebar-user-email">
-                <p className="text-muted">E-mail</p>
+                <p className="text-muted">{t("member_page.email")}</p>
                 <p className="mb-1x">{member.email}</p>
               </div>
             </div>
@@ -78,20 +80,20 @@ const Member: React.FC = () => {
                   to={`/member`}
                   className={({ isActive }) => (isActive ? "active" : "")}
                 >
-                  個人檔案
+                  {t("member_page.profile.profile_title")}
                 </NavLink>
               </li>
               {(!isGoogleMember) &&
                 <li>
-                  <NavLink to={`/member/account`}>修改密碼</NavLink>
+                  <NavLink to={`/member/account`}>{t("member_page.edit_password.edit_passowrd_sidebar")}</NavLink>
                 </li>
               }
 
               <li>
-                <NavLink to={`/member/order`}>訂票紀錄</NavLink>
+                <NavLink to={`/member/order`}>{t("member_page.booking_recod.booking_record_sidebar")}</NavLink>
               </li>
               <li>
-                <NavLink to={`/member/bonus`}>紅利查詢</NavLink>
+                <NavLink to={`/member/bonus`}>{t("member_page.bonus.bonus_sidebar")}</NavLink>
               </li>
             </ul>
           </div>

@@ -169,6 +169,7 @@ const monthMap: { [key: string]: { [key: string]: string } } = {
   }
 };
 
+
 const paymethodMap: { [key: string]: string } = {
   "信用卡": "Credit Card",
   "綠界科技-Credit_CreditCard": "ECPAY-Credit_CreditCard",
@@ -212,8 +213,19 @@ const levelMap: { [key: string]: { [key: number]: { level: string, color: string
       color: "#d8121a"
     },
   },
-
 }
+
+const levelZhToEng: { [key: string]: string } = {
+  "普": "G",
+  "護": "PG",
+  "輔": "PG-13",
+  "限": "R",
+  "G": "G",
+  "PG": "PG",
+  "PG-13": "PG-13",
+  "R": "R",
+}
+
 
 const paymentMethodMap_eng: { [key: string]: { [key: string]: {} } } = {
   "zh": {
@@ -336,10 +348,17 @@ export const transDateString = (lang: string, date: string) => {
     return date;
   }
 }
+export const transLevel = (lang: string, levelData: string) => {
+  if (!lang || lang === 'zh') {
+    return levelData
+  }
+  return levelZhToEng[levelData];
+};
 
 export const transLevelData = (lang: string = 'en', level: number = 0) => {
   return levelMap[lang || 'en'][level];
 };
+
 
 export const transPaymentMethod = (lang: string, payment: string) => {
   if (!payment) {

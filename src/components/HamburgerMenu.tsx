@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { OrderContext } from "../store";
+import { t } from "i18next";
 
 interface HamburgerMenuProps {
   isLogin: boolean;
@@ -13,6 +14,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
   isOpen,
   setIsOpen,
 }) => {
+
   const location = useLocation();
   const navigate = useNavigate();
   const navigateHandler = (path: string) => {
@@ -42,7 +44,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
           </div>
         </div>
         <ul className="hamburger-menu-link">
-          <li>
+          {/* <li>
             <p
               className={location.pathname.match("/benifet") ? "active" : ""}
               onClick={() => navigateHandler("/benifet")}
@@ -50,8 +52,8 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
             >
               好康優惠
             </p>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <p
               className={location.pathname.match("/aboutus") ? "active" : ""}
               onClick={() => navigateHandler("/aboutus")}
@@ -59,14 +61,14 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
             >
               關於影城
             </p>
-          </li>
+          </li> */}
           <li>
             <p
               className={location.pathname.match("/admin") ? "active" : ""}
               onClick={() => navigateHandler("/admin")}
               role="button"
             >
-              後台管理
+              {t("menu.aminPanel")}
             </p>
           </li>
           {isLogin && (
@@ -77,7 +79,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   onClick={() => navigateHandler("/member")}
                   role="button"
                 >
-                  個人檔案
+                  {t("member_page.profile.profile_title")}
                 </p>
               </li>
               {(!isGoogleMember) &&
@@ -89,7 +91,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                     onClick={() => navigateHandler("/member/account")}
                     role="button"
                   >
-                    修改密碼
+                    {t("member_page.edit_password.edit_passowrd_sidebar")}
                   </p>
                 </li>
               }
@@ -101,7 +103,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   onClick={() => navigateHandler("/member/order")}
                   role="button"
                 >
-                  訂票記錄
+                  {t("member_page.booking_recod.booking_record_sidebar")}
                 </p>
               </li>
               <li>
@@ -112,7 +114,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   onClick={() => navigateHandler("/member/bonus")}
                   role="button"
                 >
-                  紅利查詢
+                  {t("member_page.bonus.bonus_sidebar")}
                 </p>
               </li>
             </>

@@ -6,6 +6,7 @@ import { OrderDataType, PopUpwindowRefType } from "../../interface";
 import { Loading } from "../../components";
 import { PopUpWindows } from "../../components";
 import { OrderList } from "./components/OrderList";
+import { t } from "i18next";
 
 const MemberOrder: React.FC = ({ }) => {
   const [state, dispatch] = useContext(OrderContext);
@@ -28,14 +29,14 @@ const MemberOrder: React.FC = ({ }) => {
 
   return (
     <>
-      <MemberContainer title="訂票紀錄">
+      <MemberContainer title={t("member_page.booking_recod.booking_record_sidebar")}>
         <Loading isActive={loading} />
         <div className="memberOrder">
           <ul className="orderHead">
-            <li>訂票時間</li>
-            <li>電影</li>
-            <li>放映場次</li>
-            <li>座位</li>
+            <li>{t("member_page.booking_recod.title_booking_time")}</li>
+            <li>{t("member_page.booking_recod.title_booking_movie")}</li>
+            <li>{t("member_page.booking_recod.title_booking_date")}</li>
+            <li>{t("member_page.booking_recod.title_booking_seats")}</li>
           </ul>
           <ul className="orderContentWrap">
             {orderData.map((order, index) => {

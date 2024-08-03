@@ -1,18 +1,20 @@
 import React from "react";
 import { MemberContainer } from "../../components/MemberContainer";
+import { useTranslation } from "react-i18next";
 
 const MemberBonus: React.FC = ({ }) => {
+  const { t } = useTranslation()
   return (
     <>
-      <MemberContainer title="會員紅利">
+      <MemberContainer title={t("member_page.bonus.bonus_title")}>
         <div className="memberBonus">
           <div className="memberBonus-total mb-2 d-flex align-center">
-            我得紅利點數：
+            {t("member_page.bonus.bonus_get_point_number")}
             <img src="/images/member/icon_bonus_pink.svg" className="me-2" /> 0
           </div>
           <div className="memberBonus-list">
-            <p className="mb-2">會員紅利紀錄</p>
-            暫無紀錄
+            <p className="mb-2">{t("member_page.bonus.bonus_get_point_record")}</p>
+            {t("member_page.bonus.bonus_get_point_none")}
           </div>
         </div>
       </MemberContainer>

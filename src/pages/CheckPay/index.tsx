@@ -265,7 +265,7 @@ const CheckPay: React.FC<CheckPayProps> = ({ }) => {
           <button type='button' className='btn_primary mt-4 me-1 w-100' onClick={() => {
             popUpwindowRef.current?.closeModal()
             navigate('/member')
-          }}>{t("member.member_center_title")}
+          }}>{t("member_page.member_center_title")}
           </button>
           <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={() => {
             popUpwindowRef.current?.closeModal()

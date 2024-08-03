@@ -109,7 +109,10 @@
     "join_us_content": "Sign up to get a $50 discount on all theaters instantly",
     "cancel": "Cancel",
     "checkout": "Checkout",
-    "order_id": "Booking ID"
+    "order_id": "Booking ID",
+    "order_detail": "Booking Detail",
+    "ticket_number": "Ticket Number",
+    "ticket_quantity": "Member discount (x{{quantity}})"
   },
   "order": {
     "contact_information_title": "Contact Information",
@@ -157,6 +160,7 @@
     "member_mamagement_page": {
       "usesr_management_list": "Usesr Management List",
       "id_number": "ID No.",
+      "edit_member_data": "Edit Member",
       "member_id": "Mmeber ID",
       "profile_pic": "Profile Picture",
       "nick_name": "Name",
@@ -208,8 +212,38 @@
       "view_mode_notice_delete_text": "This is in viewing mode. Deletion are not allowed."
     }
   },
-  "member": {
-    "member_center_title": "Member Center"
+  "member_page": {
+    "member": "Member",
+    "member_center_title": "Member Center",
+    "email": "E-mail",
+    "no_data": "No Data",
+    "profile": {
+      "profile_title": "Profile",
+      "pircture": "Picture",
+      "nick_name": "Nick Name",
+      "brithday": "Birthday",
+      "phone_number": "Phone Number"
+    },
+    "edit_password": {
+      "edit_passowrd_sidebar": "Edit Password",
+      "new_passowrd": "New Password",
+      "confirm_passowrd": "Confirm Password"
+    },
+    "booking_recod": {
+      "booking_record_sidebar": "Booking Record",
+      "title_booking_time": "Time",
+      "title_booking_movie": "Movie",
+      "title_booking_date": "Date",
+      "title_booking_seats": "Seats",
+      "check_booking_detail": "Check Detail"
+    },
+    "bonus": {
+      "bonus_sidebar": "Bonus",
+      "bonus_title": "Member Bonus",
+      "bonus_get_point_number": "My bouns point",
+      "bonus_get_point_record": "Bouns record",
+      "bonus_get_point_none": "No bouns record found"
+    }
   },
   "footer": {
     "contact_us": "Contact Us",
