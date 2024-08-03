@@ -30,9 +30,9 @@ export const useInitialization = () => {
   useEffect(() => {
     const getUserLocationAndSetLanguage = async () => {
       try {
-        // const response = await axios.get('https://ipapi.co/json/');
-        // const country = response.data.country;
-        const country = "" as string;
+        const response = await axios.get('https://ipapi.co/json/');
+        const country = response.data.country;
+        // const country = "" as string;
 
         switch (country) {
           case 'TW':
