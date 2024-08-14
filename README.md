@@ -32,7 +32,7 @@ This project is a personal side project aimed at building a full-stack movie tic
 ### Technologies Used (Frontend)
 
 - Frontstage - React + Typescript + Bootstrap + styled-components+ SocketI.O + Google Login + ECpay + Internationalization
-- Backstage - Redux and Redux Toolkit + Ant Design + Internationalization
+- Backstage - Redux and Redux Toolkit + RTK-Query + Ant Design + Internationalization
 
 ## Directory Structure
 
