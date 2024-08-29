@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useRef, MutableRefObject } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
-import { useForm, useWatch, } from "react-hook-form"
+import { useForm, useWatch } from "react-hook-form"
 import { ScreenCheck, PopUpWindows, MessageBox } from '../../components/';
 import { OrderContext } from '../../store';
 import { PopUpwindowRefType, CreditCardType, CompleteResDataType } from '../../interface';
@@ -85,17 +85,11 @@ const CheckPay: React.FC<CheckPayProps> = ({ }) => {
     "orderId": ""
   };
   // const payMethod = (getValues().payMethod === `creditCard`) ? ' - 信用卡' : (getValues().payMethod === `ecPay`) ? ' - 綠界金流' : ""
-  const payMethod = ` - ${transPaymentMethod(language, getValues().payMethod)}` || ''
+  const payMethod = (getValues().payMethod) ? ` - ${transPaymentMethod(language, getValues().payMethod)}` : ''
 
   // 進入該頁時，載入銀行的代碼
   useEffect(() => {
     setLoading(true)
-
-    // transMovieTitleName('en', '小美人魚 (豪華廳)', true)
-    // popUpwindowRef.current?.openModal()
-    // setIsPayComplete(true)
-    // popUpwindowRef.current?.closeModal()
-    // setIsPayComplete(false)
     socketIoRef.current = io(url, { transports: ['websocket'] });
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     dispatch({
@@ -118,12 +112,6 @@ const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   /*隨時監控form，若有錯誤，scroll移到最上方，先把此功能關掉，因為當它一出現錯誤，
     滑鼠滾輪就會移到最上面，干擾使用時的體驗
   */
-
-  useEffect(() => {
-    // if (errors) {
-    //   window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    // }
-  }, [watchForm])
 
   // 登入或註冊將會員email寫到email的input欄位
   useEffect(() => {
