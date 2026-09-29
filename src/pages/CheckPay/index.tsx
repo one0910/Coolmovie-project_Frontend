@@ -14,6 +14,25 @@ import { transDateString, transMovieTitleName, transPaymentMethod, transSeats } 
 
 interface CheckPayProps { }
 
+const mockBankcodes = [
+  '004 臺灣銀行',
+  '005 臺灣土地銀行',
+  '006 合作金庫銀行',
+  '007 第一銀行',
+  '008 華南銀行',
+  '009 彰化銀行',
+  '011 上海商業儲蓄銀行',
+  '012 台北富邦銀行',
+  '013 國泰世華銀行',
+  '017 兆豐國際商業銀行',
+  '050 臺灣中小企業銀行',
+  '052 渣打國際商業銀行',
+  '103 新光銀行',
+  '808 玉山商業銀行',
+  '812 台新銀行',
+  '822 中國信託',
+]
+
 const ContactInfoInput = styled.div<{ language: string }>`
   span{
     width:auto;
@@ -49,7 +68,7 @@ const CompleteBookingItemDiv = styled.div<{ language: string }>`
 const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   const [state, dispatch] = useContext(OrderContext);
   const [loading, setLoading] = useState(false)
-  const [bankcodes, setBankcodes] = useState([])
+  const [bankcodes, setBankcodes] = useState<string[]>([])
   const [completeResData, setCompleteResData] = useState<CompleteResDataType | null>(null)
   const [isPayComplete, setIsPayComplete] = useState(false)
   const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
@@ -98,15 +117,8 @@ const CheckPay: React.FC<CheckPayProps> = ({ }) => {
         lastPage: location.pathname,
       },
     });
-    (async function () {
-      try {
-        let response = await authFetch.get('https://9b71893b-9621-4845-b234-553e758f8f8a.mock.pstmn.io/bankcode')
-        setBankcodes(response.data.bankcode)
-        setLoading(false)
-      } catch (error) {
-        console.log('error', error);
-      }
-    }())
+    setBankcodes(mockBankcodes)
+    setLoading(false)
   }, [])
 
   /*隨時監控form，若有錯誤，scroll移到最上方，先把此功能關掉，因為當它一出現錯誤，
